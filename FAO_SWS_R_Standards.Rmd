@@ -1,0 +1,181 @@
+---
+title: FAO SWS R Style Guide
+output:
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(fig.path='figure/', fig.align='center', fig.show='hold',
+               warning=FALSE, message=FALSE, error=FALSE, tidy=FALSE, 
+               results='markup', eval=TRUE, echo=TRUE, cache=FALSE, dpi=200)
+options(replace.assign=TRUE,width=80)
+```
+
+\section{R Style Rules}
+
+The following rules are designed for any modules uploaded to the SWS production server.  However, some rules below are not strictly enforced, and those are written in italics.
+
+\subsection{File Names}  Should end in .R and be meaningful.
+\subsection{Identifiers}  Any style using underscores (my\_function), dots (my.function), lower camel case (myFunction), or upper camel case (MyFunction) is acceptable.  But, the style should be consistent across the entire R file.  Also, ``magic numbers'' should be avoided.  For example:
+
+```{r, eval=FALSE}
+if(daysInMonth == 28)
+    currentMonth = "february"
+```
+
+should instead be replaced with
+
+```{r, eval=FALSE}
+daysInFebruary = 28
+if(daysInMonth == daysInFebruary)
+    currentMonth = "february"
+```
+
+\subsection{Line Length}  Lines should generally wrap at 80 characters.  100 characters is allowable in certain scenarios, but lines should not exceed 100 characters.
+\subsection{Indentation}  Indentation should always be with space characters, but may be two or four spaces.  However, spaces should be consistent across the entire file.  Using an editor such as R Studio will help you with this.  Indentation should never be with tabs, only spaces, as tabs may be rendered differently in different editors.  Indentation should occur whenever a set of braces occur.
+\subsection{Spacing}  \textit{Spaces should be placed around all binary operators (=, +, -, <, etc.) and after commas.}
+\subsection{Curly Braces}  \textit{An opening curly brace should never go on it's own line, and a closing curly brace should always go on it's own line.  Curly braces are not required around one-line if, for, while, ... statements.  Additionally, if-else statements do not need curly braces if both the if and else conditions are single lines (otherwise, curly braces should be used for both the if and else conditions).}
+\subsection{Assignment}  Both `<-` and `=` are allowed, but must be consistent throughout the entire file.
+\subsection{Semicolons}  These should never be used.
+\subsection{Commenting Guidelines}  Thorough commenting should be in your code so that another programmer can easily understand what you're doing.  Comments should begin with \#\# and a single space.  Short comments can be placed at the end of lines, and should be preceded by one space, one \#, and one space.
+\subsection{Function Definitions and Calls}  Function definitions should first list arguments without default values, followed by those with default values.  In both function definitions and function calls, multiple arguments per line are allowed; \textit{line breaks are only allowed between assignments}.
+\subsection{Function Documentation}  Any non-trivial function should be documented following the roxygen2 coding style.  See \url{https://github.com/SWS-Methodology/sws_flag/blob/master/faoswsFlag/R/aggregateObservationFlag.R} for an example.  Not all these sections are required, but the function should have at least a title (the first line), a short description (the next chunk), all parameters documented, and a description of the return value.  Moreover, these descriptions should be meaningful, and not like:
+
+```{r, eval=FALSE}
+##' My Function
+##' 
+##' Runs the analysis.
+##' 
+##' @param func The function
+##' 
+##' @return The result
+```
+
+Additionally, if the function has any side effect, this should be documented very clearly!  This shouldn't happen much with global variables as they are not recommended, but data.table objects are passed by reference and hence modifications inside a function will change the data.table.  These effects should be documented (and kept to a minimum, when possible).\\
+
+Functions should also be kept reasonably short and should be split into coherent blocks.
+
+\subsection{Anonymous Function}  An anonymous function is an unnamed function, usually something that is constructed as part of a \*apply call.  Such functions are useful for quick inline evaluation, and don't necessarily need to be documented.  However, if the function is complex enough, it should be defined and named outside of the \*apply call with the usual function documentation (i.e. roxygen-style comments).
+
+\section{R Language Rules}
+
+\subsection{attach}  Never use attach.
+\subsection{Global Variables}  Avoid the use of global variables whenever possible.  These may be used, but only in extreme cases.
+\subsection{.Rprofile}  Your code should run without any custom definitions in your .Rprofile.
+\subsection{Functions}
+\subsection{Objects and Methods}
+\subsection{Conventions}
+
+\section{General Layout and Ordering}
+
+The following sections should exist in the specified order.  However, not all sections are required in a particular R file.  The single hash comments are meant to separate different sections.
+
+```{r, eval=FALSE}
+# Beginning comment:
+## This file does ...
+## We assume that you have a connection to the SWS, that a linear model is
+## reasonable, etc.
+## We still need to add the following features: ...
+## Author: Me
+
+# All library() calls followed by all source() calls
+library(ggplot2)
+library(faosws)
+source("myFunctions.R")
+source("/path/to/file/myOtherFile.R")
+
+# Function definitions
+##' My Function
+##' 
+##' This function doesn't do anything.
+##' 
+##' @param x Numeric, an input value.
+##' 
+##' @return Returns a numeric vector of the same length as x but with values
+##' x + 1
+
+myFun = function(x){
+    x + 1
+}
+
+# Executed statements, if applicable.
+x = rnorm(10)
+y = myFun(x)
+```
+
+\section{SWS Specific Content}
+
+\subsection{Repository Organization}
+
+How should repositories be organized?  Where should we place the R files, the .xml file, and the .R file that runs the module?  What about documentation files (man, vignettes)?
+
+\subsection{Local Testing Environment}
+
+All scripts uploaded to the SWS will likely need to be run in a local/test environment as well as on the SWS.  To test if the script is currently being run on the server, use the following R code block:
+
+```{r, eval=FALSE}
+DEBUG_MODE = Sys.getenv("R_DEBUG_MODE")
+if(DEBUG_MODE == TRUE){ # Must test since DEBUG_MODE could be ""
+    GetTestEnvironment(
+        baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
+        token = "88ee026d-cd28-40ed-8266-284541d346b9"
+    )
+}
+```
+
+\subsection{Code Organization}
+
+\textit{It is generally preferable to have functions in a separate folder rather than one long .R file.  Each function can then be documented and easily accessed.}
+
+\subsection{R Packages}
+
+For complex analyses related to SWS modules should be organized following the R package structure.  For an example of such a structure, please see \url{https://github.com/SWS-Methodology/sws_imputation/tree/master/faoswsImputation}.  For more details around the R practices, please see \url{http://cran.r-project.org/doc/manuals/r-release/R-exts.html#Package-structure}.  Here's an overview of the structure:
+
+\begin{itemize}
+    \item R: This should be a directory containing all R functions for the package.
+    \item man: This should be a directory containing all the .Rd files (or documentation files).  Creation of these files is easy by executing \texttt{devtools::document} on the package directory (R will scan the scripts in the R directory and automatically create documentation files based on the roxygen2 comments written by the programmer).
+    \item data: Optional, but highly recommended.  This directory can contain sample datasets that show how the package works.  These datasets should generally be for reference only, and should not be required to actually run any of the code.
+    \item vignettes: This directory contains .Rnw files which will become vignettes once the package is built.  These vignettes provide extensive documentation of the package and examples of how to run code.
+    \item tests: This directory contains unit tests that are ran when the package is compiled and provide a very good tool for checking the code written by developers.  Additionally, the testthat package can be used to run these tests frequently while updating package code.  This is an extremely good practice, but it's currently not implemented on any FAO SWS packages.
+    \item DESCRIPTION: A file describing the package (i.e. version, author, etc.)
+    \item NAMESPACE: This package is automatically created by \texttt{devtools::document}.  It specifies function imports and exports, but shouldn't be edited by hand if using \texttt{devtools::document}.
+    \item ...: Additional directories are also accepted and useful, but this document is meant to just discuss R coding standards.
+\end{itemize}
+
+The R modules should be implemented as packages for several reasons:
+\begin{itemize}
+    \item The code, documentation, and manuals can be easily transferred to a new programmer and he/she can begin using them without much guidance (assuming the documentation is thorough).
+    \item Checks are run while compiling packages to enforce certain constraints and warnings notify the compiler when certain types of documentation are missing (for example).  Thus, building a package provides a useful way for checking your code.
+    \item This structure forces programmers to follow a rigorous code structure and ensures consistency.
+\end{itemize}
+
+\subsection{Additional Styles/Rules for SWS}
+
+\begin{itemize}
+    \item The code \texttt{rm(list = ls())} should never be used within any script uploaded to the working system, as this removes crucial SWS variables and will result in an error.
+\end{itemize}
+
+\section{Additional Topics}
+
+\begin{itemize}
+    \item Package structure, checks to pass.
+    \item Ensuring inputs: we should implement simple tests at the beginning of
+    each function to ensure that the input parameters are valid/meet
+    assumptions of the function.
+    \item What rules should we have around which functions should be exported
+    from a package?
+    \item Avoid data.table::setnames in functions so as to prevent colnames
+    changing unexpectantly when errors occur.
+    \item roxygen: in order to ensure the NAMESPACE file is correctly written,
+    functions from external packages should be referenced via :: in the FAO
+    package.  Or, the roxygen comment block should have @@import or
+    @@importFrom.
+    \item Some scripts make use of unlink and file.copy
+    to delete all scripts within a directory and then copy them back in.
+    I'd recommend we avoid this type of behavior, and the use of unlink, as
+    much as possible.
+    \item All repositories with FAO code on Github should have a disclaimer in the README.md file, something to the effect of ``\*\* All work under this repository represents the latest status of development and made public for collaboration. It however, does not reflect the current state of the system and use of the program is at the discretionary of the users. \*\*''
+\end{itemize}
