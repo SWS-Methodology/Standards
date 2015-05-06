@@ -23,26 +23,95 @@ The following rules are designed for any modules uploaded to the SWS production 
 
 ```{r, eval=FALSE}
 if(daysInMonth == 28)
-    currentMonth = "february"
+    currentMonth <- "february"
 ```
 
 should instead be replaced with
 
 ```{r, eval=FALSE}
-daysInFebruary = 28
+daysInFebruary <- 28
 if(daysInMonth == daysInFebruary)
-    currentMonth = "february"
+    currentMonth <- "february"
 ```
 
 \subsection{Line Length}  Lines should generally wrap at 80 characters.  100 characters is allowable in certain scenarios, but lines should not exceed 100 characters.
-\subsection{Indentation}  Indentation should always be with space characters, but may be two or four spaces.  However, spaces should be consistent across the entire file.  Using an editor such as R Studio will help you with this.  Indentation should never be with tabs, only spaces, as tabs may be rendered differently in different editors.  Indentation should occur whenever a set of braces occur.
-\subsection{Spacing}  \textit{Spaces should be placed around all binary operators (=, +, -, <, etc.) and after commas.}
-\subsection{Curly Braces}  \textit{An opening curly brace should never go on it's own line, and a closing curly brace should always go on it's own line.  Curly braces are not required around one-line if, for, while, ... statements.  Additionally, if-else statements do not need curly braces if both the if and else conditions are single lines (otherwise, curly braces should be used for both the if and else conditions).}
-\subsection{Assignment}  Both `<-` and `=` are allowed, but must be consistent throughout the entire file.
+\subsection{Indentation}  Indentation should always be with space characters, but may be two or four spaces.  However, spaces should be consistent across the entire file.  Using an editor such as R Studio will help you with this.  Indentation should never be with tabs, only spaces, as tabs may be rendered differently in different editors.  Indentation should occur whenever a set of braces occur, as well as whenever code is wrapped onto multiple lines.  Within R Studio, code can be automatically indented by selecting all the code and pressing CTRL + I.
+\subsection{Spacing}  The particular style of spacing that one uses is not important, but spaces should be in your code to keep it from being too cluttered.  Additionally, the style followed should be consistent throughout the whole file.  Below are some examples of different spacing styles, both of which are acceptable:
+```{r, eval = FALSE}
+myFunc <- function(x = 1, y = 2){
+    x + y
+}
+```
+
+```{r, eval = FALSE}
+myFunc <- function (x=1, y=2) {
+    x + y
+}
+```
+
+Moreover, spacing can be placed within code to help with readability, but this is not required:
+
+```{r, eval = FALSE}
+myComplexFunction <- function(longArgument  = 1,
+                              y             = 3,
+                              someArgument  = d[filter == TRUE, ],
+                              otherArg      = data[, c("Test")] * 100){
+    return(0)
+}
+```
+
+\subsection{Curly Braces}  The preferred style is that an opening curly brace should never go on it's own line, and a closing curly brace should always go on it's own line.  However, variations are allowed but must be consistent throughout the file:
+
+```{r, eval = FALSE}
+f <- function(x, y, z){
+    x + y + z
+}
+```
+
+```{r, eval = FALSE}
+f <- function(x, y, z)
+{
+    x + y + z
+}
+```
+
+Curly braces are required around one-line if, for, while, ... statements.  Thus, the following code is poorly formatted (even though it runs ok):
+
+```{r, eval = FALSE}
+if(x == 1)
+    y <- 2
+else
+    y <- 1
+```
+
+Instead, this should be written as
+
+```{r, eval = FALSE}
+if(x == 1){
+    y <- 2
+} else {
+    y <- 1
+}
+```
+
+\subsection{Assignment}  Both `<-` and `=` are allowed, but must be consistent throughout the entire file.  If a user has no preference, then the `<-` is recommended, as this is in line with R standard recommendations.
 \subsection{Semicolons}  These should never be used.
-\subsection{Commenting Guidelines}  Thorough commenting should be in your code so that another programmer can easily understand what you're doing.  Comments should begin with \#\# and a single space.  Short comments can be placed at the end of lines, and should be preceded by one space, one \#, and one space.
-\subsection{Function Definitions and Calls}  Function definitions should first list arguments without default values, followed by those with default values.  In both function definitions and function calls, multiple arguments per line are allowed; \textit{line breaks are only allowed between assignments}.
-\subsection{Function Documentation}  Any non-trivial function should be documented following the roxygen2 coding style.  See \url{https://github.com/SWS-Methodology/sws_flag/blob/master/faoswsFlag/R/aggregateObservationFlag.R} for an example.  Not all these sections are required, but the function should have at least a title (the first line), a short description (the next chunk), all parameters documented, and a description of the return value.  Moreover, these descriptions should be meaningful, and not like:
+\subsection{Commenting Guidelines}  Thorough commenting should be in your code so that another programmer can easily understand what you're doing.  Comments should begin with one or multiple \#'s and a single space.  Short comments can be placed at the end of lines, and should be preceded by at least one space, one \#, and one space.  Examples:
+
+```{r, eval = FALSE}
+## This is a comment
+x <- 1   # Assign the value of 1 to x
+```
+
+When editing or updating a file, it is good practice to annotate with comments the changes you made, or to explain confusing parts of the code.  In such cases, you should also add your name and date.
+
+```{r, eval = FALSE}
+## (JMB, 6/5/2015) The following code does ...
+d[(filter) & x > lowerBound, newValue := oldValue + oldValueAdjustment]
+```
+
+\subsection{Function Definitions and Calls}  Function definitions should first list arguments without default values, followed by those with default values.  In both function definitions and function calls, multiple arguments per line are allowed; line breaks are only allowed between assignments.
+\subsection{Function Documentation}  Any non-trivial function should be documented following the roxygen2 coding style.  Not all these sections are required, but the function should have at least a title (the first line), a short description (the next chunk), all parameters documented, and a description of the return value.  Moreover, these descriptions should be meaningful, and not like:
 
 ```{r, eval=FALSE}
 ##' My Function
@@ -54,24 +123,94 @@ if(daysInMonth == daysInFebruary)
 ##' @return The result
 ```
 
-Additionally, if the function has any side effect, this should be documented very clearly!  This shouldn't happen much with global variables as they are not recommended, but data.table objects are passed by reference and hence modifications inside a function will change the data.table.  These effects should be documented (and kept to a minimum, when possible).\\
+Instead, here is an example of a better documented function:\newpage
+
+```{r, eval=FALSE}
+##' Mixed Model for Imputation
+##'
+##' This function imputes missing values with a linear mixed model.
+##' 
+##' The default functionality of this model is to fit a linear mixed model to
+##' the data.  time and intercept are assumed to be fixed effects, and the
+##' random effects are specified by the byKey parameter of
+##' imputationParameters.  So, for example, byKey may reference the variable
+##' containing country data.  In that case, a model is fit which assumes a
+##' linear relationship between production (or whatever dependent variable the
+##' user has specified) and time.  However, the intercept and slope of this
+##' fit varies from country to country, and so country is considered a random
+##' effect.
+##' 
+##' Moreover, the model fit is not a simple linear regression, but rather a
+##' spline regression (using the bs function from the \pkg{splines} package).
+##' The fit of this model will therefore depend on the number of degrees of
+##' freedom of this spline model (and, if the degrees of freedom is 1, then the
+##' simple linear regression model is used).
+##'
+##' @param data The data.table object containing the data.
+##' @param df The number of degrees of freedom for the spline.
+##' @param weights The weights for the observations.
+##' @param modelFormula Formula specifying how the dependent variable (value)
+##' depends on the other columns of data.  Should be a valid mixed model
+##' formula, as it will be passed to lmer (R's mixed model function).
+##' @param imputationParameters A list of the parameters for the imputation
+##' algorithms.  See defaultImputationParameters() for a starting point.
+##' 
+##' @return Returns a vector of the estimated/imputed values.  If a value
+##' existed in the original data, then an NA is returned in that location.
+##' 
+##' @export
+##' 
+
+defaultMixedModel = function(data, df = 1, weights = NULL, modelFormula = NULL,
+                             imputationParameters){
+    Write code here...
+}
+```
+
+Additionally, if the function has any side effects, these should be documented very clearly!  Global variables should only be created in extreme scenarios, as they can create such side effects.  However, data.table objects are passed by reference and hence modifications inside a function will change the data.table.  These effects should be documented (and kept to a minimum, when possible).
 
 Functions should also be kept reasonably short and should be split into coherent blocks.
 
-\subsection{Anonymous Function}  An anonymous function is an unnamed function, usually something that is constructed as part of a \*apply call.  Such functions are useful for quick inline evaluation, and don't necessarily need to be documented.  However, if the function is complex enough, it should be defined and named outside of the \*apply call with the usual function documentation (i.e. roxygen-style comments).
+Never define a function within a loop.  This creates unnecessary overhead, and if that loop iterates many times, alot of computation is spent on redefining the same function.
+
+\subsection{Anonymous Function}  An anonymous function is an unnamed function, usually something that is constructed as part of a \*apply call.  Such functions are useful for quick inline evaluation, and don't necessarily need to be documented.  However, if the function is complex enough, it should be defined and named outside of the \*apply call with the usual function documentation (i.e. roxygen-style comments).  Additionally, if it is used more than once, it should be defined outside of the \*apply call (to avoid having to update the function in multiple locations).
 
 \section{R Language Rules}
 
 \subsection{attach}  Never use attach.
-\subsection{Global Variables}  Avoid the use of global variables whenever possible.  These may be used, but only in extreme cases.
-\subsection{.Rprofile}  Your code should run without any custom definitions in your .Rprofile.
-\subsection{Functions}
-\subsection{Objects and Methods}
-\subsection{Conventions}
+\subsection{.Rprofile}  Your code should run without any custom definitions in your .Rprofile.  For example:
+```{r}
+options("stringsAsFactors")
+options("stringsAsFactors" = FALSE)
+options("stringsAsFactors")
+```
+
+For example, suppose you place the second line of code above (that assigns stringsAsFactors to FALSE) in your .Rprofile.  Then, when you read in a dataset with characters, that column will be treated as a character column.  However, if a different user runs your same code, that column will be created as a factor.  This can cause errors which are nearly impossible to debug, as the reason for the difference between the two behaviours is not clear.
+
+This file can be useful, however, for changing some other options.  For example:
+
+```{r, eval = FALSE}
+## Don't ask me for my CRAN mirror every time
+options("repos" = c(CRAN = "http://cran.rstudio.com/"))
+
+## Penalize scientific notation (only affects display):
+options(scipen=20)
+```
+
+
+\subsection{Loading External Code}  Libraries are external packages which are unavoidable when programming in R.  Functions from libraries should be used in one of two ways:
+
+```{r, eval = FALSE}
+library(data.table)
+reshape2::cast(d, x ~ y)
+```
+
+In the first case, the entire data.table package is loaded, and this is the desired behavior if that package will be used extensively throughout the script.  If, however, a package is to be used only a few times, the second approach is preferred: not loading the entire package helps prevent potential naming conflicts.  Additionally, it makes the code more understandable.  Never use require in place of library: it allows the function to continue even if the loading of the library failed, and this will likely cause errors later (that will presumably be harder to understand and debug).
+\subsection{data.table}  \textbf{Discuss complications with pass-by-reference...}
 
 \section{General Layout and Ordering}
 
-The following sections should exist in the specified order.  However, not all sections are required in a particular R file.  The single hash comments are meant to separate different sections.
+The following sections should exist in the specified order.  However, not all sections are required in a particular R file.  The single hash comments are meant to separate different sections.\newpage
 
 ```{r, eval=FALSE}
 # Beginning comment:
@@ -97,13 +236,13 @@ source("/path/to/file/myOtherFile.R")
 ##' @return Returns a numeric vector of the same length as x but with values
 ##' x + 1
 
-myFun = function(x){
+myFun <- function(x){
     x + 1
 }
 
 # Executed statements, if applicable.
-x = rnorm(10)
-y = myFun(x)
+x <- rnorm(10)
+y <- myFun(x)
 ```
 
 \section{SWS Specific Content}
@@ -117,7 +256,7 @@ How should repositories be organized?  Where should we place the R files, the .x
 All scripts uploaded to the SWS will likely need to be run in a local/test environment as well as on the SWS.  To test if the script is currently being run on the server, use the following R code block:
 
 ```{r, eval=FALSE}
-DEBUG_MODE = Sys.getenv("R_DEBUG_MODE")
+DEBUG_MODE <- Sys.getenv("R_DEBUG_MODE")
 if(DEBUG_MODE == TRUE){ # Must test since DEBUG_MODE could be ""
     GetTestEnvironment(
         baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
