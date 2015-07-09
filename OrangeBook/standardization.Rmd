@@ -15,10 +15,10 @@ library(diagram) # For plotting commodity trees
 
 options(scipen = 100, digits = 0)
     
-if(Sys.info()[7] == "josh"){ # Josh Work
-    workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
-} else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-    workingDir = "~/Github/privateFAO/OrangeBook/"
+if(Sys.getenv("USER") == "josh"){ # Josh Work
+    workingDir = "~/Documents/Github/Working/OrangeBook/"
+} else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
+    workingDir = "~/Github/Working/OrangeBook/"
 } else {
     stop("No working dir for current user!")
 }

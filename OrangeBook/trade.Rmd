@@ -1,0 +1,64 @@
+---
+title: "Agricultural trade data processing"
+date: "July 9, 2015"
+output: pdf_document
+---
+
+Last update: `r Sys.time()`
+
+```{r options, echo = F, warning=F}
+subdir <- "OrangeBook"
+sourcedir <- "tradeR"
+options(width = 120)
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+
+
+source(file.path(Sys.getenv("HOME"), "r_adhoc", "trade_prevalid_testing", "setupconnection.R"))
+
+if(length(lapply(dir(file.path(Sys.getenv("HOME"), "r_adhoc", "privateFAO", subdir, sourcedir), 
+                     full.names = T), 
+                 source)) == 0) stop("Files for sourcing not found")
+
+printTab <- function(tbl, ...) knitr::kable(tbl, ...)
+
+trade_src <- src_postgres("sws_data", "localhost", 5432, "trade", .pwd, 
+                          options = "-c search_path=ess")
+
+cttl <- tbl(trade_src, sql("select * from tariffline"))
+
+
+
+
+```
+
+
+# Raw trade data
+
+FAO receives data on trade flows from [United Nations Statistical Division](http://unstats.un.org/unsd/default.htm). The division runs  [Commodity Trade Statistics Database UN Comtrade](http://unstats.un.org/unsd/comtrade_announcement.htm)  "It stores standardised official annual trade statistics reported by countries and reflecting international merchandise flows detailed by commodity and partner country with coverage reaching up to 99 percent of world merchandise trade". 
+
+One can freely download this standardised statistics from the [open data base](http://comtrade.un.org/data/). Statistical Division of FAO gets nonstandardised data.
+
+```{r example_raw_data, echo = F}
+tbl(trade_src, sql("select 
+year, reporter, partner, hs, flow, weight, qty, qunit, value 
+ from tariffline
+where year = '2011' and 
+reporter = '842' and flow = '1' order by random() limit 10")) %>% 
+  collect()  %>% 
+  printTab(caption = "Random sample of import trade flows of 2011 year, reported by US")
+```
+
+
+
+
+# Validation of trade data
+
+## Detection of outliers
+
+## Imputing of missing quantities and replacement of outliers
+
+# Aggregation of trade data
+
+## Reliability index
+
