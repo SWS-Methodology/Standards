@@ -1,0 +1,18 @@
+---
+title: "Agricultural trade data processing"
+date: "July 9, 2015"
+output: pdf_document
+---
+
+# Raw trade data
+
+# Validation of trade data
+
+## Detection of outliers
+
+## Imputing of missing quantities and replacement of outliers
+
+# Aggregation of trade data
+
+## Reliability index
+
