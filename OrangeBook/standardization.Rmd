@@ -153,9 +153,7 @@ wheatData = wheatData[geographicAreaM49 == "840", ]
 
 ### Trade
 
-NEED TRADE RESULTS HERE!!!
-
-Once the mirroring, imputation and balancing has completed, we can know fill in the country totals into our current FBS table.
+For the next example, we'll show how the imputation, mirroring and balancing works.  In this case, we just take the country totals and insert into this table.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
