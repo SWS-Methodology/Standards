@@ -35,7 +35,11 @@ if(Sys.info()[7] == "rockc_000"){ #Josh's laptop
 }
 
 data = getStockData()
-model = buildStockModel(data = data)
+model = buildStockModel(data = data, cumulativeYears = 10)
+currentSession = sessionInfo()
+save(model, currentSession,
+     file = paste0(R_SWS_SHARE_PATH, "stockModel",
+                   gsub("(-| |:)", ".", Sys.time()), ".RData"))
 
 ## Code from predictModelAg.R
 timeRange = 1990:2010 # Change documentation if this changes!
@@ -90,9 +94,9 @@ preds = preds[!is.na(Value), ]
 stockEstimates = preds
 
 if(Sys.info()[7] == "rockc_000"){
-    save(stockEstimates, file = "~/GitHub/Working/OrangeBook/stockEstimates.RData")
+    save(stockEstimates, file = "~/GitHub/privateFAO/OrangeBook/stockEstimates.RData")
 } else if(Sys.info()[7] == "josh"){
-    save(stockEstimates, file = "~/Documents/Github/Working/OrangeBook/stockEstimates.RData")
+    save(stockEstimates, file = "~/Documents/Github/privateFAO/OrangeBook/stockEstimates.RData")
 } else {
     stop("Need path for this user!")
 }

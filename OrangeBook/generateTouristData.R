@@ -12,9 +12,9 @@ GetTestEnvironment(
 
 ## Source in the food data
 if(Sys.info()[7] == "josh"){
-    load("~/Documents/Github/Working/OrangeBook/foodEstimates.RData")
+    load("~/Documents/Github/privateFAO/OrangeBook/foodEstimates.RData")
 } else if(Sys.info()[7] == "rockc_000"){
-    load("~/GitHub/Working/OrangeBook/foodEstimates.RData")
+    load("~/GitHub/privateFAO/OrangeBook/foodEstimates.RData")
 } else {
     stop("No user defined yet!")
 }
@@ -176,9 +176,6 @@ setnames(data6, old = c("geographicAreaM49", "measuredItemCPC",
 ## Compute total calories per person per day in orig country
 data6[, totalLocalCalories := sum(calValue), by = c("orig", "year")]
 
-## set the keys for the data.table to sort by year and country of origin
-setkey(data6, year, orig, item)
-
 ## merge data4 and data6 to allow calculation of calories by commodity
 data7 <- merge(data4, data6, allow.cartesian=TRUE, by = c("year", "orig"))
 ## Get rid of some of the tourist columns that we don't need anymore:
@@ -188,43 +185,17 @@ data7[, c("onVisNum", "onVisDays", "totDayVisNum",
 ## calculate the total calories consumed, by item, for the entire year
 data7[, totCaloriesByItemPerYear := totVisDays * calValue]
 
-## calculate calories consumed within a country, by tourists visiting from other
-## countries, and therefore these calories can be subtracted from the total
-## calories available to the permanent population in the country listed in
-## column #3
-touristTotalCaloriesInCountry <- data4[, list(calsVisToCountry = sum(totVisCals)),
-                                  by = list(year,dest)]
+caloriesByOrig = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
+                       by = c("year", "orig", "item")]
+caloriesByDest = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
+                       by = c("year", "dest", "item")]
 
-## calculate calories by people that left the country to be a tourist in the
-## destination country, therefore these calories can be added to the total
-## calories available to the permanent population country of origin, which is
-## listed in column
-touristTotalCaloriesOutCountry <- data4[, list(calsVisFromCountry = sum(totVisCals)),
-                                  by = list(year,orig)]
-
-## sort the calories consumed within a country, by individual food balance sheet
-## commodity item, by tourists visiting from other countries, and therefore these
-## calories can be subtracted from the total calories available to the permanent
-## population in the country listed in column #2, dest
-touristCaloriesInCountryByItem <- data7[ , list(totCaloriesByItemPerYear),
-                                        by = list(year, dest, orig, item) ]
-
-## sort the calories consumed by visitors from country of origin, by individual
-## food balance sheet commodity item, by tourists visiting other countries, and
-## therefore these calories can be subtracted from the total calories available
-## to the permanent population in the country listed in column #2, orig
-touristCaloriesOutCountryByItem <- data7[ , list(totCaloriesByItemPerYear),
-                                        by = list(year, orig, dest, item) ]
-
-## this is a crosscheck of calorie totals summed by dest, orig and year in data7
-## to make sure they corroborate with the originals in data4
-crosscheck <- data7[, sum(totCaloriesByItemPerYear),
-                     by = list(dest, orig, year)]
-
-## assemble two outputs into a list to be returned
-touristCalories <- list(touristTotalCaloriesInCountry,
-                        touristTotalCaloriesOutCountry)
-
-## assemble two outputs into a list to be returned
-touristCaloriesByItem <- list(touristCaloriesInCountryByItem,
-                              touristCaloriesOutCountryByItem)
+if(Sys.info()[7] == "josh"){
+    save(caloriesByDest, caloriesByOrig,
+         file = "~/Documents/Github/privateFAO/OrangeBook/touristEstimates.RData")
+} else if(Sys.info()[7] == "rockc_000"){
+    save(caloriesByDest, caloriesByOrig,
+         file = "~/GitHub/privateFAO/OrangeBook/touristEstimates.RData")
+} else {
+    stop("No user defined yet!")
+}
