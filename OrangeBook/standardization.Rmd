@@ -36,7 +36,7 @@ suppressWarnings({suppressMessages({
 fbsElements = c(5113, 5025, 5312, 5510, 5327, 5421, 5520, 5525,
                 5120, 5023, 5141, 71, 5600, 5800)
     
-printTable = function(data){
+printTable = function(data, updateColName = NULL){
     printDT = copy(data)
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
              c("OpeningStock", "AreaSown", "AreaHarvested", "Production",
@@ -52,7 +52,9 @@ printTable = function(data){
             printDT[, c(colName) := 0]
         }
     })
-    knitr::kable(printDT[, items, with = FALSE])
+    out = knitr::kable(printDT[, items, with = FALSE])
+    out[1] = gsub("|Item     |", "|**Item**  |", out[1], fixed = TRUE)
+    return(out)
 }
 
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
@@ -126,7 +128,7 @@ printTable(toPrint)
 
 Next, we run the production imputation module.  Production is only imputed for primary products, and so in this case no imputation is done (and no changes occur in the table).
 
-```{r, echo = FALSE, fig.show = FALSE, eval = FALSE}
+```{r, echo = FALSE, fig.show = FALSE}
 suppressWarnings({suppressMessages({
 
 # procParams = defaultProcessingParameters(productionValue = 5510,
@@ -145,9 +147,6 @@ toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
 ## Remove alot of the data, and "impute" it later
 printTable(toPrint)
 
-## No longer need other countries, so drop them!
-wheatData = wheatData[geographicAreaM49 == "840", ]
-
 })})
 ```
 
@@ -164,12 +163,12 @@ wheatData[, Value_measuredElement_5800 :=
 wheatData[Value_measuredElement_5600 == 0, Value_measuredElement_5600 := NA]
 wheatData[Value_measuredElement_5800 == 0, Value_measuredElement_5800 := NA]
 
-toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-
 ## No longer need other countries, so drop them!
 wheatData = wheatData[geographicAreaM49 == "840", ]
+
+toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
+## Print the trade data
+printTable(toPrint)
 })})
 ```
 
@@ -177,7 +176,7 @@ NOTE (Josh): The trade figures I quote here are based on the US data, but not ex
 
 ### Stock Changes
 
-We now estimate the stock changes.  Note that for most products, we assume that countries do not hold stocks.  Generally, stocks will only be held for primary level products, and not even all of these products.  The numbers below represent the estimated stock changes (by the stock imputation methodology mentioned above) for the example country we're considering.
+We now estimate the stock changes.  Note that for most products, we assume that countries do not hold stocks.  Generally, stocks will only be held for primary level products, and not even all of these products.  The numbers below represent the estimated stock changes (by the stock imputation methodology described previously) for the example country we're considering.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -251,7 +250,11 @@ Work in progress...
 
 ### Tourist Consumption
 
-Work in progress...
+The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, that country will certainly have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+
+```{r, echo = FALSE}
+
+```
 
 ### Residual Other Uses
 
@@ -283,30 +286,103 @@ The first step in this process of creating the food balance sheets is to standar
 suppressWarnings({suppressMessages({
 wheatData = wheatData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
                           paste0("Value_measuredElement_", fbsElements)), with = FALSE]
+## NOTE: This standardization process below should eventually go into the
+## standardizeNew function in faoswsAupus.
 tree1 = copy(tree)
-shares = fread(paste0(workingDir, "shareData.csv"))
+areaVar = "geographicAreaM49"
+yearVar = "timePointYears"
+byKey = c(areaVar, yearVar)
+shares = fread(paste0(workingDir, "shareData.csv"),
+               colClasses = c("character", "character", "numeric", "numeric"))
+## Cartesian product to expand default shares/extraction rates to country/year specifc
+mergeKeys = wheatData[, .N, byKey]
+## Use N as a key to merge on
+mergeKeys[, N := 1]
+tree1[, N := 1]
+tree1 = merge(tree1, mergeKeys, by = "N", allow.cartesian = TRUE)
+tree1[, N := NULL]
 setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
          c("parentID", "childID"))
-tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
-## If Value_share is not NA, this is a primary to first processing edge
-tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
-          list(childID, parentID, 100*extractionRate/Value_share)]
-tree1[, Value_share := NULL]
-tree1[, share := 1]
-tree1[, geographicAreaM49 := "840"]
-tree1[, timePointYears := "2011"]
+tree1 = merge(tree1, shares, by = c("parentID", "childID"), all.x = TRUE)
+
+## If we already have production for a processed product (i.e. flour), we need
+## to update the shares so that the processing of wheat into flour is reasonable
+## and doesn't lead to vastly wrong extraction rates.  We must also update the
+## shares for all other products by scaling them up or down proportionally.
+toMerge = wheatData[, list(measuredItemCPC, geographicAreaM49, timePointYears,
+                   Value_measuredElement_5510)]
+## Get keys for when we have production of a processed product:
+implicitShare = toMerge[!is.na(Value_measuredElement_5510) &
+                        measuredItemCPC %in% unique(tree1$childID), ]
+setnames(implicitShare, c("measuredItemCPC", "Value_measuredElement_5510"),
+         c("childID", "productionChild"))
+tree1 = merge(tree1, implicitShare, by = c(byKey, "childID"),
+              all = TRUE)
+## Get the production of the parent product as well
+setnames(toMerge, c("measuredItemCPC", "Value_measuredElement_5510"),
+         c("parentID", "productionParent"))
+tree1 = merge(tree1, toMerge, by = c(byKey, "parentID"),
+               all.x = TRUE)
+## Add in the extraction rate
+tree1[, newShare := 100 * productionChild / extractionRate / productionParent]
+## Update the share value based on the implicit calculation.  If multiple 
+## implicit shares are defined in one processing group (i.e. production of flour
+## AND bran is available), then we'll average the implicit shares.  This seems
+## very unlikely to ever occur, though...
+tree1[, newShare := mean(newShare, na.rm = TRUE),
+       by = c(byKey, "parentID", "groupID")]
+tree1[, Value_share := ifelse(is.na(newShare), Value_share, newShare)]
+## Scale up shares that haven't been defined
+tree1[, firstInGroup := !duplicated(groupID), by = c(byKey, "parentID")]
+tree1[, implicitSum := sum(newShare * firstInGroup, na.rm = TRUE),
+       by = c(byKey, "parentID")]
+## Scale non-implicit shares.  They should sum up to 100-implicitSum, and they 
+## currently sum up to sum(Value_share * firstInGroup) over the group (using
+## firstInGroup to de-duplicate the extraction processes with multiple outputs. 
+## So, we just use that ratio to scale up/down.
+tree1[is.na(newShare),
+       Value_share := Value_share * (100 - implicitSum) /
+           sum(Value_share * firstInGroup), by = c(byKey, "parentID")]
+warning("This approach may be problematic if implicitSum goes over 100.",
+        "We could get negative shares!")
+
+## If Value_share is not NA, this is a primary to first processing edge.  To
+## compute extraction rate, the parent * share * oldExtraction = quantity of the
+## child.  Thus, to compute an "extraction rate" from the child to the parent,
+## we'll take 1/(share * extractionRate).
+reversedTree = copy(tree1)
+reversedTree[, reverseEdge := !is.na(Value_share)]
+reversedTree[(reverseEdge), c("parentID", "childID", "extractionRate", "Value_share") :=
+          list(childID, parentID, 100 / extractionRate / Value_share, 100)]
+## If the extraction rate from the true parent to the child was Inf (i.e. no
+## processing) then we would have an extraction rate from the child back to the
+## parent of 0.  This will give us infinities in our standardization, and really
+## we just want to force no processing along this edge.  Thus, set
+## extractionRate here to Inf.
+reversedTree[reverseEdge & extractionRate == 0, extractionRate := Inf]
+
+## Convert shares to 0 to 1 rather than 0 to 100
+reversedTree[, Value_share := Value_share / 100]
+
+## Before standardizing, remove production amounts of processed commodities. 
+## These will come in automatically from production of the parent commodity.
+wheatData[!is.na(Value_measuredElement_5510) &
+          measuredItemCPC %in% shares$childID,
+          Value_measuredElement_5510 := NA]
+
 ## Technically, we shouldn't be standardizing production up, but production of
 ## lower commodities should all be 0 anyways.
-step1 = standardizeTree(data = wheatData, tree = tree1, elements = fbsElements,
+step1 = standardizeTree(data = wheatData, tree = reversedTree, elements = fbsElements,
                 yearVar = "timePointYears", geoVar = "geographicAreaM49",
-                itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
+                itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_",
+                shareVar = "Value_share")
 toPrint = step1[geographicAreaM49 == "840" & timePointYears == "2011", ]
 ## Remove alot of the data, and "impute" it later
 printTable(toPrint)
 })})
 ```
 
-To illustrate the calculations occuring in this step, we'll focus on one specific element: the imports for 23140.02.  This commodity originally had `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]` kg reported.  However, all children commodities must be rolled up into this first level processing element (in this case there are none) and all primary products must be processed down according to the default shares and extraction rates.  In this case, the share of 0111 to 23140.02 was `r shares[childID == "23140.02", Value_share]`\% and the extraction rate was `r round(tree[childID == "23140.02", extractionRate]*100, 0)`\%.  Thus, we will take the imports for 0111, i.e. `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]`, and multiply it by the share while dividing by the extraction rate.  This gives a increase of `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate])` kg to the import of element 23140.02, thus the final import value is `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate]) + wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]`.
+To illustrate the calculations occuring in this step, we first note that product focus on one specific element: the imports for 23140.02.  This commodity originally had `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]` kg reported.  However, all children commodities must be rolled up into this first level processing element (in this case there are none) and all primary products must be processed down according to the default shares and extraction rates.  In this case, the share of 0111 to 23140.02 was `r tree1[childID == "23140.02" & timePointYears == "2011", ]`\% and the extraction rate was `r round(tree[childID == "23140.02", extractionRate]*100, 0)`\%.  Thus, we will take the imports for 0111, i.e. `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]`, and multiply it by the share while dividing by the extraction rate.  This gives a increase of `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate])` kg to the import of element 23140.02, thus the final import value is `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate]) + wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]`.
 
 NOTE (Josh): I'm not 100\% confident this is the right approach, but it seems to make sense.  We need to process wheat into flour so that we can create bran and germ, but we don't know how much to process down (as we haven't yet balanced the wheat).  However, we could just simply standardize each element individually down into first level processing, and I think that should work.
 
@@ -461,28 +537,28 @@ plotSingleTree(edges = tree[parentID %in% cattleKeys & !is.na(childID), ],
 ```
 
 ```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-cattleData = cattleData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
-                          paste0("Value_measuredElement_", fbsElements)), with = FALSE]
-tree1 = copy(tree)
-shares = fread(paste0(workingDir, "shareData.csv"))
-setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
-         c("parentID", "childID"))
-tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
-## If Value_share is not NA, this is a primary to first processing edge
-tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
-          list(childID, parentID, 100*extractionRate/Value_share)]
-tree1[, Value_share := NULL]
-tree1[, share := 1]
-tree1[, geographicAreaM49 := "840"]
-tree1[, timePointYears := "2011"]
-step1 = standardizeTree(data = cattleData, tree = tree1, elements = fbsElements,
-                yearVar = "timePointYears", geoVar = "geographicAreaM49",
-                itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
-toPrint = step1[geographicAreaM49 == "840" & timePointYears == "2011", ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
+# suppressWarnings({suppressMessages({
+# cattleData = cattleData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
+#                           paste0("Value_measuredElement_", fbsElements)), with = FALSE]
+# tree1 = copy(tree)
+# shares = fread(paste0(workingDir, "shareData.csv"))
+# setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
+#          c("parentID", "childID"))
+# tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
+# ## If Value_share is not NA, this is a primary to first processing edge
+# tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
+#           list(childID, parentID, 100*extractionRate/Value_share)]
+# tree1[, Value_share := NULL]
+# tree1[, share := 1]
+# tree1[, geographicAreaM49 := "840"]
+# tree1[, timePointYears := "2011"]
+# step1 = standardizeTree(data = cattleData, tree = tree1, elements = fbsElements,
+#                 yearVar = "timePointYears", geoVar = "geographicAreaM49",
+#                 itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
+# toPrint = step1[geographicAreaM49 == "840" & timePointYears == "2011", ]
+# ## Remove alot of the data, and "impute" it later
+# printTable(toPrint)
+# })})
 ```
 
 ### Feed
@@ -632,28 +708,28 @@ plotSingleTree(edges = tree[parentID %in% palmOilKeys, ],
 ```
 
 ```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-palmData = palmData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
-                          paste0("Value_measuredElement_", fbsElements)), with = FALSE]
-tree1 = copy(tree)
-shares = fread(paste0(workingDir, "shareData.csv"))
-setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
-         c("parentID", "childID"))
-tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
-## If Value_share is not NA, this is a primary to first processing edge
-tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
-          list(childID, parentID, 100*extractionRate/Value_share)]
-tree1[, Value_share := NULL]
-tree1[, share := 1]
-tree1[, geographicAreaM49 := "840"]
-tree1[, timePointYears := "2011"]
-step1 = standardizeTree(data = palmData, tree = tree1, elements = fbsElements,
-                yearVar = "timePointYears", geoVar = "geographicAreaM49",
-                itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
-toPrint = step1[geographicAreaM49 == "840" & timePointYears == "2011", ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
+# suppressWarnings({suppressMessages({
+# palmData = palmData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
+#                           paste0("Value_measuredElement_", fbsElements)), with = FALSE]
+# tree1 = copy(tree)
+# shares = fread(paste0(workingDir, "shareData.csv"))
+# setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
+#          c("parentID", "childID"))
+# tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
+# ## If Value_share is not NA, this is a primary to first processing edge
+# tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
+#           list(childID, parentID, 100*extractionRate/Value_share)]
+# tree1[, Value_share := NULL]
+# tree1[, share := 1]
+# tree1[, geographicAreaM49 := "840"]
+# tree1[, timePointYears := "2011"]
+# step1 = standardizeTree(data = palmData, tree = tree1, elements = fbsElements,
+#                 yearVar = "timePointYears", geoVar = "geographicAreaM49",
+#                 itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
+# toPrint = step1[geographicAreaM49 == "840" & timePointYears == "2011", ]
+# ## Remove alot of the data, and "impute" it later
+# printTable(toPrint)
+# })})
 ```
 
 ### Feed
