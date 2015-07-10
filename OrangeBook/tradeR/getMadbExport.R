@@ -23,7 +23,8 @@ getMadbExport <- function(country, hs) {
     rvest::html_table(fill = T, header = T) %>% 
     as.data.frame(stringsAsFactors = F) %>% 
     select(hs = 1, desc = 2) %>% 
-    filter(!is.na(hs)) %>% 
+    filter(!is.na(hs),
+           !is.na(desc)) %>% 
     mutate(
       dash = stringr::str_replace(
         stringr::str_extract(desc, 
