@@ -8,15 +8,16 @@ classoption: landscape
 suppressWarnings({suppressMessages({
     
 library(data.table)
-library(faoswsProduction)
-library(faoswsImputation)
-library(faoswsSeed)
+# library(faoswsProduction)
+# library(faoswsImputation)
+# library(faoswsSeed)
 library(diagram) # For plotting commodity trees
 
 #aaaa
 
+# Never use scientific notation, don't print decimals either.
 options(scipen = 100, digits = 0)
-    
+
 if(Sys.getenv("USER") == "josh"){ # Josh Work
     workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
@@ -28,6 +29,7 @@ if(Sys.getenv("USER") == "josh"){ # Josh Work
 files = dir(paste0(workingDir, "../../faoswsAupus/R"), full.names = TRUE)
 ## Assign to temp so as to prevent writing to screen
 temp = sapply(files, source)
+source(paste0(workingDir, "printTableFunctions.R"))
 
 })})
 ```
@@ -37,29 +39,6 @@ suppressWarnings({suppressMessages({
 
 fbsElements = c(5113, 5025, 5312, 5510, 5327, 5421, 5520, 5525,
                 5120, 5023, 5141, 71, 5600, 5800)
-    
-printTable = function(data, updateColName = NULL){
-    printDT = copy(data)
-    setnames(printDT, paste0("Value_measuredElement_", fbsElements),
-             c("OpeningStock", "AreaSown", "AreaHarv", "Production",
-               "Input", "Yield", "Feed", "Seed", "Waste", "Processed", "Food",
-               "StockChange", "Imports", "Exports"))
-    setnames(printDT, "measuredItemCPC", "Item")
-
-    items = c("Item", "AreaHarv", "Yield", "Production", "Imports", "Exports",
-              "StockChange", "Food", "Feed", "Waste", "Seed", "Industrial",
-              "Tourist", "Residual")
-    sapply(items, function(colName){
-        if(!colName %in% colnames(printDT)){
-            printDT[, c(colName) := 0]
-        }
-    })
-    out = knitr::kable(printDT[, items, with = FALSE])
-    ## Trying to get bold to work with kable:
-    out[1] = gsub("| Item", "|**Item**", out[1], fixed = TRUE)
-    return(out)
-}
-
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
 cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
@@ -115,21 +94,65 @@ printTable(toPrint)
 
 ### Production
 
-For production data, we first fill in the table with any available official figures.
+For production data, we first fill in the table with any available official figures.  To impute production, we must also consider yield and area harvested data as yield is defined as production divided by area harvested (and thus with any two elements the third is uniquely defined).  Suppose we have the following official data:
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
+    
+toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011" &
+                        measuredItemCPC %in% c("0111", "23110"), ]
+toPrint[measuredItemCPC == "23110", c("Value_measuredElement_5312",
+                                      "Value_measuredElement_5421") := NA]
+toPrint[measuredItemCPC == "23110", c("Value_measuredElement_5510") := 
+    fullData[measuredItemCPC == "23110" & timePointYears == "2011" &
+                 geographicAreaM49 == "840", Value_measuredElement_5510]]
+toPrint[measuredItemCPC == "0111", c("Value_measuredElement_5421") := 0, ]
+## Remove alot of the data, and "impute" it later
+printProductionTable(toPrint)
+
+})})
+```
+
+In this case, the production value is only known for wheat flour (it is missing for wheat), and for wheat we are also missing the yield value.  The first step in the imputation process is to impute the yield, using the previously described production imputation methodology.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+
+## "Impute" by extracting the official yield value
+toPrint[measuredItemCPC == "0111", c("Value_measuredElement_5421") := 
+    fullData[measuredItemCPC == "0111" & timePointYears == "2011" &
+                 geographicAreaM49 == "840", Value_measuredElement_5421]]
+## Remove alot of the data, and "impute" it later
+printProductionTable(toPrint)
+
+})})
+```
+
+Now, we have enough information to impute the production data:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+
+## "Impute" by extracting the official yield value
+toPrint[measuredItemCPC == "0111", c("Value_measuredElement_5510") := 
+    fullData[measuredItemCPC == "0111" & timePointYears == "2011" &
+                 geographicAreaM49 == "840", Value_measuredElement_5510]]
+## Remove alot of the data, and "impute" it later
+printProductionTable(toPrint)
+
+})})
+```
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({invisible({
 wheatData[, Value_measuredElement_5510 :=
               fullData[measuredItemCPC %in% wheatKeys, Value_measuredElement_5510]]
 wheatData[Value_measuredElement_5510 == 0,
           Value_measuredElement_5510 := NA]
-toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
+})})})
 ```
 
-Next, we run the production imputation module.  Production is only imputed for primary products, and so in this case no imputation is done (and no changes occur in the table).
+Now, we fill in the table with our production values.  Production is only imputed for primary products, and so in this case no additional values are filled in.
 
 ```{r, echo = FALSE, fig.show = FALSE}
 suppressWarnings({suppressMessages({
@@ -385,7 +408,10 @@ printTable(toPrint)
 })})
 ```
 
+```{r, echo = FALSE, eval = FALSE}
+## Wrapping in an R loop as a "comment"
 To illustrate the calculations occuring in this step, we first note that product focus on one specific element: the imports for 23140.02.  This commodity originally had `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]` kg reported.  However, all children commodities must be rolled up into this first level processing element (in this case there are none) and all primary products must be processed down according to the default shares and extraction rates.  In this case, the share of 0111 to 23140.02 was `r tree1[childID == "23140.02" & timePointYears == "2011", ]`\% and the extraction rate was `r round(tree[childID == "23140.02", extractionRate]*100, 0)`\%.  Thus, we will take the imports for 0111, i.e. `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]`, and multiply it by the share while dividing by the extraction rate.  This gives a increase of `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate])` kg to the import of element 23140.02, thus the final import value is `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate]) + wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]`.
+```
 
 NOTE (Josh): I'm not 100\% confident this is the right approach, but it seems to make sense.  We need to process wheat into flour so that we can create bran and germ, but we don't know how much to process down (as we haven't yet balanced the wheat).  However, we could just simply standardize each element individually down into first level processing, and I think that should work.
 

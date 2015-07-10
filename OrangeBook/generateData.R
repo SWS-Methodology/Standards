@@ -2,15 +2,15 @@ library(faosws)
 library(data.table)
 GetTestEnvironment(
     baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
-    token = "e77abee7-9b0d-4557-8c6f-8968872ba7ca"
+    token = "2789cc75-120e-4963-9694-41c4bcf67814"
 #     baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
 #     token = "7fe7cbec-2346-46de-9a3a-8437eca18e2a" #Michael's token
 )
 
 if(Sys.info()[7] == "josh"){ # Josh Work
-    workingDir = "~/Documents/Github/Working/OrangeBook/"
+    workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-    workingDir = "~/Github/Working/OrangeBook/"
+    workingDir = "~/Github/privateFAO/OrangeBook/"
 } else {
     stop("No working dir for current user!")
 }
