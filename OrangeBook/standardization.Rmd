@@ -16,9 +16,9 @@ library(diagram) # For plotting commodity trees
 options(scipen = 100, digits = 0)
     
 if(Sys.getenv("USER") == "josh"){ # Josh Work
-    workingDir = "~/Documents/Github/Working/OrangeBook/"
+    workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
-    workingDir = "~/Github/Working/OrangeBook/"
+    workingDir = "~/Github/privateFAO/OrangeBook/"
 } else {
     stop("No working dir for current user!")
 }
@@ -39,7 +39,7 @@ fbsElements = c(5113, 5025, 5312, 5510, 5327, 5421, 5520, 5525,
 printTable = function(data, updateColName = NULL){
     printDT = copy(data)
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
-             c("OpeningStock", "AreaSown", "AreaHarvested", "Production",
+             c("OpeningStock", "AreaSown", "AreaHarv", "Production",
                "Input", "Yield", "Feed", "Seed", "Waste", "Processed", "Food",
                "StockChange", "Imports", "Exports"))
     setnames(printDT, "measuredItemCPC", "Item")
@@ -53,7 +53,8 @@ printTable = function(data, updateColName = NULL){
         }
     })
     out = knitr::kable(printDT[, items, with = FALSE])
-    out[1] = gsub("|Item     |", "|**Item**  |", out[1], fixed = TRUE)
+    ## Trying to get bold to work with kable:
+    out[1] = gsub("| Item", "|**Item**", out[1], fixed = TRUE)
     return(out)
 }
 
