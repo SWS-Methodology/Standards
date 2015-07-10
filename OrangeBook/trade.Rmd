@@ -4,9 +4,22 @@ date: "July 9, 2015"
 output: pdf_document
 ---
 
+```{r, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(list(echo = FALSE,
+                           eval = TRUE,
+                           cache = FALSE,
+                           warning = FALSE,
+                           message = FALSE,
+                           fig.height = 10,
+                           fig.width = 12))
+```
+
 Last update: `r Sys.time()`
 
-```{r options, echo = F, warning=F}
+```{r options}
+
+# if(Sys.getenv("HOSTNAME") != "matrunichstation") stop("Sorry, local database is used for compilation")
+
 subdir <- "OrangeBook"
 sourcedir <- "tradeR"
 options(width = 120)
@@ -35,21 +48,44 @@ cttl <- tbl(trade_src, sql("select * from tariffline"))
 
 # Raw trade data
 
-FAO receives data on trade flows from [United Nations Statistical Division](http://unstats.un.org/unsd/default.htm). The division runs  [Commodity Trade Statistics Database UN Comtrade](http://unstats.un.org/unsd/comtrade_announcement.htm)  "It stores standardised official annual trade statistics reported by countries and reflecting international merchandise flows detailed by commodity and partner country with coverage reaching up to 99 percent of world merchandise trade". 
+FAO receives data on trade flows from [United Nations Statistical Division](http://unstats.un.org/unsd/default.htm). The division runs  [Commodity Trade Statistics Database UN Comtrade](http://unstats.un.org/unsd/comtrade_announcement.htm)  "It stores standardised official annual trade statistics reported by countries and reflecting international merchandise flows detailed by commodity and partner country with coverage reaching up to 99 percent of world merchandise trade[^comtrade_ann]". 
 
-One can freely download this standardised statistics from the [open data base](http://comtrade.un.org/data/). Statistical Division of FAO gets nonstandardised data.
+[^comtrade_ann]: http://unstats.un.org/unsd/comtrade_announcement.htm Comtrade Announcement
 
-```{r example_raw_data, echo = F}
+One can freely download this standardised statistics from the [open data base](http://comtrade.un.org/data/). Statistical Division of FAO gets unstandardised data.
+
+```{r example_raw_data}
 tbl(trade_src, sql("select 
 year, reporter, partner, hs, flow, weight, qty, qunit, value 
  from tariffline
 where year = '2011' and 
 reporter = '842' and flow = '1' order by random() limit 10")) %>% 
   collect()  %>% 
-  printTab(caption = "Random sample of import trade flows of 2011 year, reported by US")
+  printTab(caption = "Random sample of import trade flows of 2011 year, reported by the US")
 ```
 
+This is an example of unstandardised data on trade inflows in 2011, reported by the United States. Reporters and trade partners are represented with three-digit numerical [codes](http://unstats.un.org/unsd/methods/m49/m49.htm) used by the Statistics Division of the United Nations. Trade commodities are classified with extended Harmonized Commodity Description and Coding System (HS)[^hs_about] maintained by the World Customs Organization[^wto].
 
+[^hs_about]: http://www.wcoomd.org/en/topics/nomenclature/overview/what-is-the-harmonized-system.aspx What is the Harmonized System (HS)?
+[^wto]: http://www.wcoomd.org/en.aspx World Customs Organization
+
+Weight is measured in kilograms and value in US dollars. Quantity (qty column) is an optional alternative for weight. It could be measured in different units (qunit column). See full list of possible units and their descriptions in Annex I of Quantity and Weight Data in UN Comtrade[^un_units].
+
+[^un_units]: http://unstats.un.org/unsd/tradekb/Knowledgebase/Quantity-and-Weight-Data-in-UN-Comtrade Quantity and Weight Data in UN Comtrade
+
+## Country-specific HS commodity codes
+
+Harmonized system classification is declared by WCO up to 6 digits. A country may extend HS to more detailed level  to better respond to local circumstances. Let's compare differencies in codes under subheading 0202 Meat of bovine animals, frozen between the US and Brazil.
+
+```{r hscodes_us}
+getMadbExport("US", "0202") %>% 
+  rename(Description = desc) %>% 
+  printTab(caption = "Extension of HS codes by the US")
+
+getMadbExport("BR", "0202") %>% 
+  rename(Description = desc) %>% 
+  printTab(caption = "Extension of HS codes by Brazil")
+```
 
 
 # Validation of trade data
