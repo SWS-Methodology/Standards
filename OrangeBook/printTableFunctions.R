@@ -45,3 +45,24 @@ printProductionTable = function(data){
     out = knitr::kable(printDT[, items, with = FALSE])
     return(out)
 }
+
+printStandardizationTable = function(data){
+    printDT = copy(data)
+    
+    ## Bring in item names
+    if(Sys.getenv("USER") == "josh"){ # Josh Work
+        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
+    } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
+        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
+    } else {
+        stop("No working dir for current user!")
+    }
+    printDT = merge(printDT, description, by = "Item")
+    
+    setnames(printDT, c("prodMean", "prodSd", "wheatMean", "wheatSd"),
+             c("Production (processed)", "SD(Production)",
+               "Wheat Equivalent", "SD(Wheat Equivalent)"))
+    
+    knitr::kable(printDT[, c("Name", "Production (processed)", "SD(Production)",
+               "Wheat Equivalent", "SD(Wheat Equivalent)"), with = FALSE])
+}

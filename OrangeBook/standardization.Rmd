@@ -2,7 +2,10 @@
 title: "Food Balance Sheets"
 output: pdf_document
 classoption: landscape
+header-includes:
+   - \usepackage[table,xcdraw]{xcolor}
 ---
+
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -12,6 +15,12 @@ library(data.table)
 # library(faoswsImputation)
 # library(faoswsSeed)
 library(diagram) # For plotting commodity trees
+wheatCode = "0111"
+flourCode = "23110"
+bulgurCode = "23140.02"
+cerealsCode = "23140.03"
+starchCode = "23220.01"
+branCode = "39120.01"
 
 #aaaa
 
@@ -412,7 +421,7 @@ printTable(toPrint)
 
 ```{r, echo = FALSE, eval = FALSE}
 ## Wrapping in an R loop as a "comment"
-To illustrate the calculations occuring in this step, we first note that product focus on one specific element: the imports for 23140.02.  This commodity originally had `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]` kg reported.  However, all children commodities must be rolled up into this first level processing element (in this case there are none) and all primary products must be processed down according to the default shares and extraction rates.  In this case, the share of 0111 to 23140.02 was `r tree1[childID == "23140.02" & timePointYears == "2011", ]`\% and the extraction rate was `r round(tree[childID == "23140.02", extractionRate]*100, 0)`\%.  Thus, we will take the imports for 0111, i.e. `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]`, and multiply it by the share while dividing by the extraction rate.  This gives a increase of `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate])` kg to the import of element 23140.02, thus the final import value is `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate]) + wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]`.
+To illustrate the calculations occuring in this step, we first focus on one specific element: the imports for 23140.02.  This commodity originally had `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]` kg reported.  However, all children commodities must be rolled up into this first level processing element (in this case there are none) and all primary products must be processed down according to the default shares and extraction rates.  In this case, the share of 0111 to 23140.02 was `r tree1[childID == "23140.02" & timePointYears == "2011", ]`\% and the extraction rate was `r round(tree[childID == "23140.02", extractionRate]*100, 0)`\%.  Thus, we will take the imports for 0111, i.e. `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]`, and multiply it by the share while dividing by the extraction rate.  This gives a increase of `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate])` kg to the import of element 23140.02, thus the final import value is `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate]) + wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]`.
 ```
 
 **Problem: Flour, in this case, receives a very low share because the production of wheat is so high and so much is exported.  Thus, we shouldn't be standardizing production in this way but rather the food from wheat should flow into the production of flour and other derived products.**
@@ -429,7 +438,7 @@ printTable(toPrint)
 })})
 ```
 
-We first standardize the food values up to Wheat to get an estimate for food for the primary commodity:
+We then standardize the food values up to Wheat to get an estimate for food for the primary commodity:
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -438,6 +447,40 @@ toPrint[measuredItemCPC == "0111", Value_measuredElement_5141 :=
 printTable(toPrint)
 })})
 ```
+
+Now, we balance the primary product:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5510 := Value_measuredElement_5510]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5600 := Value_measuredElement_5600]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5900 := Value_measuredElement_5900]
+diff = toPrint[measuredItemCPC == "0111",
+               Value_measuredElement_5510 + Value_measuredElement_5600 -
+                   Value_measuredElement_5900 - Value_measuredElement_71 -
+                   Value_measuredElement_5525 - Value_measuredElement_5120 -
+                   Value_measuredElement_5141]
+stockDelta = diff * .4
+foodDelta = diff * .2
+wasteDelta = diff * .2
+seedDelta = diff * .2
+toPrint[measuredItemCPC == "0111", Value_measuredElement_71 := Value_measuredElement_71 + stockDelta]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5525 := Value_measuredElement_5525 + seedDelta]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5120 := Value_measuredElement_5120 + wasteDelta]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5141 := Value_measuredElement_5141 + foodDelta]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+printTable(toPrint)
+})})
+```
+
+This updated value for food can now be allocated to the production of children commodities (via multiplication of the shares and extraction rates).
+
+**Problem: At this point, the amount allocated to wheat food is not enough to cover offical flour production.  We could attempt to bound the distribution of food at the minimum amount to create the flour production, but in this case the optimum would be on that boundary and so we'd have no wheat to allocate to the other commodities.  This will then cause other problems if those commodities have higher exports/food than imports.**
+
+**Question: How do we pass the food element into production in the subelements?**
 
 #### Standardization Approach 3
 
@@ -451,7 +494,7 @@ printTable(toPrint)
 })})
 ```
 
-We then compute the needed ``production'' of each of the processed products to satisfy any deficits due to exports or consumption (note that we can allow production to be zero if supply exceeds utilization).
+We then compute the required ``production'' of each of the processed products to satisfy any deficits due to exports or consumption (note that we can allow production to be zero if supply exceeds utilization).
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -467,7 +510,80 @@ printTable(toPrint)
 })})
 ```
 
-TO DO: Standardize all these ``productions'' up to the food of their parents and continue until you get a food value for wheat (note: above, you calculated production of flour too early).  Then, you will have a distribution for food based on the sum of the distributions for all the children.  In the case of by-products, the commodity with the highest production requirement should be used!!!  Now, Food gets adjusted in the balance, and this adjustment proportionally flows down to all the children according to their variability.  Additionally, we must enforce consistent shares/extraction rates across grouped commodities (for example, flour/bran/germ) and so when flowing back down we will create excess production of some of the by-products.
+Since wheat starch is produced from wheat flour, we would first need to ensure the wheat flour food can cover any deficits of wheat starch.  However, since wheat starch imports exceed exports plus food, we don't have to worry about this requirement.  Instead, we can just standardize all the first processed level products back to food of wheat.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+distributionTable = toPrint[measuredItemCPC %in% c(flourCode, bulgurCode,
+                                                   cerealsCode, branCode),
+                            list(measuredItemCPC, Value_measuredElement_5510)]
+setnames(distributionTable, c("Item", "prodMean"))
+distributionTable[, prodSd := prodMean * .25]
+distributionTable[Item == flourCode, prodSd := 0]
+distributionTable[, wheatMean := prodMean / c(.72, .95, 1, .22)]
+distributionTable[, wheatSd := prodSd / c(.72, .95, 1, .22)]
+printStandardizationTable(distributionTable)
+})})
+```
+
+Now, we wish to compute the distribution for food for wheat.  The main requirement is in the wheat flour, and it should be noted that the 9 million kilogram requirement for wheat bran will automatically be satisfied if the 26 million kilogram requirement for wheat flour is satisfied (as they are by-products).  Thus, the food element for wheat has a mean of 26,198 thousand kilograms (the sum of the first three) and a standard deviation of 63 thousand kilograms (the square-root of the sum of the squares of the first three standard deviations).  Thus, we now have the following table:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+## Production = Exports + Food - Imports
+## 5510 = 5900 + 71 - 5600
+toPrint[measuredItemCPC == wheatCode, Value_measuredElement_5141 := 26198393]
+printTable(toPrint)
+})})
+```
+
+Now, we balance this table, and find that the food value is adjusted down slightly:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5510 := Value_measuredElement_5510]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5600 := Value_measuredElement_5600]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5900 := Value_measuredElement_5900]
+diff = toPrint[measuredItemCPC == "0111",
+               Value_measuredElement_5510 + Value_measuredElement_5600 -
+                   Value_measuredElement_5900 - Value_measuredElement_71 -
+                   Value_measuredElement_5525 - Value_measuredElement_5120 -
+                   Value_measuredElement_5141]
+stockDelta = diff * .54
+foodDelta = diff * .01
+wasteDelta = diff * .1
+seedDelta = diff * .35
+toPrint[measuredItemCPC == "0111", Value_measuredElement_71 := Value_measuredElement_71 + stockDelta]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5525 := Value_measuredElement_5525 + seedDelta]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5120 := Value_measuredElement_5120 + wasteDelta]
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5141 := Value_measuredElement_5141 + foodDelta]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
+printTable(toPrint)
+})})
+```
+
+Now, food gets adjusted in the balance, and this adjustment proportionally flows down to all the children according to their variability.
+
+```{r, echo = FALSE}
+foodDelta
+distributionTable[1:3, adjustment := foodDelta * wheatSd / sum(wheatSd)]
+distributionTable[is.na(adjustment), adjustment := 0]
+distributionTable[, wheatMean := wheatMean - adjustment]
+distributionTable[, prodMean := prodMean - adjustment / c(.72, .95, 1, .22)]
+distributionTable[, adjustment := NULL]
+printStandardizationTable(distributionTable)
+```
+
+We can now update the production numbers for each of the first level primary elements.  Note that in the process of creating flour, we also create bran and germ.  The amount of bran and germ created, in this case, is determined by the amount of flour we need to create (as that was our most stringent requirement).  Thus, we have:
+
+```{r, echo = FALSE}
+toPrint[measuredItemCPC == bulgurCode, Value_measuredElement_5510 := 
+```
+
+Additionally, we must enforce consistent shares/extraction rates across grouped commodities (for example, flour/bran/germ) and so when flowing back down we will create excess production of some of the by-products.
 
 **Problem: How do we allocate the excess when processing back down?  Should this excess be directly allocated to food/feed (depending on the commodity)?  Or maybe we do a balance at the SUA level and allocate a little to trade as well, if trade is not official?**
 
