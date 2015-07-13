@@ -38,7 +38,7 @@ source(paste0(workingDir, "printTableFunctions.R"))
 suppressWarnings({suppressMessages({
 
 fbsElements = c(5113, 5025, 5312, 5510, 5327, 5421, 5520, 5525,
-                5120, 5023, 5141, 71, 5600, 5800)
+                5120, 5023, 5141, 71, 5600, 5900)
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
 cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
@@ -80,7 +80,7 @@ suppressWarnings({suppressMessages({
 wheatData = fullData[measuredItemCPC %in% wheatKeys, ]
 ## Remove alot of the data, and "impute" it later
 wheatData[, Value_measuredElement_5510 := 0]
-wheatData[, Value_measuredElement_5800 := 0]
+wheatData[, Value_measuredElement_5900 := 0]
 wheatData[, Value_measuredElement_5600 := 0]
 wheatData[, Value_measuredElement_5520 := 0]
 wheatData[, Value_measuredElement_5525 := 0]
@@ -184,10 +184,10 @@ For the next example, we'll show how the imputation, mirroring and balancing wor
 suppressWarnings({suppressMessages({
 wheatData[, Value_measuredElement_5600 :=
               fullData[measuredItemCPC %in% wheatKeys, Value_measuredElement_5600]]
-wheatData[, Value_measuredElement_5800 :=
-              fullData[measuredItemCPC %in% wheatKeys, Value_measuredElement_5800]]
+wheatData[, Value_measuredElement_5900 :=
+              fullData[measuredItemCPC %in% wheatKeys, Value_measuredElement_5900]]
 wheatData[Value_measuredElement_5600 == 0, Value_measuredElement_5600 := NA]
-wheatData[Value_measuredElement_5800 == 0, Value_measuredElement_5800 := NA]
+wheatData[Value_measuredElement_5900 == 0, Value_measuredElement_5900 := NA]
 
 ## No longer need other countries, so drop them!
 wheatData = wheatData[geographicAreaM49 == "840", ]
@@ -278,10 +278,6 @@ Work in progress...
 
 The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, that country will certainly have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
 
-```{r, echo = FALSE}
-
-```
-
 ### Residual Other Uses
 
 Work in progress...
@@ -306,7 +302,13 @@ NOTE (Josh): At this point, we should also compute calories/proteins/fats.
 
 NOTE (Josh): Need to keep track of the standard deviations as well so that we can balance at the end.
 
-The first step in this process of creating the food balance sheets is to standardize all commodities up or down the commodity tree to the first processing level equivalent.  Thus, our table is updated as follows:
+```{r, echo = FALSE}
+wheatDataSaved = copy(wheatData)
+```
+
+#### Standardization Approach 1
+
+We first standardize all commodities up or down the commodity tree to the first processing level equivalent.  We do this element-by-element, and thus we represent trade and food consumption of derived products in their first-processing level equivalent (which seems very natural/reasonable).  However, we also do this for the primary product: we translate production of wheat into production of flour/bran/germ; stock changes of wheat into stock changes of flour/bran/germ; etc.  For all elements except production, this standardization is additive (i.e. the imports of flour are added to the standardized imports of wheat, bread, etc. to get the total standardized imports of flour).  For production, this should not occur as you never truly have ``production'' of processed products.  However, if production of a processed product is reported, that means that the standardized primary product must provide for this production and thus we update the shares to give us the correct amount here.  Thus, our table is updated as follows:
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -413,9 +415,61 @@ printTable(toPrint)
 To illustrate the calculations occuring in this step, we first note that product focus on one specific element: the imports for 23140.02.  This commodity originally had `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]` kg reported.  However, all children commodities must be rolled up into this first level processing element (in this case there are none) and all primary products must be processed down according to the default shares and extraction rates.  In this case, the share of 0111 to 23140.02 was `r tree1[childID == "23140.02" & timePointYears == "2011", ]`\% and the extraction rate was `r round(tree[childID == "23140.02", extractionRate]*100, 0)`\%.  Thus, we will take the imports for 0111, i.e. `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]`, and multiply it by the share while dividing by the extraction rate.  This gives a increase of `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate])` kg to the import of element 23140.02, thus the final import value is `r wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "0111", Value_measuredElement_5600]*shares[childID == "23140.02", Value_share]/(100*tree[childID == "23140.02", extractionRate]) + wheatData[geographicAreaM49 == "840" & timePointYears == "2011" & measuredItemCPC == "23140.02", Value_measuredElement_5600]`.
 ```
 
-NOTE (Josh): I'm not 100\% confident this is the right approach, but it seems to make sense.  We need to process wheat into flour so that we can create bran and germ, but we don't know how much to process down (as we haven't yet balanced the wheat).  However, we could just simply standardize each element individually down into first level processing, and I think that should work.
+**Problem: Flour, in this case, receives a very low share because the production of wheat is so high and so much is exported.  Thus, we shouldn't be standardizing production in this way but rather the food from wheat should flow into the production of flour and other derived products.**
 
+#### Standardization Approach 2
 
+We first start with the pre-standardized table:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+wheatData = copy(wheatDataSaved)
+toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
+printTable(toPrint)
+})})
+```
+
+We first standardize the food values up to Wheat to get an estimate for food for the primary commodity:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+toPrint[measuredItemCPC == "0111", Value_measuredElement_5141 := 
+            18539484/.72 + 3684/.95 + 98131/1]
+printTable(toPrint)
+})})
+```
+
+#### Standardization Approach 3
+
+We first start with the pre-standardized table:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+wheatData = copy(wheatDataSaved)
+toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
+printTable(toPrint)
+})})
+```
+
+We then compute the needed ``production'' of each of the processed products to satisfy any deficits due to exports or consumption (note that we can allow production to be zero if supply exceeds utilization).
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+## Production = Exports + Food - Imports
+## 5510 = 5900 + 71 - 5600
+wheatData[is.na(Value_measuredElement_5510), Value_measuredElement_5510 := 
+              ifelse(is.na(Value_measuredElement_5900), 0, Value_measuredElement_5900) +
+              ifelse(is.na(Value_measuredElement_5141), 0, Value_measuredElement_5141) -
+              ifelse(is.na(Value_measuredElement_5600), 0, Value_measuredElement_5600)]
+wheatData[Value_measuredElement_5510 < 0, Value_measuredElement_5510 := 0]
+toPrint = wheatData[geographicAreaM49 == "840" & timePointYears == "2011", ]
+printTable(toPrint)
+})})
+```
+
+TO DO: Standardize all these ``productions'' up to the food of their parents and continue until you get a food value for wheat (note: above, you calculated production of flour too early).  Then, you will have a distribution for food based on the sum of the distributions for all the children.  In the case of by-products, the commodity with the highest production requirement should be used!!!  Now, Food gets adjusted in the balance, and this adjustment proportionally flows down to all the children according to their variability.  Additionally, we must enforce consistent shares/extraction rates across grouped commodities (for example, flour/bran/germ) and so when flowing back down we will create excess production of some of the by-products.
+
+**Problem: How do we allocate the excess when processing back down?  Should this excess be directly allocated to food/feed (depending on the commodity)?  Or maybe we do a balance at the SUA level and allocate a little to trade as well, if trade is not official?**
 
 ### Feed
 

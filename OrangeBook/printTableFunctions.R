@@ -6,7 +6,16 @@ printTable = function(data, updateColName = NULL){
                "StockChange", "Imports", "Exports"))
     setnames(printDT, "measuredItemCPC", "Item")
 
-    items = c("Item", "Production", "Imports", "Exports",
+    if(Sys.getenv("USER") == "josh"){ # Josh Work
+        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
+    } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
+        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
+    } else {
+        stop("No working dir for current user!")
+    }
+    printDT = merge(printDT, description, by = "Item")
+
+    items = c("Name", "Production", "Imports", "Exports",
               "StockChange", "Food", "Feed", "Waste", "Seed", "Industrial",
               "Tourist", "Residual")
     sapply(items, function(colName){
@@ -15,6 +24,7 @@ printTable = function(data, updateColName = NULL){
         }
     })
     out = knitr::kable(printDT[, items, with = FALSE])
+    
     ## Trying to get bold to work with kable:
     out[1] = gsub("| Item", "|**Item**", out[1], fixed = TRUE)
     return(out)
