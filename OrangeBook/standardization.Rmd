@@ -29,7 +29,8 @@ currentYear = "2011"
 #aaaa
 
 # Never use scientific notation, don't print decimals either.
-options(scipen = 100, digits = 0)
+options(scipen = 100)
+# options(digits = 0)
 
 if(Sys.getenv("USER") == "josh"){ # Josh Work
     workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
@@ -125,7 +126,6 @@ toPrint[measuredItemCPC == "23110" & element %in% c("5312", "5421"), Value := NA
 toPrint[measuredItemCPC == "23110" & element == "5510", Value := 
     fullData[measuredItemCPC == "23110" & timePointYears == currentYear &
                  geographicAreaM49 == currentCountry, Value_measuredElement_5510]]
-## Remove alot of the data, and "impute" it later
 printProductionTable(toPrint)
 
 })})
@@ -140,7 +140,6 @@ suppressWarnings({suppressMessages({
 toPrint[measuredItemCPC == "0111" & element == "5421", Value := 
     fullData[measuredItemCPC == "0111" & timePointYears == currentYear &
                  geographicAreaM49 == currentCountry, Value_measuredElement_5421]]
-## Remove alot of the data, and "impute" it later
 printProductionTable(toPrint)
 
 })})
@@ -155,7 +154,6 @@ suppressWarnings({suppressMessages({
 toPrint[measuredItemCPC == "0111" & element == "5510", Value := 
     fullData[measuredItemCPC == "0111" & timePointYears == currentYear &
                  geographicAreaM49 == currentCountry, Value_measuredElement_5510]]
-## Remove alot of the data, and "impute" it later
 printProductionTable(toPrint)
 
 })})
@@ -168,9 +166,11 @@ wheatData = merge(wheatData,
                            c("Value_measuredElement_5510", params$mergeKey),
                            with = FALSE], by = params$mergeKey)
 wheatData[element == "5510", Value := Value_measuredElement_5510]
+wheatData[, standardDeviation := 0]
+wheatData[element == "5510" & measuredItemCPC == "0111",
+          standardDeviation := Value * .05]
 wheatData[element == "5510" & Value == 0, Value := NA]
 wheatData[, Value_measuredElement_5510 := NULL]
-wheatData[, standardDeviation := 0]
 })})})
 ```
 
@@ -192,7 +192,7 @@ suppressWarnings({suppressMessages({
 #                        yieldImputationParameters = yieldParams,
 #                        productionImputationParameters = prodIParams)
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
+toPrint[, updateFlag := element == "5510"]
 printTable(toPrint)
 
 })})
@@ -224,6 +224,7 @@ wheatData = wheatData[geographicAreaM49 == currentCountry, ]
 params$mergeKey = params$mergeKey[2:3]
 
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := element %in% c("5600", "5900")]
 ## Print the trade data
 printTable(toPrint)
 })})
@@ -248,7 +249,7 @@ replaceData(wheatData,
             mergeKey = params$mergeKey)
 wheatData[element == "71" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
+toPrint[, updateFlag := element == "71"]
 printTable(toPrint)
 })})
 ```
@@ -273,7 +274,7 @@ replaceData(wheatData,
 # wheatData[element == "5141" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
+toPrint[, updateFlag := element == "5141" & Value > 0]
 printTable(toPrint)
 })})
 ```
@@ -294,7 +295,7 @@ replaceData(wheatData,
 wheatData[element == "5120" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
+toPrint[, updateFlag := element == "5120"]
 printTable(toPrint)
 })})
 warning("Standard error for loss data is currently just 20% of loss value, it ",
@@ -317,7 +318,7 @@ replaceData(wheatData,
 wheatData[element == "5525" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
+toPrint[, updateFlag := element == "5525"]
 printTable(toPrint)
 })})
 warning("Standard error for seed data is currently just 20% of seed value, it ",
@@ -538,6 +539,7 @@ suppressWarnings({suppressMessages({
 computeProcessedProduction(data = wheatData, tree = tree, standParams = params)
 wheatData[element == "5510" & Value < 0, Value := 0]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := (element == "5510" & Value < 18000000)]
 printTable(toPrint)
 })})
 ```
@@ -551,8 +553,6 @@ distributionTable = toPrint[measuredItemCPC %in% c(flourCode, bulgurCode,
                                 element == "5510",
                             list(measuredItemCPC, Value, standardDeviation)]
 setnames(distributionTable, c("Item", "prodMean", "prodSd"))
-distributionTable[, prodSd := prodMean * .25]
-distributionTable[Item == flourCode, prodSd := 0]
 distributionTable[, wheatMean := prodMean / c(.72, .95, 1, .22)]
 distributionTable[, wheatSd := prodSd / c(.72, .95, 1, .22)]
 printStandardizationTable(distributionTable)
@@ -563,44 +563,32 @@ Now, we wish to compute the distribution for food for wheat.  The main requireme
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-## Production = Exports + Food - Imports
-## 5510 = 5900 + 71 - 5600
-toPrint[measuredItemCPC == wheatCode, Value_measuredElement_5141 := 26198393]
+wheatData = rollUpFood(data = wheatData, tree = tree, standParams = params)
+toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := (element == "5141" & measuredItemCPC == "0111")]
 printTable(toPrint)
+invisible(toPrint[, updateFlag := NULL])
 })})
 ```
 
-Now, we balance this table, and find that the food value is adjusted down slightly:
+Now, we must balance this table.  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for each of the elements for wheat:
 
 ```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-toPrint[measuredItemCPC == "0111", Value_measuredElement_5510 := Value_measuredElement_5510]
-toPrint[measuredItemCPC == "0111", Value_measuredElement_5600 := Value_measuredElement_5600]
-toPrint[measuredItemCPC == "0111", Value_measuredElement_5900 := Value_measuredElement_5900]
-diff = toPrint[measuredItemCPC == "0111",
-               Value_measuredElement_5510 + Value_measuredElement_5600 -
-                   Value_measuredElement_5900 - Value_measuredElement_71 -
-                   Value_measuredElement_5525 - Value_measuredElement_5120 -
-                   Value_measuredElement_5141]
-stockDelta = diff * .54
-foodDelta = diff * .01
-wasteDelta = diff * .1
-seedDelta = diff * .35
-toPrint[measuredItemCPC == "0111", Value_measuredElement_71 := Value_measuredElement_71 + stockDelta]
-toPrint[measuredItemCPC == "0111", Value_measuredElement_5525 := Value_measuredElement_5525 + seedDelta]
-toPrint[measuredItemCPC == "0111", Value_measuredElement_5120 := Value_measuredElement_5120 + wasteDelta]
-toPrint[measuredItemCPC == "0111", Value_measuredElement_5141 := Value_measuredElement_5141 + foodDelta]
-# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
-# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
-# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
-# toPrint[measuredItemCPC == "0111", Value_measuredElement_5 := ]
-printTable(toPrint)
-})})
+toPrint = toPrint[measuredItemCPC == "0111", ]
+printDistributionTable(toPrint)
 ```
 
-Now, food gets adjusted in the balance, and this adjustment proportionally flows down to all the children according to their variability.
+Note that in this case, the standard deviation for food is very small; this is because it's mostly determined by the production of wheat flour, and this value is an official figure.
 
+**ADD BALANCING HERE (and delete the little R chunk below which sets food manually)**
 ```{r, echo = FALSE}
+invisible(wheatData[measuredItemCPC == "0111" & timePointYears == "2011" & element == "5141",
+          Value := 26278543])
+```
+
+Now, when balancing, we find that food is adjusted down slightly.  This adjustment to food of wheat implies that the production of children commodities must also be updated (and hence their food values as well).
+
+```{r, echo = FALSE, eval = FALSE}
 suppressWarnings({suppressMessages({
 distributionTable[1:3, adjustment := foodDelta * wheatSd / sum(wheatSd)]
 distributionTable[is.na(adjustment), adjustment := 0]
@@ -613,7 +601,7 @@ printStandardizationTable(distributionTable)
 
 We can now update the production numbers for each of the first level primary elements.  Note that in the process of creating flour, we also create bran and germ.  The amount of bran and germ created, in this case, is determined by the amount of flour we need to create (as that was our most stringent requirement).  Thus, we have:
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 suppressWarnings({suppressMessages({
 toPrint[measuredItemCPC == bulgurCode, Value_measuredElement_5510 := 44617]
 toPrint[measuredItemCPC == cerealsCode, Value_measuredElement_5510 := 245363]
@@ -626,8 +614,6 @@ printTable(toPrint)
 ```
 
 Additionally, we must enforce consistent shares/extraction rates across grouped commodities (for example, flour/bran/germ) and so when flowing back down we will create excess production of some of the by-products.
-
-**Problem: How do we allocate the excess when processing back down?  Should this excess be directly allocated to food/feed (depending on the commodity)?  Or maybe we do a balance at the SUA level and allocate a little to trade as well, if trade is not official?**
 
 ### Feed
 
@@ -645,337 +631,10 @@ rm(wheatData)
 ## Cattle Meat
 
 ```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-cattleData = fullData[measuredItemCPC %in% cattleKeys, ]
-## Remove alot of the data, and "impute" it later
-cattleData[, Value_measuredElement_5520 := 0]
-cattleData[, Value_measuredElement_5525 := 0]
-cattleData[, Value_measuredElement_5120 := 0]
-cattleData[, Value_measuredElement_5141 := 0]
-cattleData[, Value_measuredElement_71 := 0]
-toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-printTable(toPrint)
-})})
-```
-
-### Production
-
-```{r, echo = FALSE, fig.show = FALSE, eval = FALSE}
-suppressWarnings({suppressMessages({
-
-procParams = defaultProcessingParameters(productionValue = 5510,
-                                         yieldValue = 5421,
-                                         areaHarvestedValue = 5312)
-yieldParams = defaultImputationParameters(variable = 5421)
-prodIParams = defaultImputationParameters(variable = 5510)
-# procParams$byKey <- yieldParams$byKey <- prodIParams$byKey <-
-#     c("geographicAreaM49", "measuredItemCPC")
-yieldParams$estimateNoData <- prodIParams$estimateNoData <- TRUE
-imputeProductionDomain(data = cattleData[measuredItemCPC == "0111", ],
-                       processingParameters = procParams,
-                       yieldImputationParameters = yieldParams,
-                       productionImputationParameters = prodIParams)
-toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-
-## No longer need other countries, so drop them!
-cattleData = cattleData[geographicAreaM49 == currentCountry, ]
-
-})})
-```
-
-### Trade
-
-### Stock Changes
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/stockEstimates.RData"))
-cattleData = merge(cattleData, stockEstimates[, c("Value", "measuredItemCPC"),
-                                             with = FALSE],
-                  by = "measuredItemCPC", all.x = TRUE)
-cattleData[, Value_measuredElement_71 := Value]
-toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-cattleData[, Value := NULL]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Food
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/foodEstimates.RData"))
-cattleData = merge(cattleData, foodEstimates[, c("mean", "measuredItemCPC", "geographicAreaM49"),
-                                           with = FALSE],
-                  by = c("measuredItemCPC", "geographicAreaM49"), all.x = TRUE)
-cattleData[, Value_measuredElement_5141 := mean]
-toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-cattleData[, mean := NULL]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Losses
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/lossEstimates.RData"))
-cattleData = merge(lossEstimates[, c("Value_measuredElement_5120",
-                                    "measuredItemCPC"), with = FALSE],
-                  cattleData, by = "measuredItemCPC", all.y = TRUE,
-                  suffixes = c(".loss", ""))
-cattleData[, Value_measuredElement_5120 := Value_measuredElement_5120.loss]
-cattleData[, Value_measuredElement_5120.loss := NULL]
-toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Seed
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/seedEstimates.RData"))
-cattleData = merge(seedEstimates[, c("Value_measuredElement_5525",
-                                    "measuredItemCPC"), with = FALSE],
-                  cattleData, by = "measuredItemCPC", all.y = TRUE,
-                  suffixes = c(".seed", ""))
-cattleData[, Value_measuredElement_5525 := Value_measuredElement_5525.seed]
-toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-cattleData[, Value_measuredElement_5525.seed := NULL]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Industrial Utilization
-
-Work in progress...
-
-### Tourist Consumption
-
-Work in progress...
-
-### Residual Other Uses
-
-Work in progress...
-
-### Standardization
-
-```{r, echo = FALSE, fig.height=12, fig.width = 18}
-suppressWarnings({suppressMessages({
-tree = fread(paste0(workingDir, "standardizationTree.csv"))
-plotSingleTree(edges = tree[parentID %in% cattleKeys & !is.na(childID), ],
-               parentColname = "parentID", childColname = "childID",
-               extractionColname = "extractionRate", box.size = .08,
-               box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
-})})
-```
-
-```{r, echo = FALSE}
-# suppressWarnings({suppressMessages({
-# cattleData = cattleData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
-#                           paste0("Value_measuredElement_", fbsElements)), with = FALSE]
-# tree1 = copy(tree)
-# shares = fread(paste0(workingDir, "shareData.csv"))
-# setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
-#          c("parentID", "childID"))
-# tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
-# ## If Value_share is not NA, this is a primary to first processing edge
-# tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
-#           list(childID, parentID, 100*extractionRate/Value_share)]
-# tree1[, Value_share := NULL]
-# tree1[, share := 1]
-# tree1[, geographicAreaM49 := currentCountry]
-# tree1[, timePointYears := currentYear]
-# step1 = standardizeTree(data = cattleData, tree = tree1, elements = fbsElements,
-#                 yearVar = "timePointYears", geoVar = "geographicAreaM49",
-#                 itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
-# toPrint = step1[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-# ## Remove alot of the data, and "impute" it later
-# printTable(toPrint)
-# })})
-```
-
-### Feed
-
-### Balancing
-
-```{r, echo = FALSE}
 rm(cattleData)
 ```
 
-
 ## Palm Oil
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-palmData = fullData[measuredItemCPC %in% palmOilKeys, ]
-## Remove alot of the data, and "impute" it later
-palmData[, Value_measuredElement_5520 := 0]
-palmData[, Value_measuredElement_5525 := 0]
-palmData[, Value_measuredElement_5120 := 0]
-palmData[, Value_measuredElement_5141 := 0]
-palmData[, Value_measuredElement_71 := 0]
-toPrint = palmData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-printTable(toPrint)
-})})
-```
-
-### Production
-
-```{r, echo = FALSE, fig.show = FALSE, eval = FALSE}
-suppressWarnings({suppressMessages({
-
-procParams = defaultProcessingParameters(productionValue = 5510,
-                                         yieldValue = 5421,
-                                         areaHarvestedValue = 5312)
-yieldParams = defaultImputationParameters(variable = 5421)
-prodIParams = defaultImputationParameters(variable = 5510)
-# procParams$byKey <- yieldParams$byKey <- prodIParams$byKey <-
-#     c("geographicAreaM49", "measuredItemCPC")
-yieldParams$estimateNoData <- prodIParams$estimateNoData <- TRUE
-imputeProductionDomain(data = palmData[measuredItemCPC == "0111", ],
-                       processingParameters = procParams,
-                       yieldImputationParameters = yieldParams,
-                       productionImputationParameters = prodIParams)
-toPrint = palmData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-
-## No longer need other countries, so drop them!
-palmData = palmData[geographicAreaM49 == currentCountry, ]
-
-})})
-```
-
-### Trade
-
-### Stock Changes
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/stockEstimates.RData"))
-palmData = merge(palmData, stockEstimates[, c("Value", "measuredItemCPC"),
-                                           with = FALSE],
-                  by = "measuredItemCPC", all.x = TRUE)
-palmData[, Value_measuredElement_71 := Value]
-toPrint = palmData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-palmData[, Value := NULL]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Food
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/foodEstimates.RData"))
-palmData = merge(palmData, foodEstimates[, c("mean", "measuredItemCPC", "geographicAreaM49"),
-                                           with = FALSE],
-                  by = c("measuredItemCPC", "geographicAreaM49"), all.x = TRUE)
-palmData[, Value_measuredElement_5141 := mean]
-toPrint = palmData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-palmData[, mean := NULL]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Losses
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/lossEstimates.RData"))
-palmData = merge(lossEstimates[, c("Value_measuredElement_5120",
-                                    "measuredItemCPC"), with = FALSE],
-                  palmData, by = "measuredItemCPC", all.y = TRUE,
-                  suffixes = c(".loss", ""))
-palmData[, Value_measuredElement_5120 := Value_measuredElement_5120.loss]
-palmData[, Value_measuredElement_5120.loss := NULL]
-toPrint = palmData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Seed
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/seedEstimates.RData"))
-palmData = merge(seedEstimates[, c("Value_measuredElement_5525",
-                                    "measuredItemCPC"), with = FALSE],
-                  palmData, by = "measuredItemCPC", all.y = TRUE,
-                  suffixes = c(".seed", ""))
-palmData[, Value_measuredElement_5525 := Value_measuredElement_5525.seed]
-toPrint = palmData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-palmData[, Value_measuredElement_5525.seed := NULL]
-## Remove alot of the data, and "impute" it later
-printTable(toPrint)
-})})
-```
-
-### Industrial Utilization
-
-Work in progress...
-
-### Tourist Consumption
-
-Work in progress...
-
-### Residual Other Uses
-
-Work in progress...
-
-### Standardization
-
-NOTE (Josh): This commodity tree looks like two separate trees.  But, the two parent nodes can actually be processed into many of the same children.  I'm not sure what the logic was for historically rolling up some of the children into one of the parents and some of the children into the other parent, but that would presumably need to be reviewed/revised.
-
-```{r, echo = FALSE, fig.height=12, fig.width = 18}
-suppressWarnings({suppressMessages({
-tree = fread(paste0(workingDir, "standardizationTree.csv"))
-plotSingleTree(edges = tree[parentID %in% palmOilKeys, ],
-               parentColname = "parentID", childColname = "childID",
-               extractionColname = "extractionRate", box.size = .08,
-               box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
-})})
-```
-
-```{r, echo = FALSE}
-# suppressWarnings({suppressMessages({
-# palmData = palmData[, c("measuredItemCPC", "timePointYears", "geographicAreaM49",
-#                           paste0("Value_measuredElement_", fbsElements)), with = FALSE]
-# tree1 = copy(tree)
-# shares = fread(paste0(workingDir, "shareData.csv"))
-# setnames(shares, c("measuredItemParentFS", "measuredItemChildFS"),
-#          c("parentID", "childID"))
-# tree1 = merge(tree1, shares, all = TRUE, by = c("childID", "parentID"))
-# ## If Value_share is not NA, this is a primary to first processing edge
-# tree1[!is.na(Value_share), c("parentID", "childID", "extractionRate") :=
-#           list(childID, parentID, 100*extractionRate/Value_share)]
-# tree1[, Value_share := NULL]
-# tree1[, share := 1]
-# tree1[, geographicAreaM49 := currentCountry]
-# tree1[, timePointYears := currentYear]
-# step1 = standardizeTree(data = palmData, tree = tree1, elements = fbsElements,
-#                 yearVar = "timePointYears", geoVar = "geographicAreaM49",
-#                 itemVar = "measuredItemCPC", elementPrefix = "Value_measuredElement_")
-# toPrint = step1[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-# ## Remove alot of the data, and "impute" it later
-# printTable(toPrint)
-# })})
-```
-
-### Feed
-
-### Balancing
 
 ```{r, echo = FALSE}
 rm(palmData)
