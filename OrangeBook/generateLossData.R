@@ -581,7 +581,7 @@ finalPredictData = imputeLoss(data = finalPredictData,
    lossMethodFlagVar = "flagMethod_measuredElement_5120",
    lossModel = lossLmeModel)
 lossEstimates = finalPredictData
-
+lossEstimates[, timePointYears := as.character(timePointYears)]
 
 if(Sys.info()[7] == "rockc_000"){
     save(lossEstimates, file = "~/GitHub/Working/OrangeBook/lossEstimates.RData")

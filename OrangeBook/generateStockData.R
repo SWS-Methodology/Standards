@@ -87,7 +87,7 @@ preds[, measuredItemCPC := faoswsUtil::fcl2cpc(formatC(as.numeric(measuredItemFS
                                            width = 4, format = "g", flag = "0"))]
 preds[, measuredElement := measuredElementFS]
 preds = preds[, list(geographicAreaM49, measuredItemCPC, measuredElement,
-                     timePointYears, Value)]
+                     timePointYears, Value, sdEstimate)]
 preds[, flagObservationStatus := "I"]
 preds[, flagMethod := "e"]
 preds = preds[!is.na(Value), ]

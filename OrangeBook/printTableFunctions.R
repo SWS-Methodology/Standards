@@ -1,5 +1,8 @@
 printTable = function(data, updateColName = NULL){
     printDT = copy(data)
+    printDT[, c("metFlag", "obsFlag", "standardDeviation") := NULL]
+    printDT[, element := paste0("Value_measuredElement_", element)]
+    printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
              c("OpeningStock", "AreaSown", "AreaHarv", "Production",
                "Input", "Yield", "Feed", "Seed", "Waste", "Processed", "Food",
@@ -26,12 +29,15 @@ printTable = function(data, updateColName = NULL){
     out = knitr::kable(printDT[, items, with = FALSE])
     
     ## Trying to get bold to work with kable:
-    out[1] = gsub("| Item", "|**Item**", out[1], fixed = TRUE)
+    out[1] = gsub("|Name", "|**Name**", out[1], fixed = TRUE)
     return(out)
 }
 
 printProductionTable = function(data){
     printDT = copy(data)
+    printDT[, c("metFlag", "obsFlag") := NULL]
+    printDT[, element := paste0("Value_measuredElement_", element)]
+    printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     setnames(printDT, paste0("Value_measuredElement_", c(5312, 5510, 5421)),
              c("Area Harvested", "Production", "Yield"))
     setnames(printDT, "measuredItemCPC", "Item")
@@ -48,6 +54,9 @@ printProductionTable = function(data){
 
 printStandardizationTable = function(data){
     printDT = copy(data)
+    printDT[, c("metFlag", "obsFlag") := NULL]
+    printDT[, element := paste0("Value_measuredElement_", element)]
+    printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     
     ## Bring in item names
     if(Sys.getenv("USER") == "josh"){ # Josh Work

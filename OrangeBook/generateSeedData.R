@@ -115,6 +115,7 @@ selectedSeed[, predicted :=
 # 
 # selectedSeed[1, predicted := 1929614]
 seedEstimates = selectedSeed
+seedEstimates[, timePointYears := as.character(timePointYears)]
 
 if(Sys.info()[7] == "rockc_000"){
     save(seedEstimates, file = "~/GitHub/Working/OrangeBook/seedEstimates.RData")
