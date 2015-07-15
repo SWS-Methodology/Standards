@@ -1,19 +1,25 @@
 ## Function for printing the main table
-printTable = function(data){
+printTable = function(data, standParams){
     printDT = copy(data)
     printDT[, c("metFlag", "obsFlag", "standardDeviation") := NULL]
     printDT[, element := paste0("Value_measuredElement_", element)]
-    ## Add bold style to updated values, round to no decimals
+    
+    fbsElements = c(standParams$productionCode, standParams$feedCode,
+                    standParams$seedCode, standParams$wasteCode,
+                    standParams$foodCode, standParams$stockCode,
+                    standParams$importCode, standParams$exportCode)
+
+    ## Add bold style to updated values, round to no decimals, NA to "-"
     printDT[, Value := as.character(round(as.numeric(Value), 0))]
+    printDT[is.na(Value), Value := "-"]
     if("updateFlag" %in% colnames(printDT)){
         printDT[(updateFlag), Value := paste0("**", Value, "**")]
         printDT[, updateFlag := NULL]
     }
     printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
-             c("OpeningStock", "AreaSown", "AreaHarv", "Production",
-               "Input", "Yield", "Feed", "Seed", "Waste", "Processed", "Food",
-               "StockChange", "Imports", "Exports"))
+             c("Production", "Feed", "Seed", "Waste",
+               "Food", "StockChange", "Imports", "Exports"))
     setnames(printDT, "measuredItemCPC", "Item")
 
     if(Sys.getenv("USER") == "josh"){ # Josh Work
@@ -33,17 +39,17 @@ printTable = function(data){
             printDT[, c(colName) := 0]
         }
     })
-    out = knitr::kable(printDT[, items, with = FALSE])
-    
-    ## Trying to get bold to work with kable:
-    out[1] = gsub("|Name", "|**Name**", out[1], fixed = TRUE)
+    out = knitr::kable(printDT[, items, with = FALSE], align = 'r')
     return(out)
 }
 
 ## Function for printing area harvested/yield/production
-printProductionTable = function(data){
+printProductionTable = function(data, standParams){
     printDT = copy(data)
     printDT[, c("metFlag", "obsFlag") := NULL]
+    ## Round to 0 or 4 (yield only) decimals
+    printDT[element == standParams$yieldCode, Value := round(Value, 4)]
+    printDT[element != standParams$yieldCode, Value := round(Value, 0)]
     printDT[, element := paste0("Value_measuredElement_", element)]
     printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     
@@ -55,7 +61,9 @@ printProductionTable = function(data){
     } else {
         stop("No working dir for current user!")
     }
-    setnames(printDT, paste0("Value_measuredElement_", c(5312, 5510, 5421)),
+    setnames(printDT, paste0("Value_measuredElement_", c(standParams$areaHarvCode,
+                                                         standParams$productionCode,
+                                                         standParams$yieldCode)),
              c("Area Harvested", "Production", "Yield"))
     setnames(printDT, "measuredItemCPC", "Item")
     printDT = merge(printDT, description, by = "Item")
@@ -71,23 +79,29 @@ printProductionTable = function(data){
 }
 
 ## Function printing expected value and standard error for the primary product
-printDistributionTable = function(data){
+printDistributionTable = function(data, standParams){
     printMean = copy(data)
     printMean[, c("metFlag", "obsFlag", "standardDeviation") := NULL]
     printMean[, element := paste0("Value_measuredElement_", element)]
+    printMean[, Value := round(Value)]
     printMean = tidyr::spread(data = printMean, key = "element", value = "Value")
     
     printSd = copy(data)
     printSd[, c("metFlag", "obsFlag", "Value") := NULL]
     printSd[, element := paste0("Value_measuredElement_", element)]
+    printSd[, standardDeviation := round(standardDeviation)]
     printSd = tidyr::spread(data = printSd, key = "element", value = "standardDeviation")
     
     printDT = rbind(printMean, printSd)
     printDT[, Variable := c("Mean", "Standard Dev.")]
     
+    fbsElements = c(standParams$productionCode, standParams$feedCode,
+                    standParams$seedCode, standParams$wasteCode,
+                    standParams$foodCode, standParams$stockCode,
+                    standParams$importCode, standParams$exportCode)
+    
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
-             c("OpeningStock", "AreaSown", "AreaHarv", "Production",
-               "Input", "Yield", "Feed", "Seed", "Waste", "Processed", "Food",
+             c("Production", "Feed", "Seed", "Waste", "Food",
                "StockChange", "Imports", "Exports"))
     setnames(printDT, "measuredItemCPC", "Item")
 
@@ -106,7 +120,7 @@ printDistributionTable = function(data){
 
 ## Function for printing the table which shows how an aggregate distribution
 ## gets calculated (during standardization).
-printStandardizationTable = function(data){
+printStandardizationTable = function(data, standParams){
     printDT = copy(data)
     
     ## Bring in item names
@@ -119,10 +133,24 @@ printStandardizationTable = function(data){
     }
     printDT = merge(printDT, description, by = "Item")
     
-    setnames(printDT, c("prodMean", "prodSd", "wheatMean", "wheatSd"),
-             c("Production (processed)", "SD(Production)",
-               "Wheat Equivalent", "SD(Wheat Equivalent)"))
-    
-    knitr::kable(printDT[, c("Name", "Production (processed)", "SD(Production)",
-               "Wheat Equivalent", "SD(Wheat Equivalent)"), with = FALSE])
+    if("adjustment" %in% colnames(printDT)){
+        setnames(printDT, c("prodMean", "prodSd", "wheatMean",
+                            "wheatSd", "adjustment"),
+                 c("Production (processed)", "SD(Production)",
+                   "Wheat Equivalent", "SD(Wheat Equivalent)", "Adjustment"))
+        
+        return(knitr::kable(printDT[, c("Name", "Production (processed)",
+                                        "SD(Production)", "Wheat Equivalent",
+                                        "SD(Wheat Equivalent)", "Adjustment"),
+                                    with = FALSE], digits = 0))
+    } else {
+        setnames(printDT, c("prodMean", "prodSd", "wheatMean", "wheatSd"),
+                 c("Production (processed)", "SD(Production)",
+                   "Wheat Equivalent", "SD(Wheat Equivalent)"))
+        
+        return(knitr::kable(printDT[, c("Name", "Production (processed)",
+                                        "SD(Production)", "Wheat Equivalent",
+                                        "SD(Wheat Equivalent)"),
+                                    with = FALSE], digits = 0))
+    }
 }
