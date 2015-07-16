@@ -15,5 +15,8 @@ getOfficialM49 <- function() {
                      which = 4,
                      stringsAsFactors = F)
   names(tbl) <- c("code", "name", "iso3")
+  tbl$iso3[tbl$iso3 == ""] <- NA
+  tbl$iso3[tbl$name == "Sark"] <- NA # Error in parse of HTML
+  
   tbl
 }
