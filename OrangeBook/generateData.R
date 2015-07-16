@@ -161,3 +161,21 @@ shareData = rbind(shareData,
     ))
 
 write.csv(shareData, file = paste0(workingDir, "shareData.csv"), row.names = FALSE)
+
+
+###############################################################################
+# Nutrient Factors                                                            #
+###############################################################################
+
+nutrCodes = GetCodeList("suafbs", "nutrient_factors_cpc",
+                        "measuredElementNutritive")
+nutrCodes = nutrCodes[description %in% c("Energy [kcal]", "Protein [g]",
+                                         "Carbohydrate, by difference [g]"),
+                      code]
+GetCodeList("suafbs", "nutrient_factors_cpc",
+                        "measuredItemHS")
+GetCodeList("suafbs", "nutrient_factors_cpc",
+                        "timePointFake")
+key = DatasetKey(domain = "suafbs", dataset = "nutrient_factors_cpc",
+                 dimensions = list(
+                     Dimension("measuredElementNutritive",

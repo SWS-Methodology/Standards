@@ -22,9 +22,9 @@ printTable = function(data, standParams){
                "Food", "StockChange", "Imports", "Exports"))
     setnames(printDT, "measuredItemCPC", "Item")
 
-    if(Sys.getenv("USER") == "josh"){ # Josh Work
+    if(Sys.info()[7] == "josh"){ # Josh Work
         description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
-    } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
+    } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
         description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
     } else {
         stop("No working dir for current user!")
@@ -37,6 +37,8 @@ printTable = function(data, standParams){
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
             printDT[, c(colName) := 0]
+        } else {
+            printDT[is.na(get(colName)), c(colName) := "-"]
         }
     })
     out = knitr::kable(printDT[, items, with = FALSE], align = 'r')
@@ -54,9 +56,9 @@ printProductionTable = function(data, standParams){
     printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     
     ## Bring in item names
-    if(Sys.getenv("USER") == "josh"){ # Josh Work
+    if(Sys.info()[7] == "josh"){ # Josh Work
         description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
-    } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
+    } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
         description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
     } else {
         stop("No working dir for current user!")
@@ -124,9 +126,9 @@ printStandardizationTable = function(data, standParams){
     printDT = copy(data)
     
     ## Bring in item names
-    if(Sys.getenv("USER") == "josh"){ # Josh Work
+    if(Sys.info()[7] == "josh"){ # Josh Work
         description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
-    } else if(Sys.getenv("USER") %in% c("browningj", "rockc_000")){ # Josh virtual & home
+    } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
         description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
     } else {
         stop("No working dir for current user!")
