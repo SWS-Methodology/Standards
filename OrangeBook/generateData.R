@@ -118,8 +118,13 @@ write.csv(data, file = paste0(workingDir, "standardizationData.csv"),
 load(paste0(workingDir, "../../faoswsAupus/data/commodityTrees.RData"))
 suaTree[, parentID := faoswsUtil::fcl2cpc(formatC(parentID, width = 4, flag = "0"))]
 suaTree[, childID := faoswsUtil::fcl2cpc(formatC(childID, width = 4, flag = "0"))]
-cpcCodes = data[!is.na(measuredItemCPC), unique(measuredItemCPC)]
+# cpcCodes = data[!is.na(measuredItemCPC), unique(measuredItemCPC)]
 suaTree = suaTree[childID %in% cpcCodes | parentID %in% cpcCodes, ]
+suaTree[, groupID := paste0(parentID, "-", childID)]
+suaTree[parentID == "0111" & childID %in% c("23110", "39120.01", "23140.01"),
+        groupID := "0111-23110"]
+suaTree[parentID == "21111.01" & childID %in% c("21111.02", "21512.01"),
+        groupID := "21111.01-21111.02"]
 write.csv(suaTree, file = paste0(workingDir, "standardizationTree.csv"),
           row.names = FALSE)
 
