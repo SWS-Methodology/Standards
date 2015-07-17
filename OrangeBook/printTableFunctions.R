@@ -1,13 +1,15 @@
 ## Function for printing the main table
 printTable = function(data, standParams){
     printDT = copy(data)
-    printDT[, c("metFlag", "obsFlag", "standardDeviation") := NULL]
+    printDT = printDT[, c(standParams$mergeKey, "element", "Value"),
+                      with = FALSE]
     printDT[, element := paste0("Value_measuredElement_", element)]
     
     fbsElements = c(standParams$productionCode, standParams$feedCode,
                     standParams$seedCode, standParams$wasteCode,
                     standParams$foodCode, standParams$stockCode,
-                    standParams$importCode, standParams$exportCode)
+                    standParams$importCode, standParams$exportCode,
+                    standParams$foodProcCode)
 
     ## Add bold style to updated values, round to no decimals, NA to "-"
     printDT[, Value := as.character(round(as.numeric(Value), 0))]
@@ -16,10 +18,12 @@ printTable = function(data, standParams){
         printDT[(updateFlag), Value := paste0("**", Value, "**")]
         printDT[, updateFlag := NULL]
     }
-    printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
+    printDT = tidyr::spread(data = printDT, key = "element", value = "Value",
+                            fill = NA)
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
              c("Production", "Feed", "Seed", "Waste",
-               "Food", "StockChange", "Imports", "Exports"))
+               "Food", "StockChange", "Imports", "Exports",
+               "Food Processing"))
     setnames(printDT, "measuredItemCPC", "Item")
 
     if(Sys.info()[7] == "josh"){ # Josh Work
@@ -31,8 +35,8 @@ printTable = function(data, standParams){
     }
     printDT = merge(printDT, description, by = "Item")
 
-    items = c("Name", "Production", "Imports", "Exports",
-              "StockChange", "Food", "Feed", "Waste", "Seed", "Industrial",
+    items = c("Name", "Production", "Imports", "Exports", "StockChange",
+              "Food", "Food Processing", "Feed", "Waste", "Seed", "Industrial",
               "Tourist", "Residual")
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
@@ -48,7 +52,8 @@ printTable = function(data, standParams){
 ## Function for printing area harvested/yield/production
 printProductionTable = function(data, standParams){
     printDT = copy(data)
-    printDT[, c("metFlag", "obsFlag") := NULL]
+    printDT = printDT[, c(standParams$mergeKey, "element", "Value"),
+                      with = FALSE]
     ## Round to 0 or 4 (yield only) decimals
     printDT[element == standParams$yieldCode, Value := round(Value, 4)]
     printDT[element != standParams$yieldCode, Value := round(Value, 0)]
@@ -83,13 +88,15 @@ printProductionTable = function(data, standParams){
 ## Function printing expected value and standard error for the primary product
 printDistributionTable = function(data, standParams){
     printMean = copy(data)
-    printMean[, c("metFlag", "obsFlag", "standardDeviation") := NULL]
+    printMean = printMean[, c(standParams$mergeKey, "element", "Value"),
+                      with = FALSE]
     printMean[, element := paste0("Value_measuredElement_", element)]
     printMean[, Value := round(Value)]
     printMean = tidyr::spread(data = printMean, key = "element", value = "Value")
     
     printSd = copy(data)
-    printSd[, c("metFlag", "obsFlag", "Value") := NULL]
+    printSd = printSd[, c(standParams$mergeKey, "element", "standardDeviation"),
+                      with = FALSE]
     printSd[, element := paste0("Value_measuredElement_", element)]
     printSd[, standardDeviation := round(standardDeviation)]
     printSd = tidyr::spread(data = printSd, key = "element", value = "standardDeviation")
@@ -100,15 +107,16 @@ printDistributionTable = function(data, standParams){
     fbsElements = c(standParams$productionCode, standParams$feedCode,
                     standParams$seedCode, standParams$wasteCode,
                     standParams$foodCode, standParams$stockCode,
-                    standParams$importCode, standParams$exportCode)
+                    standParams$importCode, standParams$exportCode,
+                    standParams$foodProcCode)
     
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
              c("Production", "Feed", "Seed", "Waste", "Food",
-               "StockChange", "Imports", "Exports"))
+               "StockChange", "Imports", "Exports", "Food Processing"))
     setnames(printDT, "measuredItemCPC", "Item")
 
-    items = c("Variable", "Production", "Imports", "Exports",
-              "StockChange", "Food", "Feed", "Waste", "Seed", "Industrial",
+    items = c("Variable", "Production", "Imports", "Exports", "StockChange",
+              "Food", "Food Processing", "Feed", "Waste", "Seed", "Industrial",
               "Tourist", "Residual")
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
