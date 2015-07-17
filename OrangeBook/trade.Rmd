@@ -1,7 +1,7 @@
 ---
 title: "Agricultural trade data processing"
-date: "July 9, 2015"
 output: pdf_document
+date: "July 9, 2015"
 ---
 
 ```{r, include=FALSE, echo = FALSE}
@@ -75,10 +75,13 @@ Weight is measured in kilograms and value in US dollars. Quantity (qty column) i
 
 ## Country-specific HS commodity codes
 
-Harmonized system classification is declared by WCO up to 6 digits. A country may extend HS to more detailed level  to better respond to local circumstances. Let's compare differencies in codes under subheading 0202 Meat of bovine animals, frozen between the US and Brazil.
+Harmonized system classification is declared by WCO up to 6 digits. A country may extend HS to more detailed level  to better respond to local circumstances. Let's compare differencies in codes under subheading 0202 Meat of bovine animals, frozen between the US and Brazil[^meta_copyright].
+
+[^meta_copyright]: http://madb.europa.eu Descriptions of country-specific HS-codes are provided by Market Access Database and copyrighted by Mendel Verlag, Germany.
 
 ```{r hscodes_us}
 getMadbExport("US", "0202") %>% 
+  mutate(desc = stringr::str_replace(desc, "and entered pursuant to its provisions", "...")) %>% 
   rename(Description = desc) %>% 
   printTab(caption = "Extension of HS codes by the US")
 
@@ -87,12 +90,55 @@ getMadbExport("BR", "0202") %>%
   printTab(caption = "Extension of HS codes by Brazil")
 ```
 
+The set of HS-codes from the US is wider, than Brazilian one. For boneless meat Brazil doesn't extend standard code 0202.30, when the US use here seven additional codes.
+
+## Country codes
+
+### Codes of reporters
+
+Area codes of reporters are standardized by the Statistical Department. The SD follows _in general_ the United Nations Standard Country or Area Codes for Statistical Use[^trade_book]. The code scheme used by the SD[^comtradesource] is slightly modified from the official one[^officialsource]. For example the official scheme offers code 840 for the US, when the modified version uses 842.
+
+[^comtradesource]: http://comtrade.un.org/data/doc/api/ The UN Comtrade data extraction API
+
+[^trade_book]: http://comtrade.un.org/pb/ The United Nations Statistics Division (2015). The 2014 International Trade Statistics Yearbook, Volume I - Trade by Country, xix.
+
+[^officialsource]: http://unstats.un.org/unsd/methods/m49/m49alpha.htm Countries or areas, codes and abbreviations 
+
+### Codes of partners
+
+Partners' codes in Tariffline data are not standardised and presented as they were reported by countries. Reporters can use as standard version of codes, so the version of the Statistical Department. For example, in Tariffline data there are 27 country codes which are not presented in official scheme and 40 codes not covered by the modified version.[^m49]
+
+[^m49]: http://rpubs.com/malexan/m49 Matrunich A. (2015). M49 country codes in Tariffline
 
 # Validation of trade data
+
+### Self-trade
+
+There are cases when a country reports itself as a partner to exports or imports. Such situations can occur due to mistakes or when an entrepôt exists.
+
+In case of the US 2011 there are no cases of self-trade.
+
 
 ## Detection of outliers
 
 ## Imputing of missing quantities and replacement of outliers
+
+The United Nations collect 
+```{r}
+noqty <- data.frame(hs = getAgriHSCodes(), stringsAsFactors = F) %>% 
+  inner_join(tbl(trade_src, sql("select 
+year, reporter, partner, hs, flow, weight, qty, qunit, value 
+ from tariffline
+where year = '2011' and 
+reporter = '842' and weight is null and qty is null")) %>% 
+  collect()  %>% 
+  mutate(hs6 = stringr::str_extract(hs, "^.{6}"),
+         hs2 = stringr::str_extract(hs, "^.{2}")),
+by = c("hs" = "hs6")) %>% 
+  filter(hs2 %in% c('02', '10', '15'))
+
+```
+
 
 # Aggregation of trade data
 

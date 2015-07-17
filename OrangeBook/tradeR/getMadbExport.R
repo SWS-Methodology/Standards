@@ -29,8 +29,8 @@ getMadbExport <- function(country, hs) {
       dash = stringr::str_replace(
         stringr::str_extract(desc, 
                              "^.*?[A-Za-z]{1}"), 
-        "[A-Za-z]$", ""),
-      desc = stringr::str_replace(desc, "^(- )*", "")
+        "[A-Za-z]$", "") #,
+      # desc = stringr::str_replace(desc, "^(- )*", "")
     )
   
   tbl %>% select(-dash)  
