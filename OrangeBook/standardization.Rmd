@@ -31,9 +31,7 @@ germCode = "23140.01"
 currentCountry = "840"
 currentYear = "2011"
 
-#aaaa
-
-# Never use scientific notation, don't print decimals either.
+# Never use scientific notation.
 options(scipen = 100)
 # options(digits = 0)
 
@@ -656,7 +654,7 @@ newTradeData = fullData[measuredItemCPC %in% sugarKeys,
 newTradeData[, standardDeviation_measuredElement_5600 := 0]
 replaceData(originalData = sugarData, newData = newTradeData,
             mergeKey = params$mergeKey)
-newTradeData = fullData[measuredItemCPC %in% wheatKeys,
+newTradeData = fullData[measuredItemCPC %in% sugarKeys,
                         c("Value_measuredElement_5900", params$mergeKey),
                         with = FALSE]
 newTradeData[, standardDeviation_measuredElement_5900 := 0]

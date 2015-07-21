@@ -589,9 +589,9 @@ lossEstimates = finalPredictData
 lossEstimates[, timePointYears := as.character(timePointYears)]
 
 if(Sys.info()[7] == "rockc_000"){
-    save(lossEstimates, file = "~/GitHub/Working/OrangeBook/lossEstimates.RData")
+    save(lossEstimates, file = "~/GitHub/privateFAO/OrangeBook/lossEstimates.RData")
 } else if(Sys.info()[7] == "josh"){
-    save(lossEstimates, file = "~/Documents/Github/Working/OrangeBook/lossEstimates.RData")
+    save(lossEstimates, file = "~/Documents/Github/privateFAO/OrangeBook/lossEstimates.RData")
 } else {
     stop("Need path for this user!")
 }
