@@ -1,7 +1,10 @@
 ## Function for printing the main table
 printTable = function(data, standParams){
     printDT = copy(data)
-    printDT = printDT[, c(standParams$mergeKey, "element", "Value"),
+    if(!"updateFlag" %in% colnames(printDT)){
+        printDT[, updateFlag := FALSE]
+    }
+    printDT = printDT[, c(standParams$mergeKey, "element", "Value", "updateFlag"),
                       with = FALSE]
     printDT[, element := paste0("Value_measuredElement_", element)]
     

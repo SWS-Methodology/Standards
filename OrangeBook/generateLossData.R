@@ -13,6 +13,10 @@ cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
 palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
                 "21700.02", "F1243", "34550", "F1275", "34120")
+sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
+              "23540", "23670.01", "24110", "2413", "24131", "24139",
+              "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
+              "01809", "F7162", "F7163")
 areaCodesM49 <- "840"
 
 selectedYear = as.character(1990:2011)
@@ -447,7 +451,8 @@ swsContext.datasets[[1]] = DatasetKey(
         list(Dimension(name = areaVar, keys = "840"),
              Dimension(name = yearVar, keys = as.character(2011)),
              Dimension(name = elementVar, keys = "5120"),
-             Dimension(name = itemVar, keys = c(wheatKeys, cattleKeys, palmOilKeys))
+             Dimension(name = itemVar, keys = c(wheatKeys, cattleKeys,
+                                                palmOilKeys, sugarKeys))
     ))
 
 
@@ -531,7 +536,7 @@ if(buildModel){
 
 finalPredictData = 
     {
-        requiredItems <<- c(wheatKeys, cattleKeys, palmOilKeys)
+        requiredItems <<- c(wheatKeys, cattleKeys, palmOilKeys, sugarKeys)
         production <<- getProductionData()
         import <<- getImportData()
         lossFoodGroup <<- getLossFoodGroup()

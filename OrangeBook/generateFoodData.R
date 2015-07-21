@@ -21,6 +21,11 @@ cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
 palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
                 "21700.02", "F1243", "34550", "F1275", "34120")
+sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
+              "23540", "23670.01", "24110", "2413", "24131", "24139",
+              "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
+              "01809", "F7162", "F7163")
+
 areaCodesFS <- GetCodeList("faostat_one", "FS1_SUA_UPD", "geographicAreaFS")
 areaCodesFS <- areaCodesFS[type == "country" &
     is.na(startDate) | as.Date(startDate) < as.Date("2011-01-01") &
@@ -44,7 +49,8 @@ gdpCodes <- "NY.GDP.PCAP.KD"
 populationCodes <- "21"
 ## The element 141 contains the FBS food numbers
 foodCodes <- "141"
-suaCodes <- faoswsUtil::cpc2fcl(c(wheatKeys, cattleKeys, palmOilKeys))
+suaCodes <- faoswsUtil::cpc2fcl(c(wheatKeys, cattleKeys, palmOilKeys, sugarKeys))
+suaCodes <- suaCodes[!is.na(suaCodes)]
 comCodes <- GetCodeList("food", "food_factors","foodCommodityM")$code
 fdmCodes <- GetCodeList("food", "food_factors","foodFdm")$code
 funCodes <- GetCodeList("food", "food_factors","foodFunction")$code

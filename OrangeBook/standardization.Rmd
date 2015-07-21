@@ -5,7 +5,6 @@ classoption: landscape
 ---
 
 # TO DO
-- Finish up the standardization: resolve the bran/germ issue with weights (probably 0 for bran and germ).
 - The trade figures I quote here are based on the US data, but not exactly.  We have HS6 trade data, and I can map that to CPC.  However, some HS6 codes map to many CPC codes.  My understanding is that the historical approach has been to not use split factors and to simply map the quantity straight into one of the CPC codes.  For this simple example, I map the HS data to CPC and randomly split it.
 - The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.
 - We need to include proteins/fats/calories
@@ -21,7 +20,6 @@ library(data.table)
 # library(faoswsImputation)
 # library(faoswsSeed)
 library(diagram) # For plotting commodity trees
-library(Rsolnp)
 wheatCode = "0111"
 flourCode = "23110"
 bulgurCode = "23140.02"
@@ -53,6 +51,7 @@ temp = sapply(files, source)
 source(paste0(workingDir, "printTableFunctions.R"))
 source(paste0(workingDir, "replaceData.R"))
 source(paste0(workingDir, "../../Balancing_ML/R/balancing.R"))
+source(paste0(workingDir, "../../Balancing_ML/R/forceBalance.R"))
 
 params = defaultStandardizationParameters()
     
@@ -65,6 +64,10 @@ cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
 palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
                 "21700.02", "F1243", "34550", "F1275", "34120")
+sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
+              "23540", "23670.01", "24110", "2413", "24131", "24139",
+              "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
+              "01809", "F7162", "F7163")
 fullData = fread(paste0(workingDir, "standardizationData.csv"))
 ## Coerce food from logical (default since all NA) to numeric
 foodVar = paste0(params$elementPrefix, params$foodCode)
@@ -228,10 +231,12 @@ newTradeData = fullData[measuredItemCPC %in% wheatKeys,
 newTradeData[, standardDeviation_measuredElement_5900 := 0]
 replaceData(originalData = wheatData, newData = newTradeData,
             mergeKey = params$mergeKey)
-## Manually reduce the bulgur imports to create a deficit.  Makes
-## standardization more interesting later.
+## Manually tweak trade to create a deficit.  Makes standardization more
+## interesting later.
 wheatData[element == "5600" & measuredItemCPC == "23140.02" &
               timePointYears == "2011", Value := 182485]
+wheatData[element == "5900" & measuredItemCPC == "23140.03" &
+              timePointYears == "2011", Value := 217289]
 wheatData[element == "5600" & Value == 0, Value := NA]
 wheatData[element == "5900" & Value == 0, Value := NA]
 
@@ -364,14 +369,15 @@ suppressWarnings({suppressMessages({
 tree = fread(paste0(workingDir, "standardizationTree.csv"),
              colClasses = c("character", "character", "numeric",
                             "character", "numeric", "character"))
+## Don't want infinite extraction rates until standardization
+tree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
+tree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
 plotSingleTree(edges = tree[parentID %in% wheatKeys, ],
                parentColname = "parentID", childColname = "childID",
                extractionColname = "extractionRate", box.size = .08,
                box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
 })})
 ```
-
-NOTE (Josh): At this point, we should also compute calories/proteins/fats.
 
 We first start with the pre-standardized table:
 
@@ -418,7 +424,6 @@ Now, we wish to compute the distribution for food to processing for wheat.  The 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
 wheatData = rollUpFood(data = wheatData, tree = tree, standParams = params)
-temp = rollUpFood(data = wheatData, tree = tree, standParams = params)
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := (element == params$foodProcCode &
@@ -448,7 +453,8 @@ toPrint = toPrint[element %in% c(params$productionCode, params$exportCode,
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
 toPrint[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
           sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
-          lbounds = ifelse(element %in% params$stockCode, -Inf, 0))]
+          lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
+          optimize = "constrOptim")]
 sink()
 toPrint[, adjustment := balancedValue - Value]
 wheatData = merge(wheatData,
@@ -467,7 +473,7 @@ Now, when balancing, we find that food is adjusted down slightly.  This adjustme
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-foodDelta = wheatData[measuredItemCPC == "0111" & timePointYears == "2011" &
+foodDelta = -wheatData[measuredItemCPC == "0111" & timePointYears == "2011" &
                   element == params$foodProcCode, get(params$adjustVar)]
 ## Determine adjustment by balancing: change(first element) + change(second) +
 ## ... = total change, so we have an equation to balance.
@@ -479,7 +485,8 @@ distributionTable[1:3, adjustment :=
               ## difference is assumed to be fixed.
               param2 = c(wheatSd, 0),
               sign = rep(1, .N+1),
-              lbound = rep(-Inf, .N+1))[1:.N]]
+              lbound = rep(-Inf, .N+1),
+              optimize = "constrOptim")[1:.N]]
 sink()
 distributionTable[is.na(adjustment), adjustment := 0]
 distributionTable[, wheatMean := wheatMean - adjustment]
@@ -524,10 +531,13 @@ suppressMessages({suppressWarnings({
 finalSuaBalance(wheatData, standParams = params,
                 feedElements = c(branCode, germCode))
 toPrint = wheatData[timePointYears == "2011", ]
-toPrint[, updateFlag := element == params$foodCode & measuredItemCPC == starchCode]
+toPrint[, updateFlag := element == params$foodCode &
+            measuredItemCPC %in% c(starchCode, flourCode)]
 printTable(toPrint, params)
 })})
 ```
+
+NOTE (Josh): At this point, we should also compute calories/proteins/fats.  But, I can't find the nutrient factors...
 
 Now, the final step is aggregating this full table back into primary equivalent.  For most elements, this is trivial: for example, the final stock change for wheat will simply be the current stock change because there is no stock change for processed products.  However, there are three elements that must be handled differently: imports, exports, and food.  Note that the final value for wheat equivalent production is simply the current value for wheat production: this is because ``production'' of flour (or any other processed product) isn't really production in the sense that the flour is acquired from a different commodity (whereas production of wheat is truly a production as it is not derived from anything else).
 
@@ -540,15 +550,18 @@ invisible({
 tree[, c(params$geoVar) := "840"]
 tree[, c(params$yearVar) := "2011"]
 tree[, share := 1]
-tree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
-tree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
+# tree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
+# tree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
 })
 finalValues = finalStandardizationToPrimary(data = wheatData, tree = tree,
                                             standParams = params)
 finalValues[, adjustment := NULL]
+finalValues = finalValues[timePointYears == "2011", ]
 printTable(finalValues, standParams = params)
 })})
 ```
+
+**Problem: We process wheat to create flour/bran/germ.  Then, We standardize back that flour/bran/germ to the wheat balance (flour to food, bran and germ to feed).  This gives us a huge imbalance, as the feed is being triple counted.  How should we correct this?  Don't divide by the extraction rate?  Don't standardize feed?**
 
 ```{r, echo = FALSE}
 ## We're done with wheat, so let's remove that data to make sure we don't
@@ -570,4 +583,418 @@ NOTE (Josh): We should include an example where a processed product can be made 
 
 ```{r, echo = FALSE}
 rm(palmData)
+```
+
+## Sugar
+
+```{r, echo = FALSE}
+wheatCode = "0111"
+flourCode = "23110"
+bulgurCode = "23140.02"
+cerealsCode = "23140.03"
+starchCode = "23220.01"
+branCode = "39120.01"
+germCode = "23140.01"
+
+currentCountry = "840"
+currentYear = "2011"
+```
+
+Now, let's consider the full process for creating a food balance sheet for sugar.  We start off with an empty table:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+sugarData = fullData[measuredItemCPC %in% sugarKeys, ]
+sugarData = data.table:::melt.data.table(data = sugarData,
+    id.vars = c(params$geoVar, params$itemVar, params$yearVar))
+sugarData[grepl("Value", variable), variableType := "Value"]
+sugarData[grepl("flagObservationStatus", variable), variableType := "obsFlag"]
+sugarData[grepl("flagMethod", variable), variableType := "metFlag"]
+castFormula = paste(paste(params$mergeKey, collapse = " + "), "~ variableType")
+# temp = tidyr::spread(data = sugarData, formula = as.formula(castFormula),
+#                             value.var = "value")
+sugarData[, variable := gsub("[A-Za-z_]*_", "", variable)]
+setnames(sugarData, "variable", "element")
+sugarData = tidyr::spread(data = sugarData, key = "variableType", value = "value")
+## Remove alot of the data, and "impute" it later
+sugarData[, Value := rep(0, nrow(sugarData))]
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+printTable(toPrint, params)
+})})
+```
+
+### Production
+
+For production data, we first fill in the table with any available official figures.  In this case, the production value is known for all the primary products and thus no imputation is done.  We also have production data for some of the processed commodities:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({invisible({
+sugarData = merge(sugarData,
+                  fullData[measuredItemCPC %in% sugarKeys,
+                           c("Value_measuredElement_5510", params$mergeKey),
+                           with = FALSE], by = params$mergeKey)
+sugarData[element == "5510", Value := Value_measuredElement_5510]
+sugarData[, standardDeviation := 0]
+sugarData[element == "5510" & Value == 0, Value := NA]
+sugarData[, Value_measuredElement_5510 := NULL]
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5510"]
+printTable(toPrint, params)
+
+})})})
+```
+
+### Trade
+
+For the next example, we'll show how the imputation, mirroring and balancing works.  In this case, we just take the country totals and insert into this table.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+newTradeData = fullData[measuredItemCPC %in% sugarKeys,
+                        c("Value_measuredElement_5600", params$mergeKey),
+                        with = FALSE]
+newTradeData[, standardDeviation_measuredElement_5600 := 0]
+replaceData(originalData = sugarData, newData = newTradeData,
+            mergeKey = params$mergeKey)
+newTradeData = fullData[measuredItemCPC %in% wheatKeys,
+                        c("Value_measuredElement_5900", params$mergeKey),
+                        with = FALSE]
+newTradeData[, standardDeviation_measuredElement_5900 := 0]
+replaceData(originalData = sugarData, newData = newTradeData,
+            mergeKey = params$mergeKey)
+## Manually tweak trade to create a deficit.  Makes standardization more
+## interesting later.
+# sugarData[element == "5600" & measuredItemCPC == "23140.02" &
+#               timePointYears == "2011", Value := 182485]
+# sugarData[element == "5900" & measuredItemCPC == "23140.03" &
+#               timePointYears == "2011", Value := 217289]
+sugarData[element == "5600" & Value == 0, Value := NA]
+sugarData[element == "5900" & Value == 0, Value := NA]
+
+## No longer need other countries, so drop them!
+sugarData = sugarData[geographicAreaM49 == currentCountry, ]
+# params$mergeKey = params$mergeKey[2:3]
+
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := element %in% c("5600", "5900")]
+## Print the trade data
+printTable(toPrint, params)
+})})
+```
+
+### Stock Changes
+
+We now estimate the stock changes.  Note that for most products, we assume that countries do not hold stocks.  Generally, stocks will only be held for primary level products, and not even all of these products.  The numbers below represent the estimated stock changes (by the stock imputation methodology described previously) for the example country we're considering.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/stockEstimates.RData"))
+setnames(stockEstimates, c("Value", "sdEstimate"),
+         paste0(c("Value", "standardDeviation"), "_measuredElement_71"))
+replaceData(sugarData,
+            stockEstimates[, c("Value_measuredElement_71",
+                               "standardDeviation_measuredElement_71",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "71" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "71"]
+printTable(toPrint, params)
+})})
+```
+
+### Food
+
+The allocation to food, on the other hand, can potentially be considered at any processing level, although some commodities (such as wheat) are assumed to not be eaten as such.  We impute food consumption numbers for the example country and update the FBS table below.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/foodEstimates.RData"))
+setnames(foodEstimates, c("mean", "var"),
+         paste0(c("Value", "standardDeviation"), "_measuredElement_5141"))
+foodEstimates = foodEstimates[geographicAreaM49 == "840", ]
+replaceData(sugarData,
+            foodEstimates[, c("Value_measuredElement_5141",
+                               "standardDeviation_measuredElement_5141",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+# If no food is estimated yet, it doesn't mean that it should be forced to be 0.
+# sugarData[element == "5141" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5141" & Value > 0]
+printTable(toPrint, params)
+})})
+```
+
+### Losses
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/lossEstimates.RData"))
+lossEstimates[, standardDeviation_measuredElement_5120 :=
+                  Value_measuredElement_5120 * .1]
+replaceData(sugarData,
+            lossEstimates[, c("Value_measuredElement_5120",
+                               "standardDeviation_measuredElement_5120",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "5120" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5120"]
+printTable(toPrint, params)
+})})
+warning("Standard error for loss data is currently just 10% of loss value, it ",
+        "is not estimated in any way.")
+```
+
+### Feed
+
+Feed allocation must be done at this phase in order to ensure that we have reduced the feed demand by the corresponding amounts of feed products (i.e. wheat bran, wheat germ, etc.).
+
+### Seed
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/seedEstimates.RData"))
+seedEstimates[, standardDeviation_measuredElement_5525 :=
+                  Value_measuredElement_5525 * .1]
+replaceData(sugarData,
+            seedEstimates[, c("Value_measuredElement_5525",
+                               "standardDeviation_measuredElement_5525",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "5525" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5525"]
+printTable(toPrint, params)
+})})
+warning("Standard error for seed data is currently just 10% of seed value, it ",
+        "is not estimated in any way.")
+```
+
+### Industrial Utilization
+
+Work in progress...
+
+### Tourist Consumption
+
+The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, that country will certainly have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+
+### Residual Other Uses
+
+Work in progress...
+
+### Standardization and Balancing
+
+Now, suppose we have the following commodity tree:
+
+```{r, echo = FALSE, fig.height=12, fig.width = 18}
+suppressWarnings({suppressMessages({
+tree = fread(paste0(workingDir, "standardizationTree.csv"),
+             colClasses = c("character", "character", "numeric",
+                            "character", "numeric", "character"))
+## Don't want infinite extraction rates until standardization
+tree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
+tree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
+plotSingleTree(edges = tree[(parentID %in% sugarKeys | childID %in% sugarKeys) &
+                                !is.na(parentID) & !is.na(childID), ],
+               parentColname = "parentID", childColname = "childID",
+               extractionColname = "extractionRate", box.size = .08,
+               box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
+})})
+```
+
+We first start with the pre-standardized table:
+
+```{r, echo = FALSE}
+# save(sugarData, file = paste0(workingDir, "preStandardizedWheat.RData"))
+# load(paste0(workingDir, "preStandardizedWheat.RData"))
+suppressWarnings({suppressMessages({
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+printTable(toPrint, params)
+})})
+```
+
+We then compute the required ``production'' of each of the processed products to satisfy any deficits due to exports or consumption (note that we can allow production to be zero if supply exceeds utilization).
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+## Production = Exports + Food - Imports
+## 5510 = 5900 + 71 - 5600
+computeProcessedProduction(data = sugarData, tree = tree, standParams = params)
+sugarData[element == "5510" & Value < 0, Value := 0]
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := (element == "5510" & Value < 18000000)]
+printTable(toPrint, params)
+})})
+```
+
+Since wheat starch is produced from wheat flour, we would first need to ensure the wheat flour "food to processing" can cover any deficits of wheat starch.  However, since wheat starch imports exceed exports plus food, we don't have to worry about this requirement.  Instead, we can just standardize all the first processed level products back to food to processing of wheat.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+distributionTable = toPrint[measuredItemCPC %in% c(flourCode, bulgurCode,
+                                                   cerealsCode, branCode) &
+                                element == params$productionCode,
+                            list(measuredItemCPC, Value, standardDeviation)]
+setnames(distributionTable, c("Item", "prodMean", "prodSd"))
+distributionTable[, wheatMean := prodMean / c(.72, .95, 1, .22)]
+distributionTable[, wheatSd := prodSd / c(.72, .95, 1, .22)]
+printStandardizationTable(distributionTable, params)
+})})
+```
+
+Now, we wish to compute the distribution for food to processing for wheat.  The main requirement is in the wheat flour, and it should be noted that the 9 million kilogram requirement for wheat bran will automatically be satisfied if the 26 million kilogram requirement for wheat flour is satisfied (as they are by-products).  Thus, the food to processing element for wheat has a mean of 26,198 thousand kilograms (the sum of the first three) and a standard deviation of 63 thousand kilograms (the square-root of the sum of the squares of the first three standard deviations).  Thus, we now have the following table:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+sugarData = rollUpFood(data = sugarData, tree = tree, standParams = params)
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := (element == params$foodProcCode &
+                             measuredItemCPC == "0111")]
+printTable(toPrint, params)
+invisible(toPrint[, updateFlag := NULL])
+})})
+```
+
+Now, we must balance this table.  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for each of the elements for wheat:
+
+```{r, echo = FALSE}
+toPrint = toPrint[measuredItemCPC == "0111", ]
+printDistributionTable(toPrint, params)
+```
+
+Note that in this case, the standard deviation for food for processing is very small; this is because it's mostly determined by the production of wheat flour, and this value is an official figure.
+
+```{r, echo = FALSE}
+suppressMessages({suppressWarnings({
+toPrint = toPrint[element %in% c(params$productionCode, params$exportCode,
+                                 params$importCode, params$stockCode,
+                                 params$foodCode, params$feedCode,
+                                 params$wasteCode, params$seedCode,
+                                 params$industrialCode, params$touristCode,
+                                 params$residualCode, params$foodProcCode), ]
+sink("temp.txt") # Sink balancing output so it doesn't get printed.
+toPrint[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
+          sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
+          lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
+          optimize = "constrOptim")]
+sink()
+toPrint[, adjustment := balancedValue - Value]
+sugarData = merge(sugarData,
+                  toPrint[, !c("Value", "metFlag", "obsFlag", "standardDeviation"),
+                          with = FALSE],
+                  by = c(params$mergeKey, "element"), all.x = TRUE)
+sugarData[!is.na(balancedValue), Value := balancedValue]
+sugarData[, balancedValue := NULL]
+toPrint[, Value := balancedValue]
+toPrint[, c("adjustment", "balancedValue") := NULL]
+printDistributionTable(toPrint, params)
+})})
+```
+
+Now, when balancing, we find that food is adjusted down slightly.  This adjustment to food of wheat implies that the production of children commodities must also be updated (and hence their food values as well).
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+foodDelta = -sugarData[measuredItemCPC == "0111" & timePointYears == "2011" &
+                  element == params$foodProcCode, get(params$adjustVar)]
+## Determine adjustment by balancing: change(first element) + change(second) +
+## ... = total change, so we have an equation to balance.
+sink("temp.txt") # Prevent writing balancing output to document
+distributionTable[1:3, adjustment :=
+    ## Means should all be 0, as we're looking at deltas from original values.
+    balancing(param1 = c(rep(0, .N), foodDelta),
+              ## Standard deviations can be read directly, and the 
+              ## difference is assumed to be fixed.
+              param2 = c(wheatSd, 0),
+              sign = rep(1, .N+1),
+              lbound = rep(-Inf, .N+1),
+              optimize = "constrOptim")[1:.N]]
+sink()
+distributionTable[is.na(adjustment), adjustment := 0]
+distributionTable[, wheatMean := wheatMean - adjustment]
+distributionTable[, prodMean := prodMean - adjustment / c(.72, .95, 1, .22)]
+printStandardizationTable(distributionTable, params)
+})})
+```
+
+We can now update the production numbers for each of the first level primary elements.  Note that in the process of creating flour, we also create bran and germ.  The amount of bran and germ created, in this case, is determined by the amount of flour we need to create (as that was our most stringent requirement).  Thus, we have:
+
+```{r, echo = FALSE}
+suppressMessages({suppressWarnings({
+## Add in default shares for all processing activities
+invisible({
+tree[, share := NA_real_]
+tree[groupID == "0111-23110", share := .90]
+tree[groupID == "0111-23140.02", share := .05]
+tree[groupID == "0111-23140.03", share := .05]
+})
+## Allocate down the adjustments in the true/automated way
+sink("temp.txt") # Sink balancing output so it doesn't get printed.
+# save(sugarData, file = paste0(workingDir, "StandardizedWheat1.RData"))
+# load(paste0(workingDir, "StandardizedWheat1.RData"))
+sugarData = rollDownFoodDelta(data = sugarData, tree = tree,
+                              standParams = params,
+                              feedElements = c("23140.01", "39120.01"))
+sink()
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, adjustment := NULL]
+toPrint[, updateFlag := (measuredItemCPC == germCode) |
+            (element %in% c(params$foodCode, params$productionCode, params$feedCode) &
+                 measuredItemCPC %in% c(bulgurCode, germCode, cerealsCode, branCode) &
+                 Value > 0)]
+printTable(toPrint, params)
+})})
+```
+
+Our food balance sheet is nearly completed, except that some commodities haven't been handled yet.  In particular, wheat starch had imports exceeding exports and so we have not balanced that commodity yet; also, wheat flour has official production and so we haven't modified that commodity either.  These unbalanced elements must be updated, and since the production is already fixed (either because it's an official figure or because it's 0) the balancing is very straight-forward: the uncertainty will be entirely allocated to food (or, in general, to either food or feed).
+
+```{r, echo = FALSE}
+suppressMessages({suppressWarnings({
+finalSuaBalance(sugarData, standParams = params,
+                feedElements = c(branCode, germCode))
+toPrint = sugarData[timePointYears == "2011", ]
+toPrint[, updateFlag := element == params$foodCode &
+            measuredItemCPC %in% c(starchCode, flourCode)]
+printTable(toPrint, params)
+})})
+```
+
+NOTE (Josh): At this point, we should also compute calories/proteins/fats.  But, I can't find the nutrient factors...
+
+Now, the final step is aggregating this full table back into primary equivalent.  For most elements, this is trivial: for example, the final stock change for wheat will simply be the current stock change because there is no stock change for processed products.  However, there are three elements that must be handled differently: imports, exports, and food.  Note that the final value for wheat equivalent production is simply the current value for wheat production: this is because ``production'' of flour (or any other processed product) isn't really production in the sense that the flour is acquired from a different commodity (whereas production of wheat is truly a production as it is not derived from anything else).
+
+To standardize trade, we can simply aggregate the trade of the children commodities up into their primary equivalent by dividing by the extraction rate.  We add these primary equivalents to the current value of trade of wheat, and we have our final, primary equivalent trade of wheat.  For food, the food of wheat isn't really ``food'' but rather the amount of wheat allocated to food.  Thus, when computing food equivalent of wheat, we standardize all the children commodities but do not add in the current value of food of wheat.
+
+```{r, echo = FALSE}
+suppressMessages({suppressWarnings({
+params$elementPrefix = ""
+invisible({
+tree[, c(params$geoVar) := "840"]
+tree[, c(params$yearVar) := "2011"]
+tree[, share := 1]
+# tree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
+# tree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
+})
+finalValues = finalStandardizationToPrimary(data = sugarData, tree = tree,
+                                            standParams = params)
+finalValues[, adjustment := NULL]
+finalValues = finalValues[timePointYears == "2011", ]
+printTable(finalValues, standParams = params)
+})})
+```
+
+**Problem: We process wheat to create flour/bran/germ.  Then, We standardize back that flour/bran/germ to the wheat balance (flour to food, bran and germ to feed).  This gives us a huge imbalance, as the feed is being triple counted.  How should we correct this?  Don't divide by the extraction rate?  Don't standardize feed?**
+
+```{r, echo = FALSE}
+rm(sugarData)
 ```

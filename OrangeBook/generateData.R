@@ -21,6 +21,10 @@ cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
 palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
                 "21700.02", "F1243", "34550", "F1275", "34120")
+sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
+              "23540", "23670.01", "24110", "2413", "24131", "24139",
+              "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
+              "01809", "F7162", "F7163")
 
 ###############################################################################
 # Non-trade Data                                                              #
@@ -37,7 +41,8 @@ key = DatasetKey(
         Dimension(name = "measuredElement", keys = c("5113", "5025", "5312", "5510", "5421",
                                                      "5520", "5525", "5023", "5327", "5016",
                                                      "5141", "5120")),
-        Dimension(name = "measuredItemCPC", keys = c(wheatKeys, cattleKeys, palmOilKeys)),
+        Dimension(name = "measuredItemCPC", keys = c(wheatKeys, cattleKeys,
+                                                     palmOilKeys, sugarKeys)),
         ## 15 years
         Dimension(name = "timePointYears", keys = as.character(1996:2011))
     ))
@@ -56,7 +61,8 @@ data[, Value_measuredElement_5141 := as.numeric(Value_measuredElement_5141)]
 #                              dimension = "partnerCountryM49")[type == "country", code]
 partnerCountry = "0" # World
 map = GetTableData(schemaName = "ess", tableName = "hs_2_cpc")
-hsKeys = map[cpc %in% gsub("\\..*", "", c(wheatKeys, cattleKeys, palmOilKeys)),
+hsKeys = map[cpc %in% gsub("\\..*", "", c(wheatKeys, cattleKeys,
+                                          palmOilKeys, sugarKeys)),
              unique(hs)]
 key = DatasetKey(
     domain = "trade",
@@ -118,7 +124,7 @@ write.csv(data, file = paste0(workingDir, "standardizationData.csv"),
 load(paste0(workingDir, "../../faoswsAupus/data/commodityTrees.RData"))
 suaTree[, parentID := faoswsUtil::fcl2cpc(formatC(parentID, width = 4, flag = "0"))]
 suaTree[, childID := faoswsUtil::fcl2cpc(formatC(childID, width = 4, flag = "0"))]
-# cpcCodes = data[!is.na(measuredItemCPC), unique(measuredItemCPC)]
+cpcCodes = data[!is.na(measuredItemCPC), unique(measuredItemCPC)]
 suaTree = suaTree[childID %in% cpcCodes | parentID %in% cpcCodes, ]
 suaTree[, groupID := paste0(parentID, "-", childID)]
 suaTree[parentID == "0111" & childID %in% c("23110", "39120.01", "23140.01"),

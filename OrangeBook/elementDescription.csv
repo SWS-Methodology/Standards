@@ -1,5 +1,8 @@
 Item,Name
 0111,Wheat
+01802,Sugar Cane
+01801,Sugar Beet
+01809,Other sugar crops n.e.
 23110,Wheat flour
 23140.02,Bulgur
 23140.03,Breakfast cereals
@@ -18,3 +21,23 @@ Item,Name
 F1243,Fat preparations n.e.
 F1275,Hydrogenated oils
 23140.01,Wheat germ
+23512,Beet sugar
+F7156,Sugar Cane Tree
+23210.04,Sugar and Syrups nes
+2351,Raw cane or beet sugar
+23511,Cane sugar
+23511.01,"Cane sugar, centrifugal"
+23520,Refined sugar
+23540,"Molasses (from beet, cane and maize)"
+23670.01,Sugar Confectionery
+24110,Undenatured ethyl alcohol (>80%)
+2413,Undenatured ethyl alcohol (<=80%)
+24131,"Spirits, liquers and other spirituous beverages"
+24139,Other spirituous beverages
+24490.92,Other non-alcoholic caloric beverages n.e.c
+39140.02,Bagasse
+F7157,Sugar Beets Tree
+39140.01,Beet Pulp
+F7161,Sugar Crops nes Tree
+F7162,"Sugar (Centrifugal, Raw)"
+F7163,Sugar (Noncentrifugal)
