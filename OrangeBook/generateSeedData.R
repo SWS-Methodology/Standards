@@ -3,9 +3,14 @@ if(Sys.info()[7] == "rockc_000"){
     files = dir("~/GitHub/faoswsSeed/R/", full.names = TRUE)
 } else if(Sys.info()[7] == "josh"){
     files = dir("~/Documents/Github/faoswsSeed/R/", full.names = TRUE)
+} else if(Sys.info()[7] == "natalia"){
+  files = dir("~/Documents/Github/faoswsSeed/R/", full.names = TRUE)
+} else if(Sys.info()[7] == "Golini"){
+  files = dir("C:/Users/Golini/Documents/Github/faoswsSeed/R/", full.names = TRUE)
 } else {
     stop("Need path for this user!")
 }
+
 sapply(files, source)
 
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
@@ -79,6 +84,12 @@ if(buildModel){
     } else if(Sys.info()[7] == "josh"){
         save(seedLmeModel,
              file = "/media/hqlprsws1_qa/browningj/seed/seedModel.RData")
+    } else if(Sys.info()[7] == "natalia"){
+      save(seedLmeModel,
+           file = "~/Documents/Github/privateFAO/OrangeBook/seedModel_Nata.RData")  
+    } else if(Sys.info()[7] == "Golini"){
+      save(seedLmeModel,
+           file = "C:/Users/Golini/Documents/Github/privateFAO/OrangeBook/seedModel_Nata.RData")  
     } else {
         stop("Need path for this user!")
     }
@@ -87,12 +98,26 @@ if(buildModel){
         load(file = "//hqlprsws1.hq.un.fao.org/sws_r_share/browningj/seed/seedModel.RData")
     } else if(Sys.info()[7] == "josh"){
         load(file = "/media/hqlprsws1_qa/browningj/seed/seedModel.RData")
+    } else if(Sys.info()[7] == "natalia"){
+      load(file = "~/Documents/Github/privateFAO/OrangeBook/seedModel_Nata.RData")
+    } else if(Sys.info()[7] == "Golini"){
+      load(file = "C:/Users/Golini/Documents/GitHub/privateFAO/OrangeBook/seedModel_Nata.RData")
     } else {
         stop("Need path for this user!")
     }
 }
 
-# seedLmeVariance = bootMer(seedLmeModel, )
+seedModelData = seedModelData[!is.na(Value_wbIndicator_SWS.FAO.TEMP), ]
+
+seedModelData[, seedPredicted :=
+                exp(predict(seedLmeModel, seedModelData, allow.new.levels = TRUE))]
+ 
+seedLmeVariance = bootMer(seedLmeModel,
+                          FUN = function(seedLmeModel) predict(seedLmeModel),
+                          nsim = 100)
+
+seedModelData[, seedVariance := apply(seedLmeVariance$t, 2, sd)]
+
 
 swsContext.datasets = list()
 swsContext.datasets[[1]] = DatasetKey(
@@ -105,20 +130,23 @@ swsContext.datasets[[1]] = DatasetKey(
              Dimension(name = itemVar, keys = c(wheatKeys, cattleKeys,
                                                 palmOilKeys, sugarKeys))
     ))
-
-selectedSeed =
-    getSelectedSeedData(swsContext.datasets[[1]]) %>%
-    removeCarryForward(data = ., variable = "Value_measuredElement_5525") %>%
-    buildCPCHierarchy(data = ., cpcItemVar = itemVar, levels = 3) %>%
-    mergeAllSeedData(seedData = ., area, climate) %>%
-    .[Value_measuredElement_5525 > 1 & Value_measuredElement_5025 > 1, ]
-
-selectedSeed[, predicted :=
-              exp(predict(seedLmeModel, selectedSeed, allow.new.levels = TRUE))]
+# 
+# selectedSeed =
+#     getSelectedSeedData(swsContext.datasets[[1]]) %>%
+#     removeCarryForward(data = ., variable = "Value_measuredElement_5525") %>%
+#     buildCPCHierarchy(data = ., cpcItemVar = itemVar, levels = 3) %>%
+#     mergeAllSeedData(seedData = ., area, climate) %>%
+#     .[Value_measuredElement_5525 > 1 & Value_measuredElement_5025 > 1, ]
+# 
+# selectedSeed[, predicted :=
+#                exp(predict(seedLmeModel, selectedSeed, allow.new.levels = TRUE))]
 # Getting strange error: "Error: sum(nb) == q is not TRUE".  Temporary hack for
 # work computer
 # 
 # selectedSeed[1, predicted := 1929614]
+
+selectedSeed = seedModelData[geographicAreaM49 == 840 & timePointYears == 2011 & measuredItemCPC == "0111"]
+
 seedEstimates = selectedSeed
 seedEstimates[, timePointYears := as.character(timePointYears)]
 
@@ -126,6 +154,10 @@ if(Sys.info()[7] == "rockc_000"){
     save(seedEstimates, file = "~/GitHub/Working/OrangeBook/seedEstimates.RData")
 } else if(Sys.info()[7] == "josh"){
     save(seedEstimates, file = "~/Documents/Github/Working/OrangeBook/seedEstimates.RData")
+} else if(Sys.info()[7] == "natalia"){
+  save(seedEstimates, file = "~/Documents/Github/PrivateFAO/OrangeBook/seedEstimates_Nata.RData")
+} else if(Sys.info()[7] == "Golini"){
+  save(seedEstimates, file = "C:/Users/Golini/Documents/Github/PrivateFAO/OrangeBook/seedEstimates_Nata.RData")
 } else {
     stop("Need path for this user!")
 }
