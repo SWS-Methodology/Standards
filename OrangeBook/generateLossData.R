@@ -34,6 +34,8 @@ if(Sys.info()[7] == "rockc_000"){
     lossModelPath = "//hqlprsws1.hq.un.fao.org/sws_r_share/browningj/loss/lossModel.RData"
 } else if(Sys.info()[7] == "josh"){
     lossModelPath = "/media/hqlprsws1_qa/browningj/loss/lossModel.RData"
+} else if(Sys.info()[7] == "Golini"){
+  lossModelPath = "//hqlprsws1.hq.un.fao.org/sws_r_share/browningj/loss/lossModel.RData"
 } else {
     stop("Need lossModelPath for this user!")
 }
@@ -432,16 +434,19 @@ removeCarryLoss = function(data, lossVar){
 }
 
 imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
-    lossModel){
+    lossModel, lossVarModel){
     imputedData = copy(data)
-    imputedData[, predicted := exp(predict(lossModel, newdata = imputedData,
+    imputedData[, lossPredicted := exp(predict(lossModel, newdata = imputedData,
                                 allow.new.levels = TRUE))]
     imputedData[(is.na(imputedData[[lossVar]]) |
                  imputedData[[lossObservationFlagVar]] %in% c("E", "I", "T", "M")) &
-                !is.na(predicted),
+                !is.na(lossPredicted),
                 `:=`(c(lossVar, lossObservationFlagVar, lossMethodFlagVar),
-                     list(predicted, "I", "e"))]
-    imputedData[, predicted := NULL]
+                     list(lossPredicted, "I", "e"))]
+    imputedData[, lossPredicted := NULL]
+    
+    imputedData[, lossVariance := apply(lossLmeVariance$t, 2, sd)]
+    
     imputedData
 }
 
@@ -526,7 +531,11 @@ if(buildModel){
                   foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
              data = finalModelData)
     
-    save(lossLmeModel, file = lossModelPath)
+    lossLmeVariance = bootMer(lossLmeModel,
+                              FUN = function(lossLmeModel) predict(lossLmeModel),
+                              nsim = 2)
+        
+    save(c(lossLmeModel,lossLmeVariance), file = lossModelPath)
 } else {
     load(lossModelPath)
 }
@@ -586,7 +595,8 @@ finalPredictData = imputeLoss(data = finalPredictData,
    lossObservationFlagVar =
        "flagObservationStatus_measuredElement_5120",
    lossMethodFlagVar = "flagMethod_measuredElement_5120",
-   lossModel = lossLmeModel)
+   lossModel = lossLmeModel,
+   lossVarModel = lossLmeVariance)
 lossEstimates = finalPredictData
 lossEstimates[, timePointYears := as.character(timePointYears)]
 
@@ -594,6 +604,8 @@ if(Sys.info()[7] == "rockc_000"){
     save(lossEstimates, file = "~/GitHub/privateFAO/OrangeBook/lossEstimates.RData")
 } else if(Sys.info()[7] == "josh"){
     save(lossEstimates, file = "~/Documents/Github/privateFAO/OrangeBook/lossEstimates.RData")
+} else if(Sys.info()[7] == "Golini"){
+  save(lossEstimates, file = "C:/Users/Golini/Documents/Github/privateFAO/OrangeBook/lossEstimates_Nata.RData")
 } else {
     stop("Need path for this user!")
 }
