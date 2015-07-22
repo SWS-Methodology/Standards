@@ -20,6 +20,8 @@ library(data.table)
 # library(faoswsImputation)
 # library(faoswsSeed)
 library(diagram) # For plotting commodity trees
+
+## Wheat codes
 wheatCode = "0111"
 flourCode = "23110"
 bulgurCode = "23140.02"
@@ -27,6 +29,12 @@ cerealsCode = "23140.03"
 starchCode = "23220.01"
 branCode = "39120.01"
 germCode = "23140.01"
+
+## Sugar codes
+beetCode = "01801"
+caneCode = "01802"
+beetSugarCode = "23512"
+molassesCode = "23540"
 
 currentCountry = "840"
 currentYear = "2011"
@@ -67,6 +75,8 @@ sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
               "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
               "01809", "F7162", "F7163")
 fullData = fread(paste0(workingDir, "standardizationData.csv"))
+fullData = fullData[timePointYears == currentYear &
+                        geographicAreaM49 == currentCountry, ]
 ## Coerce food from logical (default since all NA) to numeric
 foodVar = paste0(params$elementPrefix, params$foodCode)
 fullData[, c(foodVar) := as.numeric(get(foodVar))]
@@ -327,9 +337,10 @@ Feed allocation must be done at this phase in order to ensure that we have reduc
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/seedEstimates.RData"))
+load(paste0(workingDir, "/seedEstimates_Nata.RData"))
+seedEstimates[, Value_measuredElement_5525 := seedPredicted]
 seedEstimates[, standardDeviation_measuredElement_5525 :=
-                  Value_measuredElement_5525 * .1]
+                  exp(seedVariance)]
 replaceData(wheatData,
             seedEstimates[, c("Value_measuredElement_5525",
                                "standardDeviation_measuredElement_5525",
@@ -342,8 +353,6 @@ toPrint = wheatData[geographicAreaM49 == currentCountry &
 toPrint[, updateFlag := element == "5525"]
 printTable(toPrint, params)
 })})
-warning("Standard error for seed data is currently just 10% of seed value, it ",
-        "is not estimated in any way.")
 ```
 
 ### Industrial Utilization
@@ -370,10 +379,20 @@ tree = fread(paste0(workingDir, "standardizationTree.csv"),
 ## Don't want infinite extraction rates until standardization
 tree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
 tree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
-plotSingleTree(edges = tree[parentID %in% wheatKeys, ],
-               parentColname = "parentID", childColname = "childID",
-               extractionColname = "extractionRate", box.size = .08,
-               box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
+edges = tree[parentID %in% wheatKeys, ]
+itemName = fread(paste0(workingDir, "elementDescription.csv"))
+setnames(itemName, "Item", params$parentVar)
+edges = merge(edges, itemName, by = params$parentVar, all.x = TRUE)
+edges[, c("parentID", "Name") := list(Name, NULL)]
+setnames(itemName, params$parentVar, params$childVar)
+edges = merge(edges, itemName, by = params$childVar, all.x = TRUE)
+edges[, c("childID", "Name") := list(Name, NULL)]
+edges[, childID := gsub(" ", "\n", childID)]
+edges[, parentID := gsub(" ", "\n", parentID)]
+plotSingleTree(edges = edges, parentColname = "parentID",
+               childColname = "childID", extractionColname = "extractionRate",
+               box.size = .08, box.type = "circle", cex.txt = 2, box.prop = .5,
+               box.cex = 1.9)
 })})
 ```
 
@@ -585,19 +604,6 @@ rm(palmData)
 
 ## Sugar
 
-```{r, echo = FALSE}
-wheatCode = "0111"
-flourCode = "23110"
-bulgurCode = "23140.02"
-cerealsCode = "23140.03"
-starchCode = "23220.01"
-branCode = "39120.01"
-germCode = "23140.01"
-
-currentCountry = "840"
-currentYear = "2011"
-```
-
 Now, let's consider the full process for creating a food balance sheet for sugar.  We start off with an empty table:
 
 ```{r, echo = FALSE}
@@ -801,10 +807,21 @@ tree = fread(paste0(workingDir, "standardizationTree.csv"),
 ## Don't want infinite extraction rates until standardization
 tree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
 tree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
-plotSingleTree(edges = tree[(parentID %in% sugarKeys | childID %in% sugarKeys) &
-                                !is.na(parentID) & !is.na(childID), ],
+edges = tree[(parentID %in% sugarKeys | childID %in% sugarKeys) &
+                 !is.na(parentID) & !is.na(childID), ]
+itemName = fread(paste0(workingDir, "elementDescription.csv"),
+                 colClasses = c("character", "character"))
+setnames(itemName, "Item", params$parentVar)
+edges = merge(edges, itemName, by = params$parentVar, all.x = TRUE)
+edges[, c("parentID", "Name") := list(Name, NULL)]
+setnames(itemName, params$parentVar, params$childVar)
+edges = merge(edges, itemName, by = params$childVar, all.x = TRUE)
+edges[, c("childID", "Name") := list(Name, NULL)]
+edges[, childID := gsub(" ", "\n", childID)]
+edges[, parentID := gsub(" ", "\n", parentID)]
+plotSingleTree(edges = edges,
                parentColname = "parentID", childColname = "childID",
-               extractionColname = "extractionRate", box.size = .08,
+               extractionColname = "extractionRate", box.size = .06,
                box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
 })})
 ```
@@ -812,8 +829,6 @@ plotSingleTree(edges = tree[(parentID %in% sugarKeys | childID %in% sugarKeys) &
 We first start with the pre-standardized table:
 
 ```{r, echo = FALSE}
-# save(sugarData, file = paste0(workingDir, "preStandardizedWheat.RData"))
-# load(paste0(workingDir, "preStandardizedWheat.RData"))
 suppressWarnings({suppressMessages({
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 printTable(toPrint, params)
@@ -829,7 +844,8 @@ suppressWarnings({suppressMessages({
 computeProcessedProduction(data = sugarData, tree = tree, standParams = params)
 sugarData[element == "5510" & Value < 0, Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-toPrint[, updateFlag := (element == "5510" & Value < 18000000)]
+toPrint[, updateFlag := element == "5510" & !measuredItemCPC %in%
+            c(beetCode, caneCode, beetSugarCode, molassesCode)]
 printTable(toPrint, params)
 })})
 ```
@@ -837,6 +853,8 @@ printTable(toPrint, params)
 Since wheat starch is produced from wheat flour, we would first need to ensure the wheat flour "food to processing" can cover any deficits of wheat starch.  However, since wheat starch imports exceed exports plus food, we don't have to worry about this requirement.  Instead, we can just standardize all the first processed level products back to food to processing of wheat.
 
 ```{r, echo = FALSE}
+# save(sugarData, file = paste0(workingDir, "standardizedSugar.RData"))
+# load(paste0(workingDir, "standardizedSugar.RData"))
 suppressWarnings({suppressMessages({
 distributionTable = toPrint[measuredItemCPC %in% c(flourCode, bulgurCode,
                                                    cerealsCode, branCode) &
@@ -938,8 +956,6 @@ tree[groupID == "0111-23140.03", share := .05]
 })
 ## Allocate down the adjustments in the true/automated way
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
-# save(sugarData, file = paste0(workingDir, "StandardizedWheat1.RData"))
-# load(paste0(workingDir, "StandardizedWheat1.RData"))
 sugarData = rollDownFoodDelta(data = sugarData, tree = tree,
                               standParams = params,
                               feedElements = c("23140.01", "39120.01"))

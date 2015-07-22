@@ -1,4 +1,5 @@
 library(data.table)
+library(faosws)
 if(Sys.info()[7] == "rockc_000"){
     files = dir("~/GitHub/sws_r_api/r_modules/food_imputation/R/", full.names = TRUE)
 } else if(Sys.info()[7] == "josh"){
