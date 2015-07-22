@@ -22,8 +22,10 @@ areaCodesM49 <- "840"
 selectedYear = as.character(1990:2011)
 areaVar = "geographicAreaM49"
 yearVar = "timePointYears"
-itemVar = "measuredItemCPC"
-elementVar = "measuredElement"
+itemVar = "measuredItemSuaFbs"
+itemAgVar = "measuredItemCPC"
+elementVar = "measuredElementSuaFbs"
+elementAgVar = "measuredElement"
 valuePrefix = "Value_"
 flagObsPrefix = "flagObservationStatus_"
 flagMethodPrefix = "flagMethod_"
@@ -50,7 +52,7 @@ getAllItemCPC = function(){
         adjacent2edge(
             GetCodeTree(domain = "agriculture",
                         dataset = "agriculture",
-                        dimension = itemVar)
+                        dimension = itemAgVar)
         )
     itemEdgeGraph = graph.data.frame(itemEdgeList)
     itemDist = shortest.paths(itemEdgeGraph, v = "0", mode = "out")
@@ -63,7 +65,7 @@ getProductionData = function(){
     allCountries =
         GetCodeList(domain = "agriculture",
                     dataset = "agriculture",
-                    dimension = "geographicAreaM49")[type == "country", code]
+                    dimension = areaVar)[type == "country", code]
     
     productionKey = DatasetKey(
         domain = "agriculture",
@@ -71,9 +73,9 @@ getProductionData = function(){
         dimensions = list(
             Dimension(name = areaVar,
                       keys = allCountries),
-            Dimension(name = elementVar,
+            Dimension(name = elementAgVar,
                       keys = "5510"),
-            Dimension(name = itemVar,
+            Dimension(name = itemAgVar,
                       keys = requiredItems),
             Dimension(name = yearVar,
                       keys = selectedYear)
@@ -83,9 +85,9 @@ getProductionData = function(){
     ## Pivot to vectorize yield computation
     productionPivot = c(
         Pivoting(code = areaVar, ascending = TRUE),
-        Pivoting(code = itemVar, ascending = TRUE),
+        Pivoting(code = itemAgVar, ascending = TRUE),
         Pivoting(code = yearVar, ascending = FALSE),
-        Pivoting(code = elementVar, ascending = TRUE)
+        Pivoting(code = elementAgVar, ascending = TRUE)
     )
 
     ## Query the data
@@ -106,7 +108,7 @@ getImportData = function(){
     allCountries =
         GetCodeList(domain = "trade",
                     dataset = "total_trade_CPC",
-                    dimension = "geographicAreaM49")[type == "country", code]
+                    dimension = areaVar)[type == "country", code]
 
     importKey = DatasetKey(
         domain = "trade",
@@ -116,7 +118,7 @@ getImportData = function(){
                       keys = allCountries),
             Dimension(name = "measuredElementTrade",
                       keys = "5600"),
-            Dimension(name = "measuredItemCPC",
+            Dimension(name = itemAgVar,
                       keys = requiredItems),
             Dimension(name = yearVar,
                       keys = selectedYear)
@@ -126,7 +128,7 @@ getImportData = function(){
     ## Pivot to vectorize yield computation
     importPivot = c(
         Pivoting(code = areaVar, ascending = TRUE),
-        Pivoting(code = "measuredItemCPC", ascending = TRUE),
+        Pivoting(code = itemAgVar, ascending = TRUE),
         Pivoting(code = yearVar, ascending = FALSE),
         Pivoting(code = "measuredElementTrade", ascending = TRUE)
     )
@@ -166,7 +168,7 @@ getOfficialLossData = function(){
     allCountries =
         GetCodeList(domain = "lossWaste",
                     dataset = "loss",
-                    dimension = "geographicAreaM49")[type == "country", code]
+                    dimension = areaVar)[type == "country", code]
 
     ## HACK (Michael): This is a hack, beacause the item hierachy
     ##                 configuration is different in the loss data set
@@ -175,7 +177,7 @@ getOfficialLossData = function(){
             adjacent2edge(
                 GetCodeTree(domain = "lossWaste",
                             dataset = "loss",
-                            dimension = "measuredItemSuaFbs")
+                            dimension = itemVar)
             )
         itemEdgeGraph = graph.data.frame(itemEdgeList)
         itemDist = shortest.paths(itemEdgeGraph, v = "0", mode = "out")
@@ -196,9 +198,9 @@ getOfficialLossData = function(){
         dimensions = list(
             Dimension(name = areaVar,
                       keys = allCountries),
-            Dimension(name = "measuredElementSuaFbs",
+            Dimension(name = elementVar,
                       keys = "5120"),
-            Dimension(name = "measuredItemSuaFbs",
+            Dimension(name = itemVar,
                       keys = lossItems),
             Dimension(name = yearVar,
                       keys = selectedYear)
@@ -222,14 +224,14 @@ getOfficialLossData = function(){
     )
 
     setnames(lossQuery,
-             old = grep("measuredElementSuaFbs",
+             old = grep(elementVar,
                  colnames(lossQuery), value = TRUE),
-             new = gsub("measuredElementSuaFbs", "measuredElement",
-                 grep("measuredElementSuaFbs",
+             new = gsub(elementVar, "measuredElement",
+                 grep(elementVar,
                       colnames(lossQuery), value = TRUE)))
     setnames(lossQuery,
-             old = "measuredItemSuaFbs",
-             new = "measuredItemCPC")
+             old = itemVar,
+             new = itemAgVar)
 
 
     ## Convert time to numeric
@@ -263,7 +265,7 @@ getSelectedLossData = function(){
                       colnames(lossQuery), value = TRUE)))
     setnames(lossQuery,
              old = itemVar,
-             new = "measuredItemCPC")
+             new = itemAgVar)
 
     ## Convert time to numeric
     lossQuery[, timePointYears := as.numeric(timePointYears)]
@@ -295,7 +297,7 @@ getSelectedLossData = function(){
                       colnames(lossQuery), value = TRUE)))
     setnames(lossQuery,
              old = itemVar,
-             new = "measuredItemCPC")
+             new = itemAgVar)
 
     ## Convert time to numeric
     lossQuery[, timePointYears := as.numeric(timePointYears)]
@@ -308,18 +310,18 @@ getLossWorldBankData = function(){
     allCountries =
         GetCodeList(domain = "WorldBank",
                     dataset = "wb_ecogrw",
-                    dimension = "geographicAreaM49")[type == "country", code]
+                    dimension = areaVar)[type == "country", code]
    
     infrastructureKey =
         DatasetKey(domain = "WorldBank",
                    dataset = "wb_infrastructure",
                    dimensions =
                        list(
-                           Dimension(name = "geographicAreaM49",
+                           Dimension(name = areaVar,
                                      keys = allCountries),
                            Dimension(name = "wbIndicator",
                                      keys = "IS.ROD.PAVE.ZS"),
-                           Dimension(name = "timePointYears",
+                           Dimension(name = yearVar,
                                      keys = selectedYear)
                        )
                    )
@@ -329,20 +331,20 @@ getLossWorldBankData = function(){
                    dataset = "wb_ecogrw",
                    dimensions =
                        list(
-                           Dimension(name = "geographicAreaM49",
+                           Dimension(name = areaVar,
                                      keys = allCountries),
                            Dimension(name = "wbIndicator",
                                      keys = c("NY.GDP.MKTP.PP.KD",
                                          "NY.GDP.PCAP.KD")),
-                           Dimension(name = "timePointYears",
+                           Dimension(name = yearVar,
                                      keys = selectedYear)
                        )
                    )
 
     newPivot = c(
-        Pivoting(code = "geographicAreaM49", ascending = TRUE),
+        Pivoting(code = areaVar, ascending = TRUE),
         Pivoting(code = "wbIndicator", ascending = TRUE),
-        Pivoting(code = "timePointYears", ascending = FALSE)
+        Pivoting(code = yearVar, ascending = FALSE)
     )
 
     base =
@@ -365,7 +367,7 @@ getLossWorldBankData = function(){
                  "NY.GDP.PCAP.KD"),
              new = c("sharePavedRoad", "gdpPPP", "gdpPerCapita"))
     casted[, timePointYears := as.numeric(timePointYears)]
-    setkeyv(casted, cols = c("geographicAreaM49", "timePointYears"))
+    setkeyv(casted, cols = c(areaVar, yearVar))
     casted
 }
 
@@ -476,11 +478,11 @@ if(buildModel){
             countryTable <<-
                 GetCodeList(domain = "agriculture",
                             dataset = "agriculture",
-                            dimension = "geographicAreaM49")[type == "country",
+                            dimension = areaVar)[type == "country",
                                 list(code, description)]
             setnames(countryTable,
                      old = c("code", "description"),
-                     new = c("geographicAreaM49", "geographicAreaM49Name"))
+                     new = c(areaVar, "geographicAreaM49Name"))
         } %>%
         mergeAllLossData(lossData = loss,
                          production, import, lossFoodGroup,
