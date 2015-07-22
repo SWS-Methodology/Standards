@@ -435,6 +435,7 @@ removeCarryLoss = function(data, lossVar){
 
 imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
     lossModel, lossVarModel){
+    
     imputedData = copy(data)
     imputedData[, lossPredicted := exp(predict(lossModel, newdata = imputedData,
                                 allow.new.levels = TRUE))]
@@ -444,6 +445,11 @@ imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
                 `:=`(c(lossVar, lossObservationFlagVar, lossMethodFlagVar),
                      list(lossPredicted, "I", "e"))]
     imputedData[, lossPredicted := NULL]
+    
+    lossLmeVariance = bootMer(lossModel,
+                              FUN = function(lossModel)
+                                  predict(lossModel, newdata = data),
+                              nsim = 2)
     
     imputedData[, lossVariance := apply(lossLmeVariance$t, 2, sd)]
     
@@ -532,10 +538,10 @@ if(buildModel){
              data = finalModelData)
     
     lossLmeVariance = bootMer(lossLmeModel,
-                              FUN = function(lossLmeModel) predict(lossLmeModel),
+                              FUN = function(lossLmeModel) predict(lossLmeModel, newdata = testData),
                               nsim = 2)
         
-    save(c(lossLmeModel,lossLmeVariance), file = lossModelPath)
+    save(c(lossLmeModel, lossLmeVariance), file = lossModelPath)
 } else {
     load(lossModelPath)
 }
@@ -588,6 +594,8 @@ finalPredictData =
              )
       ]
 
+predict(lossLmeModel)
+apply(lossLmeVariance$t, 2, sd)
 
 ## Impute selected data
 finalPredictData = imputeLoss(data = finalPredictData,
