@@ -442,7 +442,8 @@ imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
     factOk = imputedData[,names(which(fact == "TRUE"))] 
     
     lossLmeModelPartial =
-      lmer(log(Value_measuredElement_5120) ~  
+      lmer(log(Value_measuredElement_5120) ~ as.numeric(timePointYears) +
+               log(Value_measuredElement_5510 + 1) +
              (-1 + log(Value_measuredElement_5510 + 1)|
                 foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
            data = finalModelData)
@@ -541,12 +542,33 @@ if(buildModel){
     ##                   foodPerishableGroup/foodGroupName/measuredItemCPC),
     ##          data = finalModelData)
     
-#     lossLmeModel =
-#         lmer(log(Value_measuredElement_5120) ~ timePointYears +
-#              log(Value_measuredElement_5510 + 1) + 
-#              (-1 + log(Value_measuredElement_5510 + 1)|
-#                   foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
-#              data = finalModelData)
+    if(modelType == "factorYear"){
+        lossLmeModel =
+            lmer(log(Value_measuredElement_5120) ~ timePointYears +
+                 log(Value_measuredElement_5510 + 1) + 
+                 (-1 + log(Value_measuredElement_5510 + 1)|
+                      foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
+                 data = finalModelData)
+        warning("With modelType = 'factorYear' you must have the same years ",
+                "for prediction as in the fitted data.  This seems to be some ",
+                "bug with the lme4 package.")
+    } else if(modelType == "numericYear"){
+        lossLmeModel =
+            lmer(log(Value_measuredElement_5120) ~ as.numeric(timePointYears) +
+                 log(Value_measuredElement_5510 + 1) + 
+                 (-1 + log(Value_measuredElement_5510 + 1)|
+                      foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
+                 data = finalModelData)
+    } else if(modelType == "noYear"){
+        lossLmeModel =
+            lmer(log(Value_measuredElement_5120) ~ 
+                 log(Value_measuredElement_5510 + 1) + 
+                 (-1 + log(Value_measuredElement_5510 + 1)|
+                      foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
+                 data = finalModelData)
+    } else {
+        stop("Invalid modelType!")
+    }
     
 #     lossLmeVariance = bootMer(lossLmeModel,
 #                                 FUN = function(lossLmeModel) 

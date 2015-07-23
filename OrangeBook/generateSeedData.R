@@ -145,15 +145,16 @@ swsContext.datasets[[1]] = DatasetKey(
 # 
 # selectedSeed[1, predicted := 1929614]
 
-selectedSeed = seedModelData[geographicAreaM49 == 840 & timePointYears == 2011 & measuredItemCPC == "0111"]
+selectedSeed = seedModelData[geographicAreaM49 == 840 & timePointYears == 2011 &
+                                 measuredItemCPC %in% c(wheatKeys, cattleKeys, sugarKeys, palmOilKeys)]
 
 seedEstimates = selectedSeed
 seedEstimates[, timePointYears := as.character(timePointYears)]
 
 if(Sys.info()[7] == "rockc_000"){
-    save(seedEstimates, file = "~/GitHub/Working/OrangeBook/seedEstimates.RData")
+    save(seedEstimates, file = "~/GitHub/privateFAO/OrangeBook/seedEstimates.RData")
 } else if(Sys.info()[7] == "josh"){
-    save(seedEstimates, file = "~/Documents/Github/Working/OrangeBook/seedEstimates.RData")
+    save(seedEstimates, file = "~/Documents/Github/privateFAO/OrangeBook/seedEstimates.RData")
 } else if(Sys.info()[7] == "natalia"){
   save(seedEstimates, file = "~/Documents/Github/PrivateFAO/OrangeBook/seedEstimates_Nata.RData")
 } else if(Sys.info()[7] == "Golini"){
