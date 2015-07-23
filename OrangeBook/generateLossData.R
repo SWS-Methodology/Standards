@@ -437,8 +437,19 @@ imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
     lossModel, lossVarModel){
     
     imputedData = copy(data)
+    
+    fact = sapply(imputedData,function(x)is.factor(x))
+    factOk = imputedData[,names(which(fact == "TRUE"))] 
+    
+    lossLmeModelPartial =
+      lmer(log(Value_measuredElement_5120) ~  
+             (-1 + log(Value_measuredElement_5510 + 1)|
+                foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
+           data = finalModelData)
+    
     imputedData[, lossPredicted := exp(predict(lossModel, newdata = imputedData,
                                 allow.new.levels = TRUE))]
+
     imputedData[(is.na(imputedData[[lossVar]]) |
                  imputedData[[lossObservationFlagVar]] %in% c("E", "I", "T", "M")) &
                 !is.na(lossPredicted),
@@ -446,12 +457,12 @@ imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
                      list(lossPredicted, "I", "e"))]
     imputedData[, lossPredicted := NULL]
     
-    lossLmeVariance = bootMer(lossModel,
+    lossLmeVariancePartial = bootMer(lossModel,
                               FUN = function(lossModel)
-                                  predict(lossModel, newdata = data),
+                                  predict(lossModel, newdata = imputedData, allow.new.levels = TRUE),
                               nsim = 2)
     
-    imputedData[, lossVariance := apply(lossLmeVariance$t, 2, sd)]
+    imputedData[, lossVariance := apply(lossLmeVariancePartial$t, 2, sd)]
     
     imputedData
 }
@@ -530,18 +541,20 @@ if(buildModel){
     ##                   foodPerishableGroup/foodGroupName/measuredItemCPC),
     ##          data = finalModelData)
     
-    lossLmeModel =
-        lmer(log(Value_measuredElement_5120) ~ timePointYears +
-             log(Value_measuredElement_5510 + 1) + 
-             (-1 + log(Value_measuredElement_5510 + 1)|
-                  foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
-             data = finalModelData)
+#     lossLmeModel =
+#         lmer(log(Value_measuredElement_5120) ~ timePointYears +
+#              log(Value_measuredElement_5510 + 1) + 
+#              (-1 + log(Value_measuredElement_5510 + 1)|
+#                   foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
+#              data = finalModelData)
     
-    lossLmeVariance = bootMer(lossLmeModel,
-                              FUN = function(lossLmeModel) predict(lossLmeModel, newdata = testData),
-                              nsim = 2)
+#     lossLmeVariance = bootMer(lossLmeModel,
+#                                 FUN = function(lossLmeModel) 
+#                                 predict(lossLmeModel),
+#                                 nsim = 2)
         
-    save(c(lossLmeModel, lossLmeVariance), file = lossModelPath)
+#     save(lossLmeModel, file = lossModelPath)
+#    save(lossLmeVariance, file = lossModelPath)
 } else {
     load(lossModelPath)
 }
@@ -594,17 +607,14 @@ finalPredictData =
              )
       ]
 
-predict(lossLmeModel)
-apply(lossLmeVariance$t, 2, sd)
-
 ## Impute selected data
 finalPredictData = imputeLoss(data = finalPredictData,
    lossVar = "Value_measuredElement_5120",
    lossObservationFlagVar =
        "flagObservationStatus_measuredElement_5120",
    lossMethodFlagVar = "flagMethod_measuredElement_5120",
-   lossModel = lossLmeModel,
-   lossVarModel = lossLmeVariance)
+   lossModel = lossLmeModelPartial,
+   lossVarModel = lossLmeVariancePartial)
 lossEstimates = finalPredictData
 lossEstimates[, timePointYears := as.character(timePointYears)]
 
