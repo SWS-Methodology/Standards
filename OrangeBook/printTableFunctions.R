@@ -30,9 +30,11 @@ printTable = function(data, standParams){
     setnames(printDT, "measuredItemCPC", "Item")
 
     if(Sys.info()[7] == "josh"){ # Josh Work
-        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
+        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv",
+                            colClasses = c("character", "character"))
     } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
+        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv",
+                            colClasses = c("character", "character"))
     } else {
         stop("No working dir for current user!")
     }
@@ -65,9 +67,11 @@ printProductionTable = function(data, standParams){
     
     ## Bring in item names
     if(Sys.info()[7] == "josh"){ # Josh Work
-        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
+        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv",
+                            colClasses = c("character", "character"))
     } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
+        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv",
+                            colClasses = c("character", "character"))
     } else {
         stop("No working dir for current user!")
     }
@@ -95,6 +99,7 @@ printDistributionTable = function(data, standParams){
                       with = FALSE]
     printMean[, element := paste0("Value_measuredElement_", element)]
     printMean[, Value := round(Value)]
+    printMean[is.na(Value), Value := 0]
     printMean = tidyr::spread(data = printMean, key = "element", value = "Value")
     
     printSd = copy(data)
@@ -138,9 +143,11 @@ printStandardizationTable = function(data, standParams){
     
     ## Bring in item names
     if(Sys.info()[7] == "josh"){ # Josh Work
-        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv")
+        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv",
+                            colClasses = c("character", "character"))
     } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv")
+        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv",
+                            colClasses = c("character", "character"))
     } else {
         stop("No working dir for current user!")
     }
