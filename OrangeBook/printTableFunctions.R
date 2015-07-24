@@ -1,5 +1,5 @@
 ## Function for printing the main table
-printTable = function(data, standParams){
+printTable = function(data, standParams, workingDir){
     printDT = copy(data)
     if(!"updateFlag" %in% colnames(printDT)){
         printDT[, updateFlag := FALSE]
@@ -29,15 +29,8 @@ printTable = function(data, standParams){
                "Food Processing"))
     setnames(printDT, "measuredItemCPC", "Item")
 
-    if(Sys.info()[7] == "josh"){ # Josh Work
-        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv",
+    description = fread(paste0(workingDir, "/elementDescription.csv"),
                             colClasses = c("character", "character"))
-    } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv",
-                            colClasses = c("character", "character"))
-    } else {
-        stop("No working dir for current user!")
-    }
     printDT = merge(printDT, description, by = "Item")
 
     items = c("Name", "Production", "Imports", "Exports", "StockChange",
@@ -55,7 +48,7 @@ printTable = function(data, standParams){
 }
 
 ## Function for printing area harvested/yield/production
-printProductionTable = function(data, standParams){
+printProductionTable = function(data, standParams, workingDir){
     printDT = copy(data)
     printDT = printDT[, c(standParams$mergeKey, "element", "Value"),
                       with = FALSE]
@@ -66,15 +59,8 @@ printProductionTable = function(data, standParams){
     printDT = tidyr::spread(data = printDT, key = "element", value = "Value")
     
     ## Bring in item names
-    if(Sys.info()[7] == "josh"){ # Josh Work
-        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv",
+    description = fread(paste0(workingDir, "/elementDescription.csv"),
                             colClasses = c("character", "character"))
-    } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv",
-                            colClasses = c("character", "character"))
-    } else {
-        stop("No working dir for current user!")
-    }
     setnames(printDT, paste0("Value_measuredElement_", c(standParams$areaHarvCode,
                                                          standParams$productionCode,
                                                          standParams$yieldCode)),
@@ -138,19 +124,12 @@ printDistributionTable = function(data, standParams){
 
 ## Function for printing the table which shows how an aggregate distribution
 ## gets calculated (during standardization).
-printStandardizationTable = function(data, standParams){
+printStandardizationTable = function(data, standParams, workingDir){
     printDT = copy(data)
     
     ## Bring in item names
-    if(Sys.info()[7] == "josh"){ # Josh Work
-        description = fread("~/Documents/Github/privateFAO/OrangeBook/elementDescription.csv",
+    description = fread(paste0(workingDir, "/elementDescription.csv"),
                             colClasses = c("character", "character"))
-    } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
-        description = fread("~/GitHub/privateFAO/OrangeBook/elementDescription.csv",
-                            colClasses = c("character", "character"))
-    } else {
-        stop("No working dir for current user!")
-    }
     printDT = merge(printDT, description, by = "Item")
     
     if("adjustment" %in% colnames(printDT)){
