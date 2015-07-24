@@ -1,976 +1,976 @@
-timePointFake,Year,measuredItemCPC,Item,measuredElementNutritive,Nutrient,Value,,,,,,
-1,All years,111,Wheat,203,Protein [g],12.34,,,,,,
-1,All years,111,Wheat,208,Energy [kcal],1420.936667,,,,,,
-1,All years,111,Wheat,904,Energy [kcal],336.098333,,,,,,
-1,All years,112,Maize (corn),203,Protein [g],9.903333,,,,,,
-1,All years,112,Maize (corn),208,Energy [kcal],1534.506667,,,,,,
-1,All years,112,Maize (corn),904,Energy [kcal],363.196667,,,,,,
-1,All years,113,Rice,203,Protein [g],7.5,,,,,,
-1,All years,113,Rice,208,Energy [kcal],1491.12,,,,,,
-1,All years,113,Rice,904,Energy [kcal],352.04,,,,,,
-1,All years,114,Sorghum,203,Protein [g],11.3,,,,,,
-1,All years,114,Sorghum,208,Energy [kcal],1526.21,,,,,,
-1,All years,114,Sorghum,904,Energy [kcal],360.82,,,,,,
-1,All years,115,Barley,203,Protein [g],12.48,,,,,,
-1,All years,115,Barley,208,Energy [kcal],1390.89,,,,,,
-1,All years,115,Barley,904,Energy [kcal],329.98,,,,,,
-1,All years,116,Rye,203,Protein [g],10.34,,,,,,
-1,All years,116,Rye,208,Energy [kcal],1389.81,,,,,,
-1,All years,116,Rye,904,Energy [kcal],329.27,,,,,,
-1,All years,117,Oats,203,Protein [g],16.89,,,,,,
-1,All years,117,Oats,208,Energy [kcal],1573.62,,,,,,
-1,All years,117,Oats,904,Energy [kcal],373.54,,,,,,
-1,All years,118,Millet,203,Protein [g],11.02,,,,,,
-1,All years,118,Millet,208,Energy [kcal],1505.26,,,,,,
-1,All years,118,Millet,904,Energy [kcal],356.42,,,,,,
-1,All years,1191,Triticale,203,Protein [g],13.05,,,,,,
-1,All years,1191,Triticale,208,Energy [kcal],1525.22,,,,,,
-1,All years,1191,Triticale,904,Energy [kcal],359.49,,,,,,
-1,All years,1192,Buckwheat,203,Protein [g],12.62,,,,,,
-1,All years,1192,Buckwheat,208,Energy [kcal],1439.27,,,,,,
-1,All years,1192,Buckwheat,904,Energy [kcal],340.74,,,,,,
-1,All years,1194,Quinoa,203,Protein [g],14.12,,,,,,
-1,All years,1194,Quinoa,208,Energy [kcal],1492.18,,,,,,
-1,All years,1194,Quinoa,904,Energy [kcal],353.71,,,,,,
-1,All years,1199,Other cereals,203,Protein [g],14.145,,,,,,
-1,All years,1199,Other cereals,208,Energy [kcal],1523.54,,,,,,
-1,All years,1199,Other cereals,904,Energy [kcal],360.43,,,,,,
-1,All years,1211,Asparagus,203,Protein [g],2.2,,,,,,
-1,All years,1211,Asparagus,208,Energy [kcal],88.9,,,,,,
-1,All years,1211,Asparagus,904,Energy [kcal],21.2,,,,,,
-1,All years,1212,Cabbages,203,Protein [g],2.026667,,,,,,
-1,All years,1212,Cabbages,208,Energy [kcal],125.835556,,,,,,
-1,All years,1212,Cabbages,904,Energy [kcal],29.982222,,,,,,
-1,All years,1213,Cauliflowers and broccoli,203,Protein [g],2.563333,,,,,,
-1,All years,1213,Cauliflowers and broccoli,208,Energy [kcal],132.136667,,,,,,
-1,All years,1213,Cauliflowers and broccoli,904,Energy [kcal],31.49,,,,,,
-1,All years,1214,Lettuce and chicory,203,Protein [g],1.238571,,,,,,
-1,All years,1214,Lettuce and chicory,208,Energy [kcal],65.272857,,,,,,
-1,All years,1214,Lettuce and chicory,904,Energy [kcal],15.681429,,,,,,
-1,All years,1215,Spinach,203,Protein [g],2.18,,,,,,
-1,All years,1215,Spinach,208,Energy [kcal],90.18,,,,,,
-1,All years,1215,Spinach,904,Energy [kcal],21.435,,,,,,
-1,All years,1219,Other leafy or stem vegetables,203,Protein [g],1.878333,,,,,,
-1,All years,1219,Other leafy or stem vegetables,208,Energy [kcal],102.106667,,,,,,
-1,All years,1219,Other leafy or stem vegetables,904,Energy [kcal],24.321667,,,,,,
-1,All years,1221,Watermelons,203,Protein [g],0.61,,,,,,
-1,All years,1221,Watermelons,208,Energy [kcal],140.5,,,,,,
-1,All years,1221,Watermelons,904,Energy [kcal],33.15,,,,,,
-1,All years,1229,Cantaloupes and other melons,203,Protein [g],0.83,,,,,,
-1,All years,1229,Cantaloupes and other melons,208,Energy [kcal],146.706667,,,,,,
-1,All years,1229,Cantaloupes and other melons,904,Energy [kcal],34.663333,,,,,,
-1,All years,1231,"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",203,Protein [g],1.43,,,,,,
-1,All years,1231,"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",208,Energy [kcal],136.69,,,,,,
-1,All years,1231,"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",904,Energy [kcal],32.405,,,,,,
-1,All years,1232,Cucumbers and gherkins,203,Protein [g],0.62,,,,,,
-1,All years,1232,Cucumbers and gherkins,208,Energy [kcal],59.35,,,,,,
-1,All years,1232,Cucumbers and gherkins,904,Energy [kcal],14.075,,,,,,
-1,All years,1233,Eggplants (aubergines),203,Protein [g],1.01,,,,,,
-1,All years,1233,Eggplants (aubergines),208,Energy [kcal],90.33,,,,,,
-1,All years,1233,Eggplants (aubergines),904,Energy [kcal],21.71,,,,,,
-1,All years,1234,Tomatoes,203,Protein [g],1.055,,,,,,
-1,All years,1234,Tomatoes,208,Energy [kcal],81.4525,,,,,,
-1,All years,1234,Tomatoes,904,Energy [kcal],19.3425,,,,,,
-1,All years,1235,"Pumpkins, squash and gourds",203,Protein [g],1.1875,,,,,,
-1,All years,1235,"Pumpkins, squash and gourds",208,Energy [kcal],129.6625,,,,,,
-1,All years,1235,"Pumpkins, squash and gourds",904,Energy [kcal],30.679167,,,,,,
-1,All years,1239,Other fruit-bearing vegetables,203,Protein [g],2.18,,,,,,
-1,All years,1239,Other fruit-bearing vegetables,208,Energy [kcal],127.34,,,,,,
-1,All years,1239,Other fruit-bearing vegetables,904,Energy [kcal],30.48,,,,,,
-1,All years,1241,"Beans, green",203,Protein [g],4.342,,,,,,
-1,All years,1241,"Beans, green",208,Energy [kcal],279.276,,,,,,
-1,All years,1241,"Beans, green",904,Energy [kcal],66.102,,,,,,
-1,All years,1242,"Peas, green",203,Protein [g],4.11,,,,,,
-1,All years,1242,"Peas, green",208,Energy [kcal],233.32,,,,,,
-1,All years,1242,"Peas, green",904,Energy [kcal],55.44,,,,,,
-1,All years,1243,"Broad beans and horse beans, green",203,Protein [g],2.1,,,,,,
-1,All years,1243,"Broad beans and horse beans, green",208,Energy [kcal],199.33,,,,,,
-1,All years,1243,"Broad beans and horse beans, green",904,Energy [kcal],46.96,,,,,,
-1,All years,1251,Carrots and turnips,203,Protein [g],0.823333,,,,,,
-1,All years,1251,Carrots and turnips,208,Energy [kcal],134.71,,,,,,
-1,All years,1251,Carrots and turnips,904,Energy [kcal],32.036667,,,,,,
-1,All years,1252,Green garlic,203,Protein [g],6.36,,,,,,
-1,All years,1252,Green garlic,208,Energy [kcal],669.74,,,,,,
-1,All years,1252,Green garlic,904,Energy [kcal],157.98,,,,,,
-1,All years,1253,Onions,203,Protein [g],1.626,,,,,,
-1,All years,1253,Onions,208,Energy [kcal],186.288,,,,,,
-1,All years,1253,Onions,904,Energy [kcal],44.006,,,,,,
-1,All years,1254,Leeks and other alliaceous vegetables,203,Protein [g],2.385,,,,,,
-1,All years,1254,Leeks and other alliaceous vegetables,208,Energy [kcal],197.5,,,,,,
-1,All years,1254,Leeks and other alliaceous vegetables,904,Energy [kcal],46.875,,,,,,
-1,All years,1259,"Other root, bulb and tuberous vegetables, n.e.",203,Protein [g],1.731667,,,,,,
-1,All years,1259,"Other root, bulb and tuberous vegetables, n.e.",208,Energy [kcal],201.496667,,,,,,
-1,All years,1259,"Other root, bulb and tuberous vegetables, n.e.",904,Energy [kcal],47.818333,,,,,,
-1,All years,1270,Mushrooms and truffles,203,Protein [g],2.462,,,,,,
-1,All years,1270,Mushrooms and truffles,208,Energy [kcal],118.402,,,,,,
-1,All years,1270,Mushrooms and truffles,904,Energy [kcal],28.194,,,,,,
-1,All years,1290,"Vegetables, fresh, n.e.",203,Protein [g],3.818333,,,,,,
-1,All years,1290,"Vegetables, fresh, n.e.",208,Energy [kcal],335.395,,,,,,
-1,All years,1290,"Vegetables, fresh, n.e.",904,Energy [kcal],79.656667,,,,,,
-1,All years,1311,Avocados,203,Protein [g],0.61,,,,,,
-1,All years,1311,Avocados,208,Energy [kcal],140.5,,,,,,
-1,All years,1311,Avocados,904,Energy [kcal],33.15,,,,,,
-1,All years,1312,Bananas,203,Protein [g],1.09,,,,,,
-1,All years,1312,Bananas,208,Energy [kcal],395.79,,,,,,
-1,All years,1312,Bananas,904,Energy [kcal],93.53,,,,,,
-1,All years,1313,Plantains and others,203,Protein [g],1.3,,,,,,
-1,All years,1313,Plantains and others,208,Energy [kcal],557.05,,,,,,
-1,All years,1313,Plantains and others,904,Energy [kcal],131.45,,,,,,
-1,All years,1314,Dates,203,Protein [g],2.13,,,,,,
-1,All years,1314,Dates,208,Energy [kcal],1255.135,,,,,,
-1,All years,1314,Dates,904,Energy [kcal],296.27,,,,,,
-1,All years,1315,Figs,203,Protein [g],2.025,,,,,,
-1,All years,1315,Figs,208,Energy [kcal],705.87,,,,,,
-1,All years,1315,Figs,904,Energy [kcal],167.015,,,,,,
-1,All years,1316,"Mangoes, guavas, mangosteens",203,Protein [g],0.82,,,,,,
-1,All years,1316,"Mangoes, guavas, mangosteens",208,Energy [kcal],268.26,,,,,,
-1,All years,1316,"Mangoes, guavas, mangosteens",904,Energy [kcal],63.42,,,,,,
-1,All years,1317,Papayas,203,Protein [g],0.47,,,,,,
-1,All years,1317,Papayas,208,Energy [kcal],186.25,,,,,,
-1,All years,1317,Papayas,904,Energy [kcal],44.1,,,,,,
-1,All years,1318,Pineapples,203,Protein [g],0.54,,,,,,
-1,All years,1318,Pineapples,208,Energy [kcal],224.06,,,,,,
-1,All years,1318,Pineapples,904,Energy [kcal],52.92,,,,,,
-1,All years,1319,"Other tropical and subtropical fruits, n.e.",203,Protein [g],1.045385,,,,,,
-1,All years,1319,"Other tropical and subtropical fruits, n.e.",208,Energy [kcal],315.178462,,,,,,
-1,All years,1319,"Other tropical and subtropical fruits, n.e.",904,Energy [kcal],74.78,,,,,,
-1,All years,1321,Pomelos and grapefruits,203,Protein [g],0.63,,,,,,
-1,All years,1321,Pomelos and grapefruits,208,Energy [kcal],141.7,,,,,,
-1,All years,1321,Pomelos and grapefruits,904,Energy [kcal],33.5,,,,,,
-1,All years,1322,Lemons and limes,203,Protein [g],0.9,,,,,,
-1,All years,1322,Lemons and limes,208,Energy [kcal],168.16,,,,,,
-1,All years,1322,Lemons and limes,904,Energy [kcal],39.97,,,,,,
-1,All years,1323,Oranges,203,Protein [g],0.94,,,,,,
-1,All years,1323,Oranges,208,Energy [kcal],198.57,,,,,,
-1,All years,1323,Oranges,904,Energy [kcal],47.04,,,,,,
-1,All years,1324,"Tangerines, mandarins, clementines",203,Protein [g],0.83,,,,,,
-1,All years,1324,"Tangerines, mandarins, clementines",208,Energy [kcal],222.345,,,,,,
-1,All years,1324,"Tangerines, mandarins, clementines",904,Energy [kcal],52.59,,,,,,
-1,All years,1329,"Other citrus fruit, n.e.",203,Protein [g],1.88,,,,,,
-1,All years,1329,"Other citrus fruit, n.e.",208,Energy [kcal],275.41,,,,,,
-1,All years,1329,"Other citrus fruit, n.e.",904,Energy [kcal],65.82,,,,,,
-1,All years,1330,Grapes,203,Protein [g],0.72,,,,,,
-1,All years,1330,Grapes,208,Energy [kcal],317.76,,,,,,
-1,All years,1330,Grapes,904,Energy [kcal],74.92,,,,,,
-1,All years,1341,Apples,203,Protein [g],1.226667,,,,,,
-1,All years,1341,Apples,208,Energy [kcal],232.656667,,,,,,
-1,All years,1341,Apples,904,Energy [kcal],55.196667,,,,,,
-1,All years,1342,Pears and quinces,203,Protein [g],1.185,,,,,,
-1,All years,1342,Pears and quinces,208,Energy [kcal],263.19,,,,,,
-1,All years,1342,Pears and quinces,904,Energy [kcal],62.38,,,,,,
-1,All years,1343,Apricots,203,Protein [g],1.3875,,,,,,
-1,All years,1343,Apricots,208,Energy [kcal],186.8375,,,,,,
-1,All years,1343,Apricots,904,Energy [kcal],44.65,,,,,,
-1,All years,1344,Cherries,203,Protein [g],0.67,,,,,,
-1,All years,1344,Cherries,208,Energy [kcal],135.05,,,,,,
-1,All years,1344,Cherries,904,Energy [kcal],32.1,,,,,,
-1,All years,1349,"Other pome fruits and stone fruits, n.e.",203,Protein [g],1.45,,,,,,
-1,All years,1349,"Other pome fruits and stone fruits, n.e.",208,Energy [kcal],186.14,,,,,,
-1,All years,1349,"Other pome fruits and stone fruits, n.e.",904,Energy [kcal],44.396667,,,,,,
-1,All years,1351,Currants and gooseberries,203,Protein [g],0.26,,,,,,
-1,All years,1351,Currants and gooseberries,208,Energy [kcal],224.05,,,,,,
-1,All years,1351,Currants and gooseberries,904,Energy [kcal],53.05,,,,,,
-1,All years,1352,Kiwi fruit,203,Protein [g],0.39,,,,,,
-1,All years,1352,Kiwi fruit,208,Energy [kcal],249.66,,,,,,
-1,All years,1352,Kiwi fruit,904,Energy [kcal],59.07,,,,,,
-1,All years,1353,"Raspberries, blackberries, mulberries and loganberries",203,Protein [g],1.4,,,,,,
-1,All years,1353,"Raspberries, blackberries, mulberries and loganberries",208,Energy [kcal],209.1,,,,,,
-1,All years,1353,"Raspberries, blackberries, mulberries and loganberries",904,Energy [kcal],49.55,,,,,,
-1,All years,1354,Strawberries,203,Protein [g],1.03,,,,,,
-1,All years,1354,Strawberries,208,Energy [kcal],249.64,,,,,,
-1,All years,1354,Strawberries,904,Energy [kcal],59.03,,,,,,
-1,All years,1355,Other berries, fruits of the genus Vaccinium,203,Protein [g],0.91,,,,,
-1,All years,1355,Other berries, fruits of the genus Vaccinium,208,Energy [kcal],173.4,,,,,
-1,All years,1355,Other berries, fruits of the genus Vaccinium,904,Energy [kcal],41.05,,,,,
-1,All years,1356,Locust beans (carobs),203,Protein [g],0.7,,,,,,
-1,All years,1356,Locust beans (carobs),208,Energy [kcal],203.8,,,,,,
-1,All years,1356,Locust beans (carobs),904,Energy [kcal],48.2,,,,,,
-1,All years,1359,Other fruits n.e.,203,Protein [g],0.815,,,,,,
-1,All years,1359,Other fruits n.e.,208,Energy [kcal],288.75,,,,,,
-1,All years,1359,Other fruits n.e.,904,Energy [kcal],68.1,,,,,,
-1,All years,1371,"Almonds, in shell",203,Protein [g],21.22,,,,,,
-1,All years,1371,"Almonds, in shell",208,Energy [kcal],2447.87,,,,,,
-1,All years,1371,"Almonds, in shell",904,Energy [kcal],591.94,,,,,,
-1,All years,1372,"Cashew nuts, in shell",203,Protein [g],16.075,,,,,,
-1,All years,1372,"Cashew nuts, in shell",208,Energy [kcal],2517.99,,,,,,
-1,All years,1372,"Cashew nuts, in shell",904,Energy [kcal],606.68,,,,,,
-1,All years,1373,"Chestnuts, in shell",203,Protein [g],4.405,,,,,,
-1,All years,1373,"Chestnuts, in shell",208,Energy [kcal],1154.145,,,,,,
-1,All years,1373,"Chestnuts, in shell",904,Energy [kcal],273.715,,,,,,
-1,All years,1374,"Hazelnuts, in shell",203,Protein [g],14.95,,,,,,
-1,All years,1374,"Hazelnuts, in shell",208,Energy [kcal],2698.5,,,,,,
-1,All years,1374,"Hazelnuts, in shell",904,Energy [kcal],653.95,,,,,,
-1,All years,1375,"Pistachios, in shell",203,Protein [g],20.27,,,,,,
-1,All years,1375,"Pistachios, in shell",208,Energy [kcal],2399.16,,,,,,
-1,All years,1375,"Pistachios, in shell",904,Energy [kcal],579.07,,,,,,
-1,All years,1376,"Walnuts, in shell",203,Protein [g],19.645,,,,,,
-1,All years,1376,"Walnuts, in shell",208,Energy [kcal],2771.87,,,,,,
-1,All years,1376,"Walnuts, in shell",904,Energy [kcal],671.265,,,,,,
-1,All years,1377,"Brazil nuts, in shell",203,Protein [g],14.32,,,,,,
-1,All years,1377,"Brazil nuts, in shell",208,Energy [kcal],2842.27,,,,,,
-1,All years,1377,"Brazil nuts, in shell",904,Energy [kcal],689.19,,,,,,
-1,All years,1379,"Other nuts (excluding wild edible nuts and groundnuts), in shell",203,Protein [g],1.316,,,,,,
-1,All years,1379,"Other nuts (excluding wild edible nuts and groundnuts), in shell",208,Energy [kcal],499.96,,,,,,
-1,All years,1379,"Other nuts (excluding wild edible nuts and groundnuts), in shell",904,Energy [kcal],118.19,,,,,,
-1,All years,141,Soya beans,203,Protein [g],36.49,,,,,,
-1,All years,141,Soya beans,208,Energy [kcal],1787.13,,,,,,
-1,All years,141,Soya beans,904,Energy [kcal],427.46,,,,,,
-1,All years,142,"Groundnuts, excluding shelled",203,Protein [g],25.5575,,,,,,
-1,All years,142,"Groundnuts, excluding shelled",208,Energy [kcal],2455.55,,,,,,
-1,All years,142,"Groundnuts, excluding shelled",904,Energy [kcal],593.1625,,,,,,
-1,All years,1422,Groundnuts in shell,203,Protein [g],25.5575,,,,,,
-1,All years,1422,Groundnuts in shell,208,Energy [kcal],2455.55,,,,,,
-1,All years,1422,Groundnuts in shell,904,Energy [kcal],593.1625,,,,,,
-1,All years,1442,Mustard seed,203,Protein [g],26.08,,,,,,
-1,All years,1442,Mustard seed,208,Energy [kcal],2151.8,,,,,,
-1,All years,1442,Mustard seed,904,Energy [kcal],518.4,,,,,,
-1,All years,1444,Sesame seed,203,Protein [g],17.73,,,,,,
-1,All years,1444,Sesame seed,208,Energy [kcal],2431.82,,,,,,
-1,All years,1444,Sesame seed,904,Energy [kcal],588.19,,,,,,
-1,All years,1445,Sunflower seed,203,Protein [g],20.78,,,,,,
-1,All years,1445,Sunflower seed,208,Energy [kcal],2520.05,,,,,,
-1,All years,1445,Sunflower seed,904,Energy [kcal],609.1,,,,,,
-1,All years,1446,Safflower seed,203,Protein [g],16.18,,,,,,
-1,All years,1446,Safflower seed,208,Energy [kcal],2280.47,,,,,,
-1,All years,1446,Safflower seed,904,Energy [kcal],547.89,,,,,,
-1,All years,1448,Poppy seed,203,Protein [g],17.1975,,,,,,
-1,All years,1448,Poppy seed,208,Energy [kcal],2385.6675,,,,,,
-1,All years,1448,Poppy seed,904,Energy [kcal],574.4475,,,,,,
-1,All years,1450,Olives,203,Protein [g],0.946667,,,,,,
-1,All years,1450,Olives,208,Energy [kcal],483.456667,,,,,,
-1,All years,1450,Olives,904,Energy [kcal],117.33,,,,,,
-1,All years,1460,"Coconuts, in shell",203,Protein [g],3.33,,,,,,
-1,All years,1460,"Coconuts, in shell",208,Energy [kcal],1473.48,,,,,,
-1,All years,1460,"Coconuts, in shell",904,Energy [kcal],357.61,,,,,,
-1,All years,1492,Copra,203,Protein [g],17.1975,,,,,,
-1,All years,1492,Copra,208,Energy [kcal],2385.6675,,,,,,
-1,All years,1492,Copra,904,Energy [kcal],574.4475,,,,,,
-1,All years,1510,Potatoes,203,Protein [g],1.9325,,,,,,
-1,All years,1510,Potatoes,208,Energy [kcal],304.9325,,,,,,
-1,All years,1510,Potatoes,904,Energy [kcal],72.0025,,,,,,
-1,All years,1520,Cassava,203,Protein [g],4.13,,,,,,
-1,All years,1520,Cassava,208,Energy [kcal],1076.89,,,,,,
-1,All years,1520,Cassava,904,Energy [kcal],253.93,,,,,,
-1,All years,1530,Sweet potatoes,203,Protein [g],4.235,,,,,,
-1,All years,1530,Sweet potatoes,208,Energy [kcal],916.445,,,,,,
-1,All years,1530,Sweet potatoes,904,Energy [kcal],216.215,,,,,,
-1,All years,1540,Yams,203,Protein [g],3.256667,,,,,,
-1,All years,1540,Yams,208,Energy [kcal],754.14,,,,,,
-1,All years,1540,Yams,904,Energy [kcal],177.896667,,,,,,
-1,All years,1591,Yautia,203,Protein [g],2.53625,,,,,,
-1,All years,1591,Yautia,208,Energy [kcal],481.2,,,,,,
-1,All years,1591,Yautia,904,Energy [kcal],113.675,,,,,,
-1,All years,1610,"Coffee, green",203,Protein [g],0.11,,,,,,
-1,All years,1610,"Coffee, green",208,Energy [kcal],7.51,,,,,,
-1,All years,1610,"Coffee, green",904,Energy [kcal],1.77,,,,,,
-1,All years,1620,tea leaves,203,Protein [g],0,,,,,,
-1,All years,1620,tea leaves,208,Energy [kcal],5.1,,,,,,
-1,All years,1620,tea leaves,904,Energy [kcal],1.2,,,,,,
-1,All years,1630,Mat� leaves,203,Protein [g],0,,,,,,
-1,All years,1630,Mat� leaves,208,Energy [kcal],5.1,,,,,,
-1,All years,1630,Mat� leaves,904,Energy [kcal],1.2,,,,,,
-1,All years,1640,Cocoa beans,203,Protein [g],19.6,,,,,,
-1,All years,1640,Cocoa beans,208,Energy [kcal],1525.6,,,,,,
-1,All years,1640,Cocoa beans,904,Energy [kcal],366.9,,,,,,
-1,All years,1651,"Pepper (Piper spp.), raw",203,Protein [g],10.39,,,,,,
-1,All years,1651,"Pepper (Piper spp.), raw",208,Energy [kcal],1249.35,,,,,,
-1,All years,1651,"Pepper (Piper spp.), raw",904,Energy [kcal],297.9,,,,,,
-1,All years,1652,"Chillies and peppers, dry (Capsicum spp. and Pimenta spp.), raw",203,Protein [g],12.01,,,,,,
-1,All years,1652,"Chillies and peppers, dry (Capsicum spp. and Pimenta spp.), raw",208,Energy [kcal],1561.07,,,,,,
-1,All years,1652,"Chillies and peppers, dry (Capsicum spp. and Pimenta spp.), raw",904,Energy [kcal],375.59,,,,,,
-1,All years,1653,"Nutmeg, mace, cardamoms, raw",203,Protein [g],7.77,,,,,,
-1,All years,1653,"Nutmeg, mace, cardamoms, raw",208,Energy [kcal],1808.43,,,,,,
-1,All years,1653,"Nutmeg, mace, cardamoms, raw",904,Energy [kcal],435.61,,,,,,
-1,All years,1654,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",203,Protein [g],17.745,,,,,,
-1,All years,1654,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",208,Energy [kcal],1530.63,,,,,,
-1,All years,1654,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",904,Energy [kcal],368.1475,,,,,,
-1,All years,1655,"Cinnamon (canella), raw",203,Protein [g],3.99,,,,,,
-1,All years,1655,"Cinnamon (canella), raw",208,Energy [kcal],1005.84,,,,,,
-1,All years,1655,"Cinnamon (canella), raw",904,Energy [kcal],243.28,,,,,,
-1,All years,1656,"Cloves (whole stems), raw",203,Protein [g],5.98,,,,,,
-1,All years,1656,"Cloves (whole stems), raw",208,Energy [kcal],1577.02,,,,,,
-1,All years,1656,"Cloves (whole stems), raw",904,Energy [kcal],380.99,,,,,,
-1,All years,1657,"Ginger, raw",203,Protein [g],8.98,,,,,,
-1,All years,1657,"Ginger, raw",208,Energy [kcal],1400.18,,,,,,
-1,All years,1657,"Ginger, raw",904,Energy [kcal],332.36,,,,,,
-1,All years,1658,"Vanilla, raw",203,Protein [g],0.06,,,,,,
-1,All years,1658,"Vanilla, raw",208,Energy [kcal],1215.72,,,,,,
-1,All years,1658,"Vanilla, raw",904,Energy [kcal],292.14,,,,,,
-1,All years,1701,"Beans, dry",203,Protein [g],22.414211,,,,,,
-1,All years,1701,"Beans, dry",208,Energy [kcal],1314.905263,,,,,,
-1,All years,1701,"Beans, dry",904,Energy [kcal],311.852632,,,,,,
-1,All years,1702,"Broad beans and horse beans, dry",203,Protein [g],26.12,,,,,,
-1,All years,1702,"Broad beans and horse beans, dry",208,Energy [kcal],1266.58,,,,,,
-1,All years,1702,"Broad beans and horse beans, dry",904,Energy [kcal],301.41,,,,,,
-1,All years,1703,"Chick peas, dry",203,Protein [g],19.3,,,,,,
-1,All years,1703,"Chick peas, dry",208,Energy [kcal],1426.03,,,,,,
-1,All years,1703,"Chick peas, dry",904,Energy [kcal],339.36,,,,,,
-1,All years,1704,"Lentils, dry",203,Protein [g],25.375,,,,,,
-1,All years,1704,"Lentils, dry",208,Energy [kcal],1318.65,,,,,,
-1,All years,1704,"Lentils, dry",904,Energy [kcal],313.175,,,,,,
-1,All years,1705,"Peas, dry",203,Protein [g],24.55,,,,,,
-1,All years,1705,"Peas, dry",208,Energy [kcal],1257.06,,,,,,
-1,All years,1705,"Peas, dry",904,Energy [kcal],299.12,,,,,,
-1,All years,1708,"Bambara beans, dry",203,Protein [g],28.5125,,,,,,
-1,All years,1708,"Bambara beans, dry",208,Energy [kcal],1598.8275,,,,,,
-1,All years,1708,"Bambara beans, dry",904,Energy [kcal],378.655,,,,,,
-1,All years,1801,Sugar beet,203,Protein [g],0,,,,,,
-1,All years,1801,Sugar beet,208,Energy [kcal],1699.49,,,,,,
-1,All years,1801,Sugar beet,904,Energy [kcal],399.88,,,,,,
-1,All years,1802,Sugar cane,203,Protein [g],0,,,,,,
-1,All years,1802,Sugar cane,208,Energy [kcal],1699.49,,,,,,
-1,All years,1802,Sugar cane,904,Energy [kcal],399.88,,,,,,
-1,All years,1809,Other sugar crops n.e.,203,Protein [g],0.02,,,,,,
-1,All years,1809,Other sugar crops n.e.,208,Energy [kcal],1207.94,,,,,,
-1,All years,1809,Other sugar crops n.e.,904,Energy [kcal],284.23,,,,,,
-1,All years,2211,Raw milk of cattle,203,Protein [g],3.28,,,,,,
-1,All years,2211,Raw milk of cattle,208,Energy [kcal],270.23,,,,,,
-1,All years,2211,Raw milk of cattle,904,Energy [kcal],64.66,,,,,,
-1,All years,2212,Raw milk of buffalo,203,Protein [g],3.75,,,,,,
-1,All years,2212,Raw milk of buffalo,208,Energy [kcal],406.74,,,,,,
-1,All years,2212,Raw milk of buffalo,904,Energy [kcal],97.73,,,,,,
-1,All years,2291,Raw milk of sheep,203,Protein [g],5.98,,,,,,
-1,All years,2291,Raw milk of sheep,208,Energy [kcal],451.78,,,,,,
-1,All years,2291,Raw milk of sheep,904,Energy [kcal],108.36,,,,,,
-1,All years,2292,Raw milk of goats,203,Protein [g],3.56,,,,,,
-1,All years,2292,Raw milk of goats,208,Energy [kcal],289.35,,,,,,
-1,All years,2292,Raw milk of goats,904,Energy [kcal],69.3,,,,,,
-1,All years,2293,Raw milk of camel,203,Protein [g],3.215,,,,,,
-1,All years,2293,Raw milk of camel,208,Energy [kcal],263.015,,,,,,
-1,All years,2293,Raw milk of camel,904,Energy [kcal],62.905,,,,,,
-1,All years,2312,Other hen eggs in shell fresh,203,Protein [g],12.56,,,,,,
-1,All years,2312,Other hen eggs in shell fresh,208,Energy [kcal],577.63,,,,,,
-1,All years,2312,Other hen eggs in shell fresh,904,Energy [kcal],138.71,,,,,,
-1,All years,2322,Other eggs from other birds fresh in shell,203,Protein [g],13.3525,,,,,,
-1,All years,2322,Other eggs from other birds fresh in shell,208,Energy [kcal],708.115,,,,,,
-1,All years,2322,Other eggs from other birds fresh in shell,904,Energy [kcal],170.2925,,,,,,
-1,All years,2910,Natural honey,203,Protein [g],0.3,,,,,,
-1,All years,2910,Natural honey,208,Energy [kcal],1404.1,,,,,,
-1,All years,2910,Natural honey,904,Energy [kcal],330.4,,,,,,
-1,All years,2920,"Snails, fresh, chilled, frozen, dried, salted or in brine, except sea snails",203,Protein [g],16.25,,,,,,
-1,All years,2920,"Snails, fresh, chilled, frozen, dried, salted or in brine, except sea snails",208,Energy [kcal],324.7,,,,,,
-1,All years,2920,"Snails, fresh, chilled, frozen, dried, salted or in brine, except sea snails",904,Energy [kcal],76.65,,,,,,
-1,All years,4322,"Farmed rock lobster and other sea crawfish, live, fresh or chilled",203,Protein [g],16.4,,,,,,
-1,All years,4322,"Farmed rock lobster and other sea crawfish, live, fresh or chilled",208,Energy [kcal],320.628889,,,,,,
-1,All years,4322,"Farmed rock lobster and other sea crawfish, live, fresh or chilled",904,Energy [kcal],75.73,,,,,,
-1,All years,4492,"Other farmed molluscs, live, fresh or chilled",203,Protein [g],14.82,,,,,,
-1,All years,4492,"Other farmed molluscs, live, fresh or chilled",208,Energy [kcal],345.595,,,,,,
-1,All years,4492,"Other farmed molluscs, live, fresh or chilled",904,Energy [kcal],81.64625,,,,,,
-1,All years,4932,"Farmed seaweeds and other algae, fresh, frozen or dried, whether or not ground, fit for human consumption",203,Protein [g],4.45,,,,,,
-1,All years,4932,"Farmed seaweeds and other algae, fresh, frozen or dried, whether or not ground, fit for human consumption",208,Energy [kcal],193.83,,,,,,
-1,All years,4932,"Farmed seaweeds and other algae, fresh, frozen or dried, whether or not ground, fit for human consumption",904,Energy [kcal],45.79,,,,,,
-1,All years,17400,Ice and snow,203,Protein [g],0,,,,,,
-1,All years,17400,Ice and snow,208,Energy [kcal],0,,,,,,
-1,All years,17400,Ice and snow,904,Energy [kcal],0,,,,,,
-1,All years,18000,Natural water,203,Protein [g],0,,,,,,
-1,All years,18000,Natural water,208,Energy [kcal],0,,,,,,
-1,All years,18000,Natural water,904,Energy [kcal],0,,,,,,
-1,All years,21111,"Meat of cattle, fresh or chilled",203,Protein [g],18.5875,,,,,,
-1,All years,21111,"Meat of cattle, fresh or chilled",208,Energy [kcal],842.5825,,,,,,
-1,All years,21111,"Meat of cattle, fresh or chilled",904,Energy [kcal],202.39,,,,,,
-1,All years,21112,"Meat of buffalo, fresh or chilled",203,Protein [g],20.686667,,,,,,
-1,All years,21112,"Meat of buffalo, fresh or chilled",208,Energy [kcal],480.95,,,,,,
-1,All years,21112,"Meat of buffalo, fresh or chilled",904,Energy [kcal],114.133333,,,,,,
-1,All years,21113,"Meat of pigs, fresh or chilled",203,Protein [g],19.286667,,,,,,
-1,All years,21113,"Meat of pigs, fresh or chilled",208,Energy [kcal],814.793333,,,,,,
-1,All years,21113,"Meat of pigs, fresh or chilled",904,Energy [kcal],195.536667,,,,,,
-1,All years,21114,"Meat of rabbits and hares, fresh or chilled",203,Protein [g],20.92,,,,,,
-1,All years,21114,"Meat of rabbits and hares, fresh or chilled",208,Energy [kcal],510.755,,,,,,
-1,All years,21114,"Meat of rabbits and hares, fresh or chilled",904,Energy [kcal],121.335,,,,,,
-1,All years,21115,"Meat of sheep, fresh or chilled",203,Protein [g],18.236667,,,,,,
-1,All years,21115,"Meat of sheep, fresh or chilled",208,Energy [kcal],871.19,,,,,,
-1,All years,21115,"Meat of sheep, fresh or chilled",904,Energy [kcal],209.446667,,,,,,
-1,All years,21116,"Meat of goat, fresh or chilled",203,Protein [g],20.6,,,,,,
-1,All years,21116,"Meat of goat, fresh or chilled",208,Energy [kcal],438.05,,,,,,
-1,All years,21116,"Meat of goat, fresh or chilled",904,Energy [kcal],103.75,,,,,,
-1,All years,21117,"Meat of camels and camelids, fresh or chilled",203,Protein [g],21.39,,,,,,
-1,All years,21117,"Meat of camels and camelids, fresh or chilled",208,Energy [kcal],540.46,,,,,,
-1,All years,21117,"Meat of camels and camelids, fresh or chilled",904,Energy [kcal],128.52,,,,,,
-1,All years,21118,"Meat of horses and other equines, fresh or chilled",203,Protein [g],21.39,,,,,,
-1,All years,21118,"Meat of horses and other equines, fresh or chilled",208,Energy [kcal],540.46,,,,,,
-1,All years,21118,"Meat of horses and other equines, fresh or chilled",904,Energy [kcal],128.52,,,,,,
-1,All years,21119,"Other meat of mammals, fresh or chilled",203,Protein [g],23.536471,,,,,,
-1,All years,21119,"Other meat of mammals, fresh or chilled",208,Energy [kcal],505.8,,,,,,
-1,All years,21119,"Other meat of mammals, fresh or chilled",904,Energy [kcal],119.802941,,,,,,
-1,All years,21121,"Meat of chickens, fresh or chilled",203,Protein [g],19.3175,,,,,,
-1,All years,21121,"Meat of chickens, fresh or chilled",208,Energy [kcal],810.415,,,,,,
-1,All years,21121,"Meat of chickens, fresh or chilled",904,Energy [kcal],194.5175,,,,,,
-1,All years,21122,"Meat of ducks, fresh or chilled",203,Protein [g],11.49,,,,,,
-1,All years,21122,"Meat of ducks, fresh or chilled",208,Energy [kcal],1650.91,,,,,,
-1,All years,21122,"Meat of ducks, fresh or chilled",904,Energy [kcal],400.02,,,,,,
-1,All years,21123,"Meat of geese, fresh or chilled",203,Protein [g],15.86,,,,,,
-1,All years,21123,"Meat of geese, fresh or chilled",208,Energy [kcal],1513.56,,,,,,
-1,All years,21123,"Meat of geese, fresh or chilled",904,Energy [kcal],366.02,,,,,,
-1,All years,21124,"Meat of turkeys, fresh or chilled",203,Protein [g],20.603333,,,,,,
-1,All years,21124,"Meat of turkeys, fresh or chilled",208,Energy [kcal],627.483333,,,,,,
-1,All years,21124,"Meat of turkeys, fresh or chilled",904,Energy [kcal],149.808333,,,,,,
-1,All years,21125,"Meat of guinea fowl, fresh or chilled",203,Protein [g],23.4,,,,,,
-1,All years,21125,"Meat of guinea fowl, fresh or chilled",208,Energy [kcal],636.45,,,,,,
-1,All years,21125,"Meat of guinea fowl, fresh or chilled",904,Energy [kcal],151.65,,,,,,
-1,All years,21131,"Meat of cattle, frozen",203,Protein [g],18.5875,,,,,,
-1,All years,21131,"Meat of cattle, frozen",208,Energy [kcal],842.5825,,,,,,
-1,All years,21131,"Meat of cattle, frozen",904,Energy [kcal],202.39,,,,,,
-1,All years,21132,"Meat of buffalo, frozen",203,Protein [g],20.686667,,,,,,
-1,All years,21132,"Meat of buffalo, frozen",208,Energy [kcal],480.95,,,,,,
-1,All years,21132,"Meat of buffalo, frozen",904,Energy [kcal],114.133333,,,,,,
-1,All years,21133,"Meat of pigs, frozen",203,Protein [g],18.842,,,,,,
-1,All years,21133,"Meat of pigs, frozen",208,Energy [kcal],874.366,,,,,,
-1,All years,21133,"Meat of pigs, frozen",904,Energy [kcal],210.122,,,,,,
-1,All years,21134,"Meat of rabbits and hares, frozen",203,Protein [g],20.92,,,,,,
-1,All years,21134,"Meat of rabbits and hares, frozen",208,Energy [kcal],510.755,,,,,,
-1,All years,21134,"Meat of rabbits and hares, frozen",904,Energy [kcal],121.335,,,,,,
-1,All years,21135,"Meat of sheep, frozen",203,Protein [g],18.236667,,,,,,
-1,All years,21135,"Meat of sheep, frozen",208,Energy [kcal],871.19,,,,,,
-1,All years,21135,"Meat of sheep, frozen",904,Energy [kcal],209.446667,,,,,,
-1,All years,21136,"Meat of goat, frozen",203,Protein [g],20.6,,,,,,
-1,All years,21136,"Meat of goat, frozen",208,Energy [kcal],438.05,,,,,,
-1,All years,21136,"Meat of goat, frozen",904,Energy [kcal],103.75,,,,,,
-1,All years,21137,"Meat of camels and camelids, frozen",203,Protein [g],21.39,,,,,,
-1,All years,21137,"Meat of camels and camelids, frozen",208,Energy [kcal],540.46,,,,,,
-1,All years,21137,"Meat of camels and camelids, frozen",904,Energy [kcal],128.52,,,,,,
-1,All years,21138,"Meat of horses and other equines, frozen",203,Protein [g],21.39,,,,,,
-1,All years,21138,"Meat of horses and other equines, frozen",208,Energy [kcal],540.46,,,,,,
-1,All years,21138,"Meat of horses and other equines, frozen",904,Energy [kcal],128.52,,,,,,
-1,All years,21139,"Other meat of mammals, frozen",203,Protein [g],23.291875,,,,,,
-1,All years,21139,"Other meat of mammals, frozen",208,Energy [kcal],503.96875,,,,,,
-1,All years,21139,"Other meat of mammals, frozen",904,Energy [kcal],119.3875,,,,,,
-1,All years,21141,"Meat of chickens, frozen",203,Protein [g],19.3175,,,,,,
-1,All years,21141,"Meat of chickens, frozen",208,Energy [kcal],810.415,,,,,,
-1,All years,21141,"Meat of chickens, frozen",904,Energy [kcal],194.5175,,,,,,
-1,All years,21142,"Meat of ducks, frozen",203,Protein [g],14.455,,,,,,
-1,All years,21142,"Meat of ducks, frozen",208,Energy [kcal],1254.725,,,,,,
-1,All years,21142,"Meat of ducks, frozen",904,Energy [kcal],303.25,,,,,,
-1,All years,21143,"Meat of geese, frozen",203,Protein [g],15.86,,,,,,
-1,All years,21143,"Meat of geese, frozen",208,Energy [kcal],1513.56,,,,,,
-1,All years,21143,"Meat of geese, frozen",904,Energy [kcal],366.02,,,,,,
-1,All years,21144,"Meat of turkeys, frozen",203,Protein [g],20.603333,,,,,,
-1,All years,21144,"Meat of turkeys, frozen",208,Energy [kcal],627.483333,,,,,,
-1,All years,21144,"Meat of turkeys, frozen",904,Energy [kcal],149.808333,,,,,,
-1,All years,21145,"Meat of guinea fowl, frozen",203,Protein [g],23.4,,,,,,
-1,All years,21145,"Meat of guinea fowl, frozen",208,Energy [kcal],636.45,,,,,,
-1,All years,21145,"Meat of guinea fowl, frozen",904,Energy [kcal],151.65,,,,,,
-1,All years,21151,"Edible offal of cattle, fresh, chilled or frozen",203,Protein [g],14.229,,,,,,
-1,All years,21151,"Edible offal of cattle, fresh, chilled or frozen",208,Energy [kcal],856.94,,,,,,
-1,All years,21151,"Edible offal of cattle, fresh, chilled or frozen",904,Energy [kcal],206.43,,,,,,
-1,All years,21152,"Edible offal of buffalo, fresh, chilled or frozen",203,Protein [g],14.229,,,,,,
-1,All years,21152,"Edible offal of buffalo, fresh, chilled or frozen",208,Energy [kcal],856.94,,,,,,
-1,All years,21152,"Edible offal of buffalo, fresh, chilled or frozen",904,Energy [kcal],206.43,,,,,,
-1,All years,21153,"Edible offal of pigs, fresh, chilled or frozen",203,Protein [g],16.023846,,,,,,
-1,All years,21153,"Edible offal of pigs, fresh, chilled or frozen",208,Energy [kcal],894.216923,,,,,,
-1,All years,21153,"Edible offal of pigs, fresh, chilled or frozen",904,Energy [kcal],215.222308,,,,,,
-1,All years,21155,"Edible offal of sheep, fresh, chilled or frozen",203,Protein [g],15.961429,,,,,,
-1,All years,21155,"Edible offal of sheep, fresh, chilled or frozen",208,Energy [kcal],479.938571,,,,,,
-1,All years,21155,"Edible offal of sheep, fresh, chilled or frozen",904,Energy [kcal],114.512857,,,,,,
-1,All years,21156,"Edible offal of goat, fresh, chilled or frozen",203,Protein [g],15.961429,,,,,,
-1,All years,21156,"Edible offal of goat, fresh, chilled or frozen",208,Energy [kcal],479.938571,,,,,,
-1,All years,21156,"Edible offal of goat, fresh, chilled or frozen",904,Energy [kcal],114.512857,,,,,,
-1,All years,21159,"Edible offal of mammals, fresh, chilled or frozen, n.e.",203,Protein [g],14.229,,,,,,
-1,All years,21159,"Edible offal of mammals, fresh, chilled or frozen, n.e.",208,Energy [kcal],856.94,,,,,,
-1,All years,21159,"Edible offal of mammals, fresh, chilled or frozen, n.e.",904,Energy [kcal],206.43,,,,,,
-1,All years,21160,"Edible offal of poultry, fresh, chilled or frozen",203,Protein [g],16.377778,,,,,,
-1,All years,21160,"Edible offal of poultry, fresh, chilled or frozen",208,Energy [kcal],784.134444,,,,,,
-1,All years,21160,"Edible offal of poultry, fresh, chilled or frozen",904,Energy [kcal],188.291111,,,,,,
-1,All years,21170,"Other meat and edible offal, fresh, chilled or frozen",203,Protein [g],17.8875,,,,,,
-1,All years,21170,"Other meat and edible offal, fresh, chilled or frozen",208,Energy [kcal],980.4475,,,,,,
-1,All years,21170,"Other meat and edible offal, fresh, chilled or frozen",904,Energy [kcal],236.07,,,,,,
-1,All years,21181,"Pig meat, cuts, salted, dried or smoked (bacon and ham)",203,Protein [g],16.081429,,,,,,
-1,All years,21181,"Pig meat, cuts, salted, dried or smoked (bacon and ham)",208,Energy [kcal],1243.295714,,,,,,
-1,All years,21181,"Pig meat, cuts, salted, dried or smoked (bacon and ham)",904,Energy [kcal],300.234286,,,,,,
-1,All years,21182,"Bovine meat, salted, dried or smoked",203,Protein [g],32.15,,,,,,
-1,All years,21182,"Bovine meat, salted, dried or smoked",208,Energy [kcal],1165.24,,,,,,
-1,All years,21182,"Bovine meat, salted, dried or smoked",904,Energy [kcal],278.33,,,,,,
-1,All years,21183,"Other meat and edible meat offal, salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",203,Protein [g],20.396667,,,,,,
-1,All years,21183,"Other meat and edible meat offal, salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",208,Energy [kcal],1174.183333,,,,,,
-1,All years,21183,"Other meat and edible meat offal, salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",904,Energy [kcal],282.7,,,,,,
-1,All years,21184,"Sausages and similar products of meat, offal or blood",203,Protein [g],15.14,,,,,,
-1,All years,21184,"Sausages and similar products of meat, offal or blood",208,Energy [kcal],1286.094375,,,,,,
-1,All years,21184,"Sausages and similar products of meat, offal or blood",904,Energy [kcal],310.541875,,,,,,
-1,All years,21185,"Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates",203,Protein [g],9.16,,,,,,
-1,All years,21185,"Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates",208,Energy [kcal],497.65375,,,,,,
-1,All years,21185,"Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates",904,Energy [kcal],118.35125,,,,,,
-1,All years,21186,Prepared dishes and meals based on meat,203,Protein [g],20.76625,,,,,,
-1,All years,21186,Prepared dishes and meals based on meat,208,Energy [kcal],1004.81875,,,,,,
-1,All years,21186,Prepared dishes and meals based on meat,904,Energy [kcal],241.35,,,,,,
-1,All years,21189,"Other prepared or preserved meat, meat offal or blood",203,Protein [g],25.734,,,,,,
-1,All years,21189,"Other prepared or preserved meat, meat offal or blood",208,Energy [kcal],882.501333,,,,,,
-1,All years,21189,"Other prepared or preserved meat, meat offal or blood",904,Energy [kcal],210.892667,,,,,,
-1,All years,21219,"Other fish, frozen",203,Protein [g],18.774848,,,,,,
-1,All years,21219,"Other fish, frozen",208,Energy [kcal],504.584545,,,,,,
-1,All years,21219,"Other fish, frozen",904,Energy [kcal],120.131212,,,,,,
-1,All years,21221,"Fish fillets and fish meat (whether or not minced), fresh or chilled",203,Protein [g],18.7472,,,,,,
-1,All years,21221,"Fish fillets and fish meat (whether or not minced), fresh or chilled",208,Energy [kcal],492.8876,,,,,,
-1,All years,21221,"Fish fillets and fish meat (whether or not minced), fresh or chilled",904,Energy [kcal],117.2832,,,,,,
-1,All years,21222,"Fish fillets, frozen",203,Protein [g],18.66,,,,,,
-1,All years,21222,"Fish fillets, frozen",208,Energy [kcal],498.609231,,,,,,
-1,All years,21222,"Fish fillets, frozen",904,Energy [kcal],118.689615,,,,,,
-1,All years,21223,"Fish meat, whether or not minced, frozen",203,Protein [g],18.532963,,,,,,
-1,All years,21223,"Fish meat, whether or not minced, frozen",208,Energy [kcal],497.871481,,,,,,
-1,All years,21223,"Fish meat, whether or not minced, frozen",904,Energy [kcal],118.53,,,,,,
-1,All years,21224,"Fish fillets, dried, salted or in brine, but not smoked",203,Protein [g],35.3,,,,,,
-1,All years,21224,"Fish fillets, dried, salted or in brine, but not smoked",208,Energy [kcal],1099.45,,,,,,
-1,All years,21224,"Fish fillets, dried, salted or in brine, but not smoked",904,Energy [kcal],262.6,,,,,,
-1,All years,21225,"Fish livers and roes, fresh or chilled",203,Protein [g],19.46,,,,,,
-1,All years,21225,"Fish livers and roes, fresh or chilled",208,Energy [kcal],652.5,,,,,,
-1,All years,21225,"Fish livers and roes, fresh or chilled",904,Energy [kcal],155.65,,,,,,
-1,All years,21226,"Fish livers and roes, frozen",203,Protein [g],19.46,,,,,,
-1,All years,21226,"Fish livers and roes, frozen",208,Energy [kcal],652.5,,,,,,
-1,All years,21226,"Fish livers and roes, frozen",904,Energy [kcal],155.65,,,,,,
-1,All years,21227,"Fish livers and roes dried, smoked, salted or in brine",203,Protein [g],24.6,,,,,,
-1,All years,21227,"Fish livers and roes dried, smoked, salted or in brine",208,Energy [kcal],1140,,,,,,
-1,All years,21227,"Fish livers and roes dried, smoked, salted or in brine",904,Energy [kcal],273.5,,,,,,
-1,All years,21232,"Fish including fillets, smoked",203,Protein [g],21.021667,,,,,,
-1,All years,21232,"Fish including fillets, smoked",208,Energy [kcal],593.728333,,,,,,
-1,All years,21232,"Fish including fillets, smoked",904,Energy [kcal],141.406667,,,,,,
-1,All years,21233,Edible fish meal,203,Protein [g],18.333333,,,,,,
-1,All years,21233,Edible fish meal,208,Energy [kcal],597.976667,,,,,,
-1,All years,21233,Edible fish meal,904,Energy [kcal],142.97,,,,,,
-1,All years,21234,"Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal",203,Protein [g],30.8825,,,,,,
-1,All years,21234,"Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal",208,Energy [kcal],803.495833,,,,,,
-1,All years,21234,"Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal",904,Energy [kcal],191.254167,,,,,,
-1,All years,21241,"Prepared dishes and meals based on fish, molluscs and crustaceans",203,Protein [g],16.22,,,,,,
-1,All years,21241,"Prepared dishes and meals based on fish, molluscs and crustaceans",208,Energy [kcal],807.095,,,,,,
-1,All years,21241,"Prepared dishes and meals based on fish, molluscs and crustaceans",904,Energy [kcal],193.006667,,,,,,
-1,All years,21242,"Fish, otherwise prepared or preserved",203,Protein [g],22.508889,,,,,,
-1,All years,21242,"Fish, otherwise prepared or preserved",208,Energy [kcal],652.086389,,,,,,
-1,All years,21242,"Fish, otherwise prepared or preserved",904,Energy [kcal],155.439444,,,,,,
-1,All years,21243,Caviar and caviar substitutes,203,Protein [g],24.6,,,,,,
-1,All years,21243,Caviar and caviar substitutes,208,Energy [kcal],1140,,,,,,
-1,All years,21243,Caviar and caviar substitutes,904,Energy [kcal],273.5,,,,,,
-1,All years,21259,"Other crustaceans, frozen, dried, salted or in brine",203,Protein [g],18.424211,,,,,,
-1,All years,21259,"Other crustaceans, frozen, dried, salted or in brine",208,Energy [kcal],367.870526,,,,,,
-1,All years,21259,"Other crustaceans, frozen, dried, salted or in brine",904,Energy [kcal],86.904211,,,,,,
-1,All years,21262,"Oysters, frozen, smoked, dried, salted or in brine",203,Protein [g],5.465,,,,,,
-1,All years,21262,"Oysters, frozen, smoked, dried, salted or in brine",208,Energy [kcal],223.34,,,,,,
-1,All years,21262,"Oysters, frozen, smoked, dried, salted or in brine",904,Energy [kcal],53.03,,,,,,
-1,All years,21268,"Other molluscs, frozen, smoked, dried, salted or in brine",203,Protein [g],15.03625,,,,,,
-1,All years,21268,"Other molluscs, frozen, smoked, dried, salted or in brine",208,Energy [kcal],367.38375,,,,,,
-1,All years,21268,"Other molluscs, frozen, smoked, dried, salted or in brine",904,Energy [kcal],86.84875,,,,,,
-1,All years,21269,"Other aquatic invertebrates, frozen, dried, salted or in brine",203,Protein [g],9.25,,,,,,
-1,All years,21269,"Other aquatic invertebrates, frozen, dried, salted or in brine",208,Energy [kcal],216.9,,,,,,
-1,All years,21269,"Other aquatic invertebrates, frozen, dried, salted or in brine",904,Energy [kcal],51.3,,,,,,
-1,All years,21270,"Crustaceans, otherwise prepared or preserved",203,Protein [g],20.2475,,,,,,
-1,All years,21270,"Crustaceans, otherwise prepared or preserved",208,Energy [kcal],606.49875,,,,,,
-1,All years,21270,"Crustaceans, otherwise prepared or preserved",904,Energy [kcal],144.36625,,,,,,
-1,All years,21280,"Molluscs and other aquatic invertebrates, otherwise prepared or preserved",203,Protein [g],19.053,,,,,,
-1,All years,21280,"Molluscs and other aquatic invertebrates, otherwise prepared or preserved",208,Energy [kcal],600.499,,,,,,
-1,All years,21280,"Molluscs and other aquatic invertebrates, otherwise prepared or preserved",904,Energy [kcal],142.628,,,,,,
-1,All years,21311,"Beans, frozen",203,Protein [g],5.02,,,,,,
-1,All years,21311,"Beans, frozen",208,Energy [kcal],337.293846,,,,,,
-1,All years,21311,"Beans, frozen",904,Energy [kcal],80.03,,,,,,
-1,All years,21312,"Peas, frozen",203,Protein [g],4.1675,,,,,,
-1,All years,21312,"Peas, frozen",208,Energy [kcal],234.31,,,,,,
-1,All years,21312,"Peas, frozen",904,Energy [kcal],55.7075,,,,,,
-1,All years,21313,"Potatoes, frozen",203,Protein [g],2.113333,,,,,,
-1,All years,21313,"Potatoes, frozen",208,Energy [kcal],289.32,,,,,,
-1,All years,21313,"Potatoes, frozen",904,Energy [kcal],68.273333,,,,,,
-1,All years,21319,"Other vegetables and pulses, frozen",203,Protein [g],2.651111,,,,,,
-1,All years,21319,"Other vegetables and pulses, frozen",208,Energy [kcal],218.138889,,,,,,
-1,All years,21319,"Other vegetables and pulses, frozen",904,Energy [kcal],51.775926,,,,,,
-1,All years,21321,Tomato juice,203,Protein [g],0.76,,,,,,
-1,All years,21321,Tomato juice,208,Energy [kcal],83.25,,,,,,
-1,All years,21321,Tomato juice,904,Energy [kcal],19.65,,,,,,
-1,All years,21329,Other vegetable juices,203,Protein [g],0.726667,,,,,,
-1,All years,21329,Other vegetable juices,208,Energy [kcal],113.726667,,,,,,
-1,All years,21329,Other vegetable juices,904,Energy [kcal],26.886667,,,,,,
-1,All years,21330,Vegetables provisionally preserved,203,Protein [g],1.012727,,,,,,
-1,All years,21330,Vegetables provisionally preserved,208,Energy [kcal],288.372727,,,,,,
-1,All years,21330,Vegetables provisionally preserved,904,Energy [kcal],69.122727,,,,,,
-1,All years,21340,"Vegetables, pulses and potatoes, preserved by vinegar or acetic acid",203,Protein [g],0.997273,,,,,,
-1,All years,21340,"Vegetables, pulses and potatoes, preserved by vinegar or acetic acid",208,Energy [kcal],563.095455,,,,,,
-1,All years,21340,"Vegetables, pulses and potatoes, preserved by vinegar or acetic acid",904,Energy [kcal],135.936364,,,,,,
-1,All years,21392,"Flour, meal, powder, flakes, granules and pellets of potatoes",203,Protein [g],6.9,,,,,,
-1,All years,21392,"Flour, meal, powder, flakes, granules and pellets of potatoes",208,Energy [kcal],1489.48,,,,,,
-1,All years,21392,"Flour, meal, powder, flakes, granules and pellets of potatoes",904,Energy [kcal],351.26,,,,,,
-1,All years,21393,Dried vegetables,203,Protein [g],14.894545,,,,,,
-1,All years,21393,Dried vegetables,208,Energy [kcal],1349.172727,,,,,,
-1,All years,21393,Dried vegetables,904,Energy [kcal],319.931818,,,,,,
-1,All years,21394,"Potatoes, otherwise prepared or preserved",203,Protein [g],3.381875,,,,,,
-1,All years,21394,"Potatoes, otherwise prepared or preserved",208,Energy [kcal],980.778125,,,,,,
-1,All years,21394,"Potatoes, otherwise prepared or preserved",904,Energy [kcal],234.565625,,,,,,
-1,All years,21395,"Beans, otherwise prepared or preserved, not frozen",203,Protein [g],3.6925,,,,,,
-1,All years,21395,"Beans, otherwise prepared or preserved, not frozen",208,Energy [kcal],280.24625,,,,,,
-1,All years,21395,"Beans, otherwise prepared or preserved, not frozen",904,Energy [kcal],66.48,,,,,,
-1,All years,21396,"Peas, otherwise prepared or preserved, not frozen",203,Protein [g],4.315,,,,,,
-1,All years,21396,"Peas, otherwise prepared or preserved, not frozen",208,Energy [kcal],234.6025,,,,,,
-1,All years,21396,"Peas, otherwise prepared or preserved, not frozen",904,Energy [kcal],55.755,,,,,,
-1,All years,21397,"Mushrooms and truffles, otherwise prepared or preserved",203,Protein [g],2.51,,,,,,
-1,All years,21397,"Mushrooms and truffles, otherwise prepared or preserved",208,Energy [kcal],125.73,,,,,,
-1,All years,21397,"Mushrooms and truffles, otherwise prepared or preserved",904,Energy [kcal],29.9975,,,,,,
-1,All years,21399,"Other vegetables and pulses, preserved other than by vinegar, acetic acid or sugar, n.e.",203,Protein [g],1.782222,,,,,,
-1,All years,21399,"Other vegetables and pulses, preserved other than by vinegar, acetic acid or sugar, n.e.",208,Energy [kcal],158.652222,,,,,,
-1,All years,21399,"Other vegetables and pulses, preserved other than by vinegar, acetic acid or sugar, n.e.",904,Energy [kcal],38.21,,,,,,
-1,All years,21411,Raisins,203,Protein [g],2.1775,,,,,,
-1,All years,21411,Raisins,208,Energy [kcal],813.365,,,,,,
-1,All years,21411,Raisins,904,Energy [kcal],191.9425,,,,,,
-1,All years,21412,"Plums, dried",203,Protein [g],3.7,,,,,,
-1,All years,21412,"Plums, dried",208,Energy [kcal],1604.1,,,,,,
-1,All years,21412,"Plums, dried",904,Energy [kcal],377.65,,,,,,
-1,All years,21419,"Other dried fruit, n.e.",203,Protein [g],2.816667,,,,,,
-1,All years,21419,"Other dried fruit, n.e.",208,Energy [kcal],1245.559167,,,,,,
-1,All years,21419,"Other dried fruit, n.e.",904,Energy [kcal],294.751667,,,,,,
-1,All years,21421,"Groundnuts, shelled",203,Protein [g],25.5575,,,,,,
-1,All years,21421,"Groundnuts, shelled",208,Energy [kcal],2455.55,,,,,,
-1,All years,21421,"Groundnuts, shelled",904,Energy [kcal],593.1625,,,,,,
-1,All years,21422,"Almonds, shelled",203,Protein [g],21.22,,,,,,
-1,All years,21422,"Almonds, shelled",208,Energy [kcal],2447.87,,,,,,
-1,All years,21422,"Almonds, shelled",904,Energy [kcal],591.94,,,,,,
-1,All years,21423,"Hazelnuts, shelled",203,Protein [g],14.95,,,,,,
-1,All years,21423,"Hazelnuts, shelled",208,Energy [kcal],2698.5,,,,,,
-1,All years,21423,"Hazelnuts, shelled",904,Energy [kcal],653.95,,,,,,
-1,All years,21424,"Cashew nuts, shelled",203,Protein [g],16.075,,,,,,
-1,All years,21424,"Cashew nuts, shelled",208,Energy [kcal],2517.99,,,,,,
-1,All years,21424,"Cashew nuts, shelled",904,Energy [kcal],606.68,,,,,,
-1,All years,21429,Other shelled nuts,203,Protein [g],8.880667,,,,,,
-1,All years,21429,Other shelled nuts,208,Energy [kcal],2059.072,,,,,,
-1,All years,21429,Other shelled nuts,904,Energy [kcal],496.107333,,,,,,
-1,All years,21431,Orange juice,203,Protein [g],0.965,,,,,,
-1,All years,21431,Orange juice,208,Energy [kcal],284.39,,,,,,
-1,All years,21431,Orange juice,904,Energy [kcal],66.996667,,,,,,
-1,All years,21432,Grapefruit juice,203,Protein [g],0.8925,,,,,,
-1,All years,21432,Grapefruit juice,208,Energy [kcal],292.0825,,,,,,
-1,All years,21432,Grapefruit juice,904,Energy [kcal],68.8025,,,,,,
-1,All years,21433,Pineapple juice,203,Protein [g],0.605,,,,,,
-1,All years,21433,Pineapple juice,208,Energy [kcal],362.3,,,,,,
-1,All years,21433,Pineapple juice,904,Energy [kcal],85.3125,,,,,,
-1,All years,21434,Grape juice,203,Protein [g],0.395,,,,,,
-1,All years,21434,Grape juice,208,Energy [kcal],379.2825,,,,,,
-1,All years,21434,Grape juice,904,Energy [kcal],89.315,,,,,,
-1,All years,21435,Apple juice,203,Protein [g],0.305,,,,,,
-1,All years,21435,Apple juice,208,Energy [kcal],457.185,,,,,,
-1,All years,21435,Apple juice,904,Energy [kcal],107.67,,,,,,
-1,All years,21439,"Other fruit juices, n.e.",203,Protein [g],0.3625,,,,,,
-1,All years,21439,"Other fruit juices, n.e.",208,Energy [kcal],147.9875,,,,,,
-1,All years,21439,"Other fruit juices, n.e.",904,Energy [kcal],34.95,,,,,,
-1,All years,21491,"Pineapples, otherwise prepared or preserved",203,Protein [g],0.401667,,,,,,
-1,All years,21491,"Pineapples, otherwise prepared or preserved",208,Energy [kcal],271.046667,,,,,,
-1,All years,21491,"Pineapples, otherwise prepared or preserved",904,Energy [kcal],63.91,,,,,,
-1,All years,21492,"Peaches, otherwise prepared or preserved",203,Protein [g],0.473333,,,,,,
-1,All years,21492,"Peaches, otherwise prepared or preserved",208,Energy [kcal],252.365,,,,,,
-1,All years,21492,"Peaches, otherwise prepared or preserved",904,Energy [kcal],59.538333,,,,,,
-1,All years,21493,"Fruits and nuts, uncooked or cooked, frozen",203,Protein [g],6.84963,,,,,,
-1,All years,21493,"Fruits and nuts, uncooked or cooked, frozen",208,Energy [kcal],1251.04,,,,,,
-1,All years,21493,"Fruits and nuts, uncooked or cooked, frozen",904,Energy [kcal],301.617037,,,,,,
-1,All years,21494,"Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes",203,Protein [g],2.455,,,,,,
-1,All years,21494,"Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes",208,Energy [kcal],1356.93,,,,,,
-1,All years,21494,"Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes",904,Energy [kcal],321.5475,,,,,,
-1,All years,21495,"Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared n.e.",203,Protein [g],20.071786,,,,,,
-1,All years,21495,"Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared n.e.",208,Energy [kcal],2522.876786,,,,,,
-1,All years,21495,"Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared n.e.",904,Energy [kcal],609.316071,,,,,,
-1,All years,21496,"Fruit and nuts, provisionally preserved, not for immediate consumption",203,Protein [g],0.943478,,,,,,
-1,All years,21496,"Fruit and nuts, provisionally preserved, not for immediate consumption",208,Energy [kcal],205.931304,,,,,,
-1,All years,21496,"Fruit and nuts, provisionally preserved, not for immediate consumption",904,Energy [kcal],48.862609,,,,,,
-1,All years,21499,"Other prepared and preserved fruit and nuts, n.e.",203,Protein [g],0.549574,,,,,,
-1,All years,21499,"Other prepared and preserved fruit and nuts, n.e.",208,Energy [kcal],286.207872,,,,,,
-1,All years,21499,"Other prepared and preserved fruit and nuts, n.e.",904,Energy [kcal],67.54766,,,,,,
-1,All years,21511,"Fats, of pig and poultry, unrendered",203,Protein [g],0.584,,,,,,
-1,All years,21511,"Fats, of pig and poultry, unrendered",208,Energy [kcal],3620.314,,,,,,
-1,All years,21511,"Fats, of pig and poultry, unrendered",904,Energy [kcal],880.538,,,,,,
-1,All years,21512,"Cattle fat, unrendered",203,Protein [g],0.75,,,,,,
-1,All years,21512,"Cattle fat, unrendered",208,Energy [kcal],3605.15,,,,,,
-1,All years,21512,"Cattle fat, unrendered",904,Energy [kcal],876.8,,,,,,
-1,All years,21513,"Buffalo fat, unrendered",203,Protein [g],0,,,,,,
-1,All years,21513,"Buffalo fat, unrendered",208,Energy [kcal],3700,,,,,,
-1,All years,21513,"Buffalo fat, unrendered",904,Energy [kcal],900,,,,,,
-1,All years,21514,"Sheep fat, unrendered",203,Protein [g],0,,,,,,
-1,All years,21514,"Sheep fat, unrendered",208,Energy [kcal],3700,,,,,,
-1,All years,21514,"Sheep fat, unrendered",904,Energy [kcal],900,,,,,,
-1,All years,21515,"Goat fat, unrendered",203,Protein [g],0,,,,,,
-1,All years,21515,"Goat fat, unrendered",208,Energy [kcal],3700,,,,,,
-1,All years,21515,"Goat fat, unrendered",904,Energy [kcal],900,,,,,,
-1,All years,21519,"Other animal fats, unrendered, n.e.",203,Protein [g],0,,,,,,
-1,All years,21519,"Other animal fats, unrendered, n.e.",208,Energy [kcal],3700,,,,,,
-1,All years,21519,"Other animal fats, unrendered, n.e.",904,Energy [kcal],900,,,,,,
-1,All years,21521,"Pig fat, rendered",203,Protein [g],1.46,,,,,,
-1,All years,21521,"Pig fat, rendered",208,Energy [kcal],3515.585,,,,,,
-1,All years,21521,"Pig fat, rendered",904,Energy [kcal],854.945,,,,,,
-1,All years,21522,"Poultry fat, rendered",203,Protein [g],0,,,,,,
-1,All years,21522,"Poultry fat, rendered",208,Energy [kcal],3692.6,,,,,,
-1,All years,21522,"Poultry fat, rendered",904,Energy [kcal],898.2,,,,,,
-1,All years,21523,Tallow,203,Protein [g],0,,,,,,
-1,All years,21523,Tallow,208,Energy [kcal],3700,,,,,,
-1,All years,21523,Tallow,904,Energy [kcal],900,,,,,,
-1,All years,21524,Fish-liver oils and their fractions,203,Protein [g],0,,,,,,
-1,All years,21524,Fish-liver oils and their fractions,208,Energy [kcal],3700,,,,,,
-1,All years,21524,Fish-liver oils and their fractions,904,Energy [kcal],900,,,,,,
-1,All years,21525,"Fats and oils and their fractions, of fish, other than liver oils",203,Protein [g],0,,,,,,
-1,All years,21525,"Fats and oils and their fractions, of fish, other than liver oils",208,Energy [kcal],3700,,,,,,
-1,All years,21525,"Fats and oils and their fractions, of fish, other than liver oils",904,Energy [kcal],900,,,,,,
-1,All years,21526,"Fats and oils and their fractions, of marine mammals",203,Protein [g],0.19,,,,,,
-1,All years,21526,"Fats and oils and their fractions, of marine mammals",208,Energy [kcal],3678.88,,,,,,
-1,All years,21526,"Fats and oils and their fractions, of marine mammals",904,Energy [kcal],894.8225,,,,,,
-1,All years,21529,"Other animal fats, rendered",203,Protein [g],0,,,,,,
-1,All years,21529,"Other animal fats, rendered",208,Energy [kcal],3700,,,,,,
-1,All years,21529,"Other animal fats, rendered",904,Energy [kcal],900,,,,,,
-1,All years,21590,"Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared./n /n /n",203,Protein [g],0,,,,,,
-1,All years,21590,"Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared./n /n /n",208,Energy [kcal],3700,,,,,,
-1,All years,21590,"Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared./n /n /n",904,Energy [kcal],900,,,,,,
-1,All years,21611,"Soya bean oil, crude",203,Protein [g],0,,,,,,
-1,All years,21611,"Soya bean oil, crude",208,Energy [kcal],3700,,,,,,
-1,All years,21611,"Soya bean oil, crude",904,Energy [kcal],900,,,,,,
-1,All years,21612,"Soya bean oil, refined",203,Protein [g],0,,,,,,
-1,All years,21612,"Soya bean oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21612,"Soya bean oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21621,"Groundnut oil, crude",203,Protein [g],0,,,,,,
-1,All years,21621,"Groundnut oil, crude",208,Energy [kcal],3700,,,,,,
-1,All years,21621,"Groundnut oil, crude",904,Energy [kcal],900,,,,,,
-1,All years,21622,"Groundnut oil, refined",203,Protein [g],0,,,,,,
-1,All years,21622,"Groundnut oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21622,"Groundnut oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21631,"Sunflower-seed and safflower-seed oil, crude",203,Protein [g],0,,,,,,
-1,All years,21631,"Sunflower-seed and safflower-seed oil, crude",208,Energy [kcal],3700,,,,,,
-1,All years,21631,"Sunflower-seed and safflower-seed oil, crude",904,Energy [kcal],900,,,,,,
-1,All years,21632,"Sunflower-seed and safflower-seed oil, refined",203,Protein [g],0,,,,,,
-1,All years,21632,"Sunflower-seed and safflower-seed oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21632,"Sunflower-seed and safflower-seed oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21641,"Rape, colza and mustard oil, crude",203,Protein [g],0,,,,,,
-1,All years,21641,"Rape, colza and mustard oil, crude",208,Energy [kcal],3700,,,,,,
-1,All years,21641,"Rape, colza and mustard oil, crude",904,Energy [kcal],900,,,,,,
-1,All years,21642,"Rape, colza and mustard oil, refined",203,Protein [g],0,,,,,,
-1,All years,21642,"Rape, colza and mustard oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21642,"Rape, colza and mustard oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21651,"Palm oil, crude",203,Protein [g],0,,,,,,
-1,All years,21651,"Palm oil, crude",208,Energy [kcal],3700,,,,,,
-1,All years,21651,"Palm oil, crude",904,Energy [kcal],900,,,,,,
-1,All years,21652,"Palm oil, refined",203,Protein [g],0,,,,,,
-1,All years,21652,"Palm oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21652,"Palm oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21661,"Coconut oil, crude",203,Protein [g],0,,,,,,
-1,All years,21661,"Coconut oil, crude",208,Energy [kcal],3698.377143,,,,,,
-1,All years,21661,"Coconut oil, crude",904,Energy [kcal],899.597143,,,,,,
-1,All years,21662,"Coconut oil, refined",203,Protein [g],0,,,,,,
-1,All years,21662,"Coconut oil, refined",208,Energy [kcal],3698.377143,,,,,,
-1,All years,21662,"Coconut oil, refined",904,Energy [kcal],899.597143,,,,,,
-1,All years,21672,"Olive oil, refined",203,Protein [g],0,,,,,,
-1,All years,21672,"Olive oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21672,"Olive oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21673,Oil of olive residues,203,Protein [g],0,,,,,,
-1,All years,21673,Oil of olive residues,208,Energy [kcal],3700,,,,,,
-1,All years,21673,Oil of olive residues,904,Energy [kcal],900,,,,,,
-1,All years,21681,"Cottonseed oil, crude",203,Protein [g],0,,,,,,
-1,All years,21681,"Cottonseed oil, crude",208,Energy [kcal],3700,,,,,,
-1,All years,21681,"Cottonseed oil, crude",904,Energy [kcal],900,,,,,,
-1,All years,21682,"Cottonseed oil, refined",203,Protein [g],0,,,,,,
-1,All years,21682,"Cottonseed oil, refined",208,Energy [kcal],3700,,,,,,
-1,All years,21682,"Cottonseed oil, refined",904,Energy [kcal],900,,,,,,
-1,All years,21691,"Other vegetable oils, crude and refiend",203,Protein [g],0,,,,,,
-1,All years,21691,"Other vegetable oils, crude and refiend",208,Energy [kcal],3700,,,,,,
-1,All years,21691,"Other vegetable oils, crude and refiend",904,Energy [kcal],900,,,,,,
-1,All years,21693,"Vegetable oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared.",203,Protein [g],0.189091,,,,,,
-1,All years,21693,"Vegetable oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared.",208,Energy [kcal],3568.100455,,,,,,
-1,All years,21693,"Vegetable oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared.",904,Energy [kcal],867.878182,,,,,,
-1,All years,21700,Margarine and similar preparations,203,Protein [g],0.168333,,,,,,
-1,All years,21700,Margarine and similar preparations,208,Energy [kcal],3179.054167,,,,,,
-1,All years,21700,Margarine and similar preparations,904,Energy [kcal],773.2125,,,,,,
-1,All years,22110,Processed liquid milk,203,Protein [g],3.294167,,,,,,
-1,All years,22110,Processed liquid milk,208,Energy [kcal],202.4975,,,,,,
-1,All years,22110,Processed liquid milk,904,Energy [kcal],48.1575,,,,,,
-1,All years,22120,"Cream, fresh",203,Protein [g],2.616,,,,,,
-1,All years,22120,"Cream, fresh",208,Energy [kcal],1028.508,,,,,,
-1,All years,22120,"Cream, fresh",904,Energy [kcal],249.116,,,,,,
-1,All years,22130,Whey,203,Protein [g],0.805,,,,,,
-1,All years,22130,Whey,208,Energy [kcal],109.22,,,,,,
-1,All years,22130,Whey,904,Energy [kcal],25.765,,,,,,
-1,All years,22211,Whole milk powder,203,Protein [g],26.32,,,,,,
-1,All years,22211,Whole milk powder,208,Energy [kcal],2088.85,,,,,,
-1,All years,22211,Whole milk powder,904,Energy [kcal],499.35,,,,,,
-1,All years,22212,Skim milk and whey powder,203,Protein [g],28.954286,,,,,,
-1,All years,22212,Skim milk and whey powder,208,Energy [kcal],1508.52,,,,,,
-1,All years,22212,Skim milk and whey powder,904,Energy [kcal],355.147143,,,,,,
-1,All years,22221,Evaporated milk,203,Protein [g],6.995,,,,,,
-1,All years,22221,Evaporated milk,208,Energy [kcal],506.8025,,,,,,
-1,All years,22221,Evaporated milk,904,Energy [kcal],120.93,,,,,,
-1,All years,22222,Condensed milk,203,Protein [g],7.91,,,,,,
-1,All years,22222,Condensed milk,208,Energy [kcal],1381.17,,,,,,
-1,All years,22222,Condensed milk,904,Energy [kcal],327.54,,,,,,
-1,All years,22230,Yoghurt and other fermented or acidified milk and cream,203,Protein [g],4.105937,,,,,,
-1,All years,22230,Yoghurt and other fermented or acidified milk and cream,208,Energy [kcal],403.036562,,,,,,
-1,All years,22230,Yoghurt and other fermented or acidified milk and cream,904,Energy [kcal],95.623125,,,,,,
-1,All years,22241,Butter and other fats and oils derived from milk of cattle,203,Protein [g],0.66,,,,,,
-1,All years,22241,Butter and other fats and oils derived from milk of cattle,208,Energy [kcal],3239.533333,,,,,,
-1,All years,22241,Butter and other fats and oils derived from milk of cattle,904,Energy [kcal],787.9,,,,,,
-1,All years,22242,Butter and other fats and oils derived from milk of buffalo,203,Protein [g],0.66,,,,,,
-1,All years,22242,Butter and other fats and oils derived from milk of buffalo,208,Energy [kcal],3239.533333,,,,,,
-1,All years,22242,Butter and other fats and oils derived from milk of buffalo,904,Energy [kcal],787.9,,,,,,
-1,All years,22249,Butter and other fats and oils derived from other milk,203,Protein [g],0.66,,,,,,
-1,All years,22249,Butter and other fats and oils derived from other milk,208,Energy [kcal],3239.533333,,,,,,
-1,All years,22249,Butter and other fats and oils derived from other milk,904,Energy [kcal],787.9,,,,,,
-1,All years,22251,"Cheese from milk of cattle, fresh or processed",203,Protein [g],21.301875,,,,,,
-1,All years,22251,"Cheese from milk of cattle, fresh or processed",208,Energy [kcal],1348.13875,,,,,,
-1,All years,22251,"Cheese from milk of cattle, fresh or processed",904,Energy [kcal],324.34,,,,,,
-1,All years,22253,"Cheese from milk of sheep, fresh or processed",203,Protein [g],17.875,,,,,,
-1,All years,22253,"Cheese from milk of sheep, fresh or processed",208,Energy [kcal],1316.16,,,,,,
-1,All years,22253,"Cheese from milk of sheep, fresh or processed",904,Energy [kcal],317.32,,,,,,
-1,All years,22254,"Cheese from milk of goats, fresh or processed",203,Protein [g],23.54,,,,,,
-1,All years,22254,"Cheese from milk of goats, fresh or processed",208,Energy [kcal],1474.39,,,,,,
-1,All years,22254,"Cheese from milk of goats, fresh or processed",904,Energy [kcal],355.396667,,,,,,
-1,All years,22260,Casein,203,Protein [g],36.16,,,,,,
-1,All years,22260,Casein,208,Energy [kcal],1526.87,,,,,,
-1,All years,22260,Casein,904,Energy [kcal],359.49,,,,,,
-1,All years,22270,Ice cream and other edible ice,203,Protein [g],2.975,,,,,,
-1,All years,22270,Ice cream and other edible ice,208,Energy [kcal],860.5825,,,,,,
-1,All years,22270,Ice cream and other edible ice,904,Energy [kcal],205.54,,,,,,
-1,All years,23110,Wheat and meslin flour,203,Protein [g],11.0475,,,,,,
-1,All years,23110,Wheat and meslin flour,208,Energy [kcal],1472.1725,,,,,,
-1,All years,23110,Wheat and meslin flour,904,Energy [kcal],347.21375,,,,,,
-1,All years,23120,Other cereal flours,203,Protein [g],10.891667,,,,,,
-1,All years,23120,Other cereal flours,208,Energy [kcal],1475.725,,,,,,
-1,All years,23120,Other cereal flours,904,Energy [kcal],349.225,,,,,,
-1,All years,23130,"Groats, meal and pellets of wheat and other cereals",203,Protein [g],10.47,,,,,,
-1,All years,23130,"Groats, meal and pellets of wheat and other cereals",208,Energy [kcal],1470.513333,,,,,,
-1,All years,23130,"Groats, meal and pellets of wheat and other cereals",904,Energy [kcal],347.351667,,,,,,
-1,All years,23140,Other cereal grain products (including corn flakes),203,Protein [g],11.729655,,,,,,
-1,All years,23140,Other cereal grain products (including corn flakes),208,Energy [kcal],1507.563103,,,,,,
-1,All years,23140,Other cereal grain products (including corn flakes),904,Energy [kcal],356.684828,,,,,,
-1,All years,23161,"Rice, semi- or wholly milled",203,Protein [g],6.923333,,,,,,
-1,All years,23161,"Rice, semi- or wholly milled",208,Energy [kcal],1490.358889,,,,,,
-1,All years,23161,"Rice, semi- or wholly milled",904,Energy [kcal],351.045556,,,,,,
-1,All years,23162,Husked rice,203,Protein [g],7.72,,,,,,
-1,All years,23162,Husked rice,208,Energy [kcal],1507.86,,,,,,
-1,All years,23162,Husked rice,904,Energy [kcal],356.02,,,,,,
-1,All years,23170,Other vegetable flours and meals,203,Protein [g],10.521176,,,,,,
-1,All years,23170,Other vegetable flours and meals,208,Energy [kcal],1419.611176,,,,,,
-1,All years,23170,Other vegetable flours and meals,904,Energy [kcal],337.742941,,,,,,
-1,All years,23180,Mixes and doughs for the preparation of bakers' wares,203,Protein [g],4.725,,,,,,
-1,All years,23180,Mixes and doughs for the preparation of bakers' wares,208,Energy [kcal],1629.9,,,,,,
-1,All years,23180,Mixes and doughs for the preparation of bakers' wares,904,Energy [kcal],386.35,,,,,,
-1,All years,23210,Glucose and glucose syrup, fructose and fructose syrup, lactose and lactose syrup, invert sugar, sugars and sugar syrups n.e., artificial honey, caramel,203,Protein [g],0.888571
-1,All years,23210,Glucose and glucose syrup, fructose and fructose syrup, lactose and lactose syrup, invert sugar, sugars and sugar syrups n.e., artificial honey, caramel,208,Energy [kcal],1291.255
-1,All years,23210,Glucose and glucose syrup, fructose and fructose syrup, lactose and lactose syrup, invert sugar, sugars and sugar syrups n.e., artificial honey, caramel,904,Energy [kcal],304.017143
-1,All years,23220,Starches, inulin, wheat gluten, dextrins and other modified starches,203,Protein [g],0.236667,,,
-1,All years,23220,Starches, inulin, wheat gluten, dextrins and other modified starches,208,Energy [kcal],1534.486667,,,
-1,All years,23220,Starches, inulin, wheat gluten, dextrins and other modified starches,904,Energy [kcal],361.173333,,,
-1,All years,23230,"Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, siftings or similar forms",203,Protein [g],0.19,,,,,,
-1,All years,23230,"Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, siftings or similar forms",208,Energy [kcal],1503.6,,,,,,
-1,All years,23230,"Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, siftings or similar forms",904,Energy [kcal],353.9,,,,,,
-1,All years,23410,"Crispbread; rusks, toasted bread and similar toasted products",203,Protein [g],10.133333,,,,,,
-1,All years,23410,"Crispbread; rusks, toasted bread and similar toasted products",208,Energy [kcal],1456.033333,,,,,,
-1,All years,23410,"Crispbread; rusks, toasted bread and similar toasted products",904,Energy [kcal],344.566667,,,,,,
-1,All years,23420,Gingerbread and the like, sweet biscuits, waffles and wafers,203,Protein [g],4.902,,,,
-1,All years,23420,Gingerbread and the like, sweet biscuits, waffles and wafers,208,Energy [kcal],1755.372,,,,
-1,All years,23420,Gingerbread and the like, sweet biscuits, waffles and wafers,904,Energy [kcal],418.584,,,,
-1,All years,23430,Pastry goods and cakes,203,Protein [g],4.44,,,,,,
-1,All years,23430,Pastry goods and cakes,208,Energy [kcal],1192.542222,,,,,,
-1,All years,23430,Pastry goods and cakes,904,Energy [kcal],283.901111,,,,,,
-1,All years,23490,Bread and other bakers' wares,203,Protein [g],9.244167,,,,,,
-1,All years,23490,Bread and other bakers' wares,208,Energy [kcal],1358.133333,,,,,,
-1,All years,23490,Bread and other bakers' wares,904,Energy [kcal],322.645833,,,,,,
-1,All years,23511,Cane sugar,203,Protein [g],0,,,,,,
-1,All years,23511,Cane sugar,208,Energy [kcal],1699.49,,,,,,
-1,All years,23511,Cane sugar,904,Energy [kcal],399.88,,,,,,
-1,All years,23512,Beet sugar,203,Protein [g],0,,,,,,
-1,All years,23512,Beet sugar,208,Energy [kcal],1699.49,,,,,,
-1,All years,23512,Beet sugar,904,Energy [kcal],399.88,,,,,,
-1,All years,23520,Refined sugar,203,Protein [g],0,,,,,,
-1,All years,23520,Refined sugar,208,Energy [kcal],1699.49,,,,,,
-1,All years,23520,Refined sugar,904,Energy [kcal],399.88,,,,,,
-1,All years,23530,"Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup",203,Protein [g],0,,,,,,
-1,All years,23530,"Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup",208,Energy [kcal],1699.49,,,,,,
-1,All years,23530,"Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup",904,Energy [kcal],399.88,,,,,,
-1,All years,23540,"Molasses (from beet, cane and maize)",203,Protein [g],0,,,,,,
-1,All years,23540,"Molasses (from beet, cane and maize)",208,Energy [kcal],1274.11,,,,,,
-1,All years,23540,"Molasses (from beet, cane and maize)",904,Energy [kcal],299.82,,,,,,
-1,All years,23610,"Cocoa paste, whether or not defatted",203,Protein [g],19.6,,,,,,
-1,All years,23610,"Cocoa paste, whether or not defatted",208,Energy [kcal],1525.6,,,,,,
-1,All years,23610,"Cocoa paste, whether or not defatted",904,Energy [kcal],366.9,,,,,,
-1,All years,23620,"Cocoa butter, fat and oil",203,Protein [g],19.6,,,,,,
-1,All years,23620,"Cocoa butter, fat and oil",208,Energy [kcal],1525.6,,,,,,
-1,All years,23620,"Cocoa butter, fat and oil",904,Energy [kcal],366.9,,,,,,
-1,All years,23630,"Cocoa powder, not sweetened",203,Protein [g],19.6,,,,,,
-1,All years,23630,"Cocoa powder, not sweetened",208,Energy [kcal],1525.6,,,,,,
-1,All years,23630,"Cocoa powder, not sweetened",904,Energy [kcal],366.9,,,,,,
-1,All years,23640,"Cocoa powder, sweetened",203,Protein [g],19.6,,,,,,
-1,All years,23640,"Cocoa powder, sweetened",208,Energy [kcal],1525.6,,,,,,
-1,All years,23640,"Cocoa powder, sweetened",904,Energy [kcal],366.9,,,,,,
-1,All years,23650,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms",203,Protein [g],6.773333,,,,,,
-1,All years,23650,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms",208,Energy [kcal],2211.296667,,,,,,
-1,All years,23650,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms",904,Energy [kcal],530.143333,,,,,,
-1,All years,23660,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms",203,Protein [g],6.0104,,,,,,
-1,All years,23660,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms",208,Energy [kcal],2036.2672,,,,,,
-1,All years,23660,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms",904,Energy [kcal],487.1704,,,,,,
-1,All years,23670,"Sugar confectionery (including white chocolate), not containing cocoa; vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar",203,Protein [g],3.303077,,,,,,
-1,All years,23670,"Sugar confectionery (including white chocolate), not containing cocoa; vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar",208,Energy [kcal],1633.807692,,,,,,
-1,All years,23670,"Sugar confectionery (including white chocolate), not containing cocoa; vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar",904,Energy [kcal],386.961538,,,,,,
-1,All years,23710,"Uncooked pasta, not stuffed or otherwise prepared",203,Protein [g],11.141,,,,,,
-1,All years,23710,"Uncooked pasta, not stuffed or otherwise prepared",208,Energy [kcal],1518.372,,,,,,
-1,All years,23710,"Uncooked pasta, not stuffed or otherwise prepared",904,Energy [kcal],358.134,,,,,,
-1,All years,23721,"Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish); couscous, except as a complete dish",203,Protein [g],5.336923,,,,,,
-1,All years,23721,"Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish); couscous, except as a complete dish",208,Energy [kcal],688.783846,,,,,,
-1,All years,23721,"Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish); couscous, except as a complete dish",904,Energy [kcal],162.890769,,,,,,
-1,All years,23722,Prepared dishes containing stuffed pasta, prepared couscous dishes,203,Protein [g],4.677143,,,,,
-1,All years,23722,Prepared dishes containing stuffed pasta, prepared couscous dishes,208,Energy [kcal],386.041429,,,,,
-1,All years,23722,Prepared dishes containing stuffed pasta, prepared couscous dishes,904,Energy [kcal],92.061429,,,,,
-1,All years,23911,"Coffee, decaffeinated or roasted",203,Protein [g],0.1,,,,,,
-1,All years,23911,"Coffee, decaffeinated or roasted",208,Energy [kcal],10.2,,,,,,
-1,All years,23911,"Coffee, decaffeinated or roasted",904,Energy [kcal],2.4,,,,,,
-1,All years,23912,"Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof",203,Protein [g],6.603333,,,,,,
-1,All years,23912,"Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof",208,Energy [kcal],1447.283333,,,,,,
-1,All years,23912,"Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof",904,Energy [kcal],341.766667,,,,,,
-1,All years,23913,"Green tea (not fermented), black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",203,Protein [g],4.38125,,,,,,
-1,All years,23913,"Green tea (not fermented), black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",208,Energy [kcal],1354.57375,,,,,,
-1,All years,23913,"Green tea (not fermented), black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",904,Energy [kcal],319.0475,,,,,,
-1,All years,23921,"Pepper (piper spp.), processed",203,Protein [g],10.4,,,,,,
-1,All years,23921,"Pepper (piper spp.), processed",208,Energy [kcal],1285.43,,,,,,
-1,All years,23921,"Pepper (piper spp.), processed",904,Energy [kcal],306.16,,,,,,
-1,All years,23922,"Chillies and peppers, dry (capsicum spp., pimenta), processed",203,Protein [g],14.14,,,,,,
-1,All years,23922,"Chillies and peppers, dry (capsicum spp., pimenta), processed",208,Energy [kcal],1321.04,,,,,,
-1,All years,23922,"Chillies and peppers, dry (capsicum spp., pimenta), processed",904,Energy [kcal],318.73,,,,,,
-1,All years,23923,"Nutmeg, mace, cardamoms, processed",203,Protein [g],7.77,,,,,,
-1,All years,23923,"Nutmeg, mace, cardamoms, processed",208,Energy [kcal],1808.43,,,,,,
-1,All years,23923,"Nutmeg, mace, cardamoms, processed",904,Energy [kcal],435.61,,,,,,
-1,All years,23924,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed",203,Protein [g],17.745,,,,,,
-1,All years,23924,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed",208,Energy [kcal],1530.63,,,,,,
-1,All years,23924,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed",904,Energy [kcal],368.1475,,,,,,
-1,All years,23925,"Cinnamon (canella), processed",203,Protein [g],3.99,,,,,,
-1,All years,23925,"Cinnamon (canella), processed",208,Energy [kcal],1005.84,,,,,,
-1,All years,23925,"Cinnamon (canella), processed",904,Energy [kcal],243.28,,,,,,
-1,All years,23926,"Cloves (whole stems), processed",203,Protein [g],5.98,,,,,,
-1,All years,23926,"Cloves (whole stems), processed",208,Energy [kcal],1577.02,,,,,,
-1,All years,23926,"Cloves (whole stems), processed",904,Energy [kcal],380.99,,,,,,
-1,All years,23927,"Ginger, processed",203,Protein [g],8.98,,,,,,
-1,All years,23927,"Ginger, processed",208,Energy [kcal],1400.18,,,,,,
-1,All years,23927,"Ginger, processed",904,Energy [kcal],332.36,,,,,,
-1,All years,23928,"Vanilla, processed",203,Protein [g],0.06,,,,,,
-1,All years,23928,"Vanilla, processed",208,Energy [kcal],1215.72,,,,,,
-1,All years,23928,"Vanilla, processed",904,Energy [kcal],292.14,,,,,,
-1,All years,23929,"Other spices and aromatics, processed",203,Protein [g],11.353333,,,,,,
-1,All years,23929,"Other spices and aromatics, processed",208,Energy [kcal],1382.082222,,,,,,
-1,All years,23929,"Other spices and aromatics, processed",904,Energy [kcal],330.936667,,,,,,
-1,All years,23991,"Homogenized preparations of meat, vegetables, fruit or nuts; preparations of milk, flour, meal, starch or malt extract, for infant use n.e.; homogenized composite food preparations",203,Protein [g],6.258947,,,,,,
-1,All years,23991,"Homogenized preparations of meat, vegetables, fruit or nuts; preparations of milk, flour, meal, starch or malt extract, for infant use n.e.; homogenized composite food preparations",208,Energy [kcal],341.355789,,,,,,
-1,All years,23991,"Homogenized preparations of meat, vegetables, fruit or nuts; preparations of milk, flour, meal, starch or malt extract, for infant use n.e.; homogenized composite food preparations",904,Energy [kcal],81.364211,,,,,,
-1,All years,23993,"Eggs, not in shell, and egg yolks, fresh or preserved; egg albumin",203,Protein [g],27.563333,,,,,,
-1,All years,23993,"Eggs, not in shell, and egg yolks, fresh or preserved; egg albumin",208,Energy [kcal],1112.801111,,,,,,
-1,All years,23993,"Eggs, not in shell, and egg yolks, fresh or preserved; egg albumin",904,Energy [kcal],266.574444,,,,,,
-1,All years,23995,Sauces, mixed condiments, mustard flour and meal, prepared mustard,203,Protein [g],11.25,,,
-1,All years,23995,Sauces, mixed condiments, mustard flour and meal, prepared mustard,208,Energy [kcal],652.571667,,,
-1,All years,23995,Sauces, mixed condiments, mustard flour and meal, prepared mustard,904,Energy [kcal],156.035,,,
-1,All years,24131,"Spirits, liqueurs and other spirituous beverages of an alcoholic strength by volume of about 40% vol",203,Protein [g],0,,,,,,
-1,All years,24131,"Spirits, liqueurs and other spirituous beverages of an alcoholic strength by volume of about 40% vol",208,Energy [kcal],1020.5,,,,,,
-1,All years,24131,"Spirits, liqueurs and other spirituous beverages of an alcoholic strength by volume of about 40% vol",904,Energy [kcal],246.325,,,,,,
-1,All years,24139,Other spirituous beverages and undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol,203,Protein [g],0,,,,,,
-1,All years,24139,Other spirituous beverages and undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol,208,Energy [kcal],1020.5,,,,,,
-1,All years,24139,Other spirituous beverages and undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol,904,Energy [kcal],246.325,,,,,,
-1,All years,24211,Sparkling wine of fresh grapes,203,Protein [g],0.07,,,,,,
-1,All years,24211,Sparkling wine of fresh grapes,208,Energy [kcal],343.58,,,,,,
-1,All years,24211,Sparkling wine of fresh grapes,904,Energy [kcal],82.66,,,,,,
-1,All years,24212,"Wine of fresh grapes, except sparkling wine; grape must",203,Protein [g],0.135,,,,,,
-1,All years,24212,"Wine of fresh grapes, except sparkling wine; grape must",208,Energy [kcal],505.2525,,,,,,
-1,All years,24212,"Wine of fresh grapes, except sparkling wine; grape must",904,Energy [kcal],121.155,,,,,,
-1,All years,24220,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,203,Protein [g],0.2,,,,,,
-1,All years,24220,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,208,Energy [kcal],679.83,,,,,,
-1,All years,24220,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,904,Energy [kcal],162.66,,,,,,
-1,All years,24230,"Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt",203,Protein [g],0.1,,,,,,
-1,All years,24230,"Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt",208,Energy [kcal],196.81,,,,,,
-1,All years,24230,"Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt",904,Energy [kcal],46.37,,,,,,
-1,All years,24310,Beer made from malt,203,Protein [g],0.33,,,,,,
-1,All years,24310,Beer made from malt,208,Energy [kcal],145.934,,,,,,
-1,All years,24310,Beer made from malt,904,Energy [kcal],34.948,,,,,,
-1,All years,24320,"Malt, whether or not roasted",203,Protein [g],10.28,,,,,,
-1,All years,24320,"Malt, whether or not roasted",208,Energy [kcal],1510.04,,,,,,
-1,All years,24320,"Malt, whether or not roasted",904,Energy [kcal],356.68,,,,,,
-1,All years,24410,"Bottled waters, not sweetened or flavoured",203,Protein [g],0,,,,,,
-1,All years,24410,"Bottled waters, not sweetened or flavoured",208,Energy [kcal],0,,,,,,
-1,All years,24410,"Bottled waters, not sweetened or flavoured",904,Energy [kcal],0,,,,,,
-1,All years,24490,Other non-alcoholic caloric beverages,203,Protein [g],0.040667,,,,,,
-1,All years,24490,Other non-alcoholic caloric beverages,208,Energy [kcal],117.330667,,,,,,
-1,All years,24490,Other non-alcoholic caloric beverages,904,Energy [kcal],27.611333,,,,,,
+timePointFake,Year,measuredItemCPC,Item,measuredElementNutritive,Nutrient,Value
+1,All years,111,Wheat,203,Protein [g],12.34
+1,All years,111,Wheat,208,Energy [kcal],1420.936667
+1,All years,111,Wheat,904,Energy [kcal],336.098333
+1,All years,112,Maize (corn),203,Protein [g],9.903333
+1,All years,112,Maize (corn),208,Energy [kcal],1534.506667
+1,All years,112,Maize (corn),904,Energy [kcal],363.196667
+1,All years,113,Rice,203,Protein [g],7.5
+1,All years,113,Rice,208,Energy [kcal],1491.12
+1,All years,113,Rice,904,Energy [kcal],352.04
+1,All years,114,Sorghum,203,Protein [g],11.3
+1,All years,114,Sorghum,208,Energy [kcal],1526.21
+1,All years,114,Sorghum,904,Energy [kcal],360.82
+1,All years,115,Barley,203,Protein [g],12.48
+1,All years,115,Barley,208,Energy [kcal],1390.89
+1,All years,115,Barley,904,Energy [kcal],329.98
+1,All years,116,Rye,203,Protein [g],10.34
+1,All years,116,Rye,208,Energy [kcal],1389.81
+1,All years,116,Rye,904,Energy [kcal],329.27
+1,All years,117,Oats,203,Protein [g],16.89
+1,All years,117,Oats,208,Energy [kcal],1573.62
+1,All years,117,Oats,904,Energy [kcal],373.54
+1,All years,118,Millet,203,Protein [g],11.02
+1,All years,118,Millet,208,Energy [kcal],1505.26
+1,All years,118,Millet,904,Energy [kcal],356.42
+1,All years,1191,Triticale,203,Protein [g],13.05
+1,All years,1191,Triticale,208,Energy [kcal],1525.22
+1,All years,1191,Triticale,904,Energy [kcal],359.49
+1,All years,1192,Buckwheat,203,Protein [g],12.62
+1,All years,1192,Buckwheat,208,Energy [kcal],1439.27
+1,All years,1192,Buckwheat,904,Energy [kcal],340.74
+1,All years,1194,Quinoa,203,Protein [g],14.12
+1,All years,1194,Quinoa,208,Energy [kcal],1492.18
+1,All years,1194,Quinoa,904,Energy [kcal],353.71
+1,All years,1199,Other cereals,203,Protein [g],14.145
+1,All years,1199,Other cereals,208,Energy [kcal],1523.54
+1,All years,1199,Other cereals,904,Energy [kcal],360.43
+1,All years,1211,Asparagus,203,Protein [g],2.2
+1,All years,1211,Asparagus,208,Energy [kcal],88.9
+1,All years,1211,Asparagus,904,Energy [kcal],21.2
+1,All years,1212,Cabbages,203,Protein [g],2.026667
+1,All years,1212,Cabbages,208,Energy [kcal],125.835556
+1,All years,1212,Cabbages,904,Energy [kcal],29.982222
+1,All years,1213,Cauliflowers and broccoli,203,Protein [g],2.563333
+1,All years,1213,Cauliflowers and broccoli,208,Energy [kcal],132.136667
+1,All years,1213,Cauliflowers and broccoli,904,Energy [kcal],31.49
+1,All years,1214,Lettuce and chicory,203,Protein [g],1.238571
+1,All years,1214,Lettuce and chicory,208,Energy [kcal],65.272857
+1,All years,1214,Lettuce and chicory,904,Energy [kcal],15.681429
+1,All years,1215,Spinach,203,Protein [g],2.18
+1,All years,1215,Spinach,208,Energy [kcal],90.18
+1,All years,1215,Spinach,904,Energy [kcal],21.435
+1,All years,1219,Other leafy or stem vegetables,203,Protein [g],1.878333
+1,All years,1219,Other leafy or stem vegetables,208,Energy [kcal],102.106667
+1,All years,1219,Other leafy or stem vegetables,904,Energy [kcal],24.321667
+1,All years,1221,Watermelons,203,Protein [g],0.61
+1,All years,1221,Watermelons,208,Energy [kcal],140.5
+1,All years,1221,Watermelons,904,Energy [kcal],33.15
+1,All years,1229,Cantaloupes and other melons,203,Protein [g],0.83
+1,All years,1229,Cantaloupes and other melons,208,Energy [kcal],146.706667
+1,All years,1229,Cantaloupes and other melons,904,Energy [kcal],34.663333
+1,All years,1231,"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",203,Protein [g],1.43
+1,All years,1231,"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",208,Energy [kcal],136.69
+1,All years,1231,"Chillies and peppers, green (Capsicum spp. and Pimenta spp.)",904,Energy [kcal],32.405
+1,All years,1232,Cucumbers and gherkins,203,Protein [g],0.62
+1,All years,1232,Cucumbers and gherkins,208,Energy [kcal],59.35
+1,All years,1232,Cucumbers and gherkins,904,Energy [kcal],14.075
+1,All years,1233,Eggplants (aubergines),203,Protein [g],1.01
+1,All years,1233,Eggplants (aubergines),208,Energy [kcal],90.33
+1,All years,1233,Eggplants (aubergines),904,Energy [kcal],21.71
+1,All years,1234,Tomatoes,203,Protein [g],1.055
+1,All years,1234,Tomatoes,208,Energy [kcal],81.4525
+1,All years,1234,Tomatoes,904,Energy [kcal],19.3425
+1,All years,1235,"Pumpkins, squash and gourds",203,Protein [g],1.1875
+1,All years,1235,"Pumpkins, squash and gourds",208,Energy [kcal],129.6625
+1,All years,1235,"Pumpkins, squash and gourds",904,Energy [kcal],30.679167
+1,All years,1239,Other fruit-bearing vegetables,203,Protein [g],2.18
+1,All years,1239,Other fruit-bearing vegetables,208,Energy [kcal],127.34
+1,All years,1239,Other fruit-bearing vegetables,904,Energy [kcal],30.48
+1,All years,1241,"Beans, green",203,Protein [g],4.342
+1,All years,1241,"Beans, green",208,Energy [kcal],279.276
+1,All years,1241,"Beans, green",904,Energy [kcal],66.102
+1,All years,1242,"Peas, green",203,Protein [g],4.11
+1,All years,1242,"Peas, green",208,Energy [kcal],233.32
+1,All years,1242,"Peas, green",904,Energy [kcal],55.44
+1,All years,1243,"Broad beans and horse beans, green",203,Protein [g],2.1
+1,All years,1243,"Broad beans and horse beans, green",208,Energy [kcal],199.33
+1,All years,1243,"Broad beans and horse beans, green",904,Energy [kcal],46.96
+1,All years,1251,Carrots and turnips,203,Protein [g],0.823333
+1,All years,1251,Carrots and turnips,208,Energy [kcal],134.71
+1,All years,1251,Carrots and turnips,904,Energy [kcal],32.036667
+1,All years,1252,Green garlic,203,Protein [g],6.36
+1,All years,1252,Green garlic,208,Energy [kcal],669.74
+1,All years,1252,Green garlic,904,Energy [kcal],157.98
+1,All years,1253,Onions,203,Protein [g],1.626
+1,All years,1253,Onions,208,Energy [kcal],186.288
+1,All years,1253,Onions,904,Energy [kcal],44.006
+1,All years,1254,Leeks and other alliaceous vegetables,203,Protein [g],2.385
+1,All years,1254,Leeks and other alliaceous vegetables,208,Energy [kcal],197.5
+1,All years,1254,Leeks and other alliaceous vegetables,904,Energy [kcal],46.875
+1,All years,1259,"Other root, bulb and tuberous vegetables, n.e.",203,Protein [g],1.731667
+1,All years,1259,"Other root, bulb and tuberous vegetables, n.e.",208,Energy [kcal],201.496667
+1,All years,1259,"Other root, bulb and tuberous vegetables, n.e.",904,Energy [kcal],47.818333
+1,All years,1270,Mushrooms and truffles,203,Protein [g],2.462
+1,All years,1270,Mushrooms and truffles,208,Energy [kcal],118.402
+1,All years,1270,Mushrooms and truffles,904,Energy [kcal],28.194
+1,All years,1290,"Vegetables, fresh, n.e.",203,Protein [g],3.818333
+1,All years,1290,"Vegetables, fresh, n.e.",208,Energy [kcal],335.395
+1,All years,1290,"Vegetables, fresh, n.e.",904,Energy [kcal],79.656667
+1,All years,1311,Avocados,203,Protein [g],0.61
+1,All years,1311,Avocados,208,Energy [kcal],140.5
+1,All years,1311,Avocados,904,Energy [kcal],33.15
+1,All years,1312,Bananas,203,Protein [g],1.09
+1,All years,1312,Bananas,208,Energy [kcal],395.79
+1,All years,1312,Bananas,904,Energy [kcal],93.53
+1,All years,1313,Plantains and others,203,Protein [g],1.3
+1,All years,1313,Plantains and others,208,Energy [kcal],557.05
+1,All years,1313,Plantains and others,904,Energy [kcal],131.45
+1,All years,1314,Dates,203,Protein [g],2.13
+1,All years,1314,Dates,208,Energy [kcal],1255.135
+1,All years,1314,Dates,904,Energy [kcal],296.27
+1,All years,1315,Figs,203,Protein [g],2.025
+1,All years,1315,Figs,208,Energy [kcal],705.87
+1,All years,1315,Figs,904,Energy [kcal],167.015
+1,All years,1316,"Mangoes, guavas, mangosteens",203,Protein [g],0.82
+1,All years,1316,"Mangoes, guavas, mangosteens",208,Energy [kcal],268.26
+1,All years,1316,"Mangoes, guavas, mangosteens",904,Energy [kcal],63.42
+1,All years,1317,Papayas,203,Protein [g],0.47
+1,All years,1317,Papayas,208,Energy [kcal],186.25
+1,All years,1317,Papayas,904,Energy [kcal],44.1
+1,All years,1318,Pineapples,203,Protein [g],0.54
+1,All years,1318,Pineapples,208,Energy [kcal],224.06
+1,All years,1318,Pineapples,904,Energy [kcal],52.92
+1,All years,1319,"Other tropical and subtropical fruits, n.e.",203,Protein [g],1.045385
+1,All years,1319,"Other tropical and subtropical fruits, n.e.",208,Energy [kcal],315.178462
+1,All years,1319,"Other tropical and subtropical fruits, n.e.",904,Energy [kcal],74.78
+1,All years,1321,Pomelos and grapefruits,203,Protein [g],0.63
+1,All years,1321,Pomelos and grapefruits,208,Energy [kcal],141.7
+1,All years,1321,Pomelos and grapefruits,904,Energy [kcal],33.5
+1,All years,1322,Lemons and limes,203,Protein [g],0.9
+1,All years,1322,Lemons and limes,208,Energy [kcal],168.16
+1,All years,1322,Lemons and limes,904,Energy [kcal],39.97
+1,All years,1323,Oranges,203,Protein [g],0.94
+1,All years,1323,Oranges,208,Energy [kcal],198.57
+1,All years,1323,Oranges,904,Energy [kcal],47.04
+1,All years,1324,"Tangerines, mandarins, clementines",203,Protein [g],0.83
+1,All years,1324,"Tangerines, mandarins, clementines",208,Energy [kcal],222.345
+1,All years,1324,"Tangerines, mandarins, clementines",904,Energy [kcal],52.59
+1,All years,1329,"Other citrus fruit, n.e.",203,Protein [g],1.88
+1,All years,1329,"Other citrus fruit, n.e.",208,Energy [kcal],275.41
+1,All years,1329,"Other citrus fruit, n.e.",904,Energy [kcal],65.82
+1,All years,1330,Grapes,203,Protein [g],0.72
+1,All years,1330,Grapes,208,Energy [kcal],317.76
+1,All years,1330,Grapes,904,Energy [kcal],74.92
+1,All years,1341,Apples,203,Protein [g],1.226667
+1,All years,1341,Apples,208,Energy [kcal],232.656667
+1,All years,1341,Apples,904,Energy [kcal],55.196667
+1,All years,1342,Pears and quinces,203,Protein [g],1.185
+1,All years,1342,Pears and quinces,208,Energy [kcal],263.19
+1,All years,1342,Pears and quinces,904,Energy [kcal],62.38
+1,All years,1343,Apricots,203,Protein [g],1.3875
+1,All years,1343,Apricots,208,Energy [kcal],186.8375
+1,All years,1343,Apricots,904,Energy [kcal],44.65
+1,All years,1344,Cherries,203,Protein [g],0.67
+1,All years,1344,Cherries,208,Energy [kcal],135.05
+1,All years,1344,Cherries,904,Energy [kcal],32.1
+1,All years,1349,"Other pome fruits and stone fruits, n.e.",203,Protein [g],1.45
+1,All years,1349,"Other pome fruits and stone fruits, n.e.",208,Energy [kcal],186.14
+1,All years,1349,"Other pome fruits and stone fruits, n.e.",904,Energy [kcal],44.396667
+1,All years,1351,Currants and gooseberries,203,Protein [g],0.26
+1,All years,1351,Currants and gooseberries,208,Energy [kcal],224.05
+1,All years,1351,Currants and gooseberries,904,Energy [kcal],53.05
+1,All years,1352,Kiwi fruit,203,Protein [g],0.39
+1,All years,1352,Kiwi fruit,208,Energy [kcal],249.66
+1,All years,1352,Kiwi fruit,904,Energy [kcal],59.07
+1,All years,1353,"Raspberries, blackberries, mulberries and loganberries",203,Protein [g],1.4
+1,All years,1353,"Raspberries, blackberries, mulberries and loganberries",208,Energy [kcal],209.1
+1,All years,1353,"Raspberries, blackberries, mulberries and loganberries",904,Energy [kcal],49.55
+1,All years,1354,Strawberries,203,Protein [g],1.03
+1,All years,1354,Strawberries,208,Energy [kcal],249.64
+1,All years,1354,Strawberries,904,Energy [kcal],59.03
+1,All years,1355,Other berries, fruits of the genus Vaccinium,203,Protein [g]
+1,All years,1355,Other berries, fruits of the genus Vaccinium,208,Energy [kcal]
+1,All years,1355,Other berries, fruits of the genus Vaccinium,904,Energy [kcal]
+1,All years,1356,Locust beans (carobs),203,Protein [g],0.7
+1,All years,1356,Locust beans (carobs),208,Energy [kcal],203.8
+1,All years,1356,Locust beans (carobs),904,Energy [kcal],48.2
+1,All years,1359,Other fruits n.e.,203,Protein [g],0.815
+1,All years,1359,Other fruits n.e.,208,Energy [kcal],288.75
+1,All years,1359,Other fruits n.e.,904,Energy [kcal],68.1
+1,All years,1371,"Almonds, in shell",203,Protein [g],21.22
+1,All years,1371,"Almonds, in shell",208,Energy [kcal],2447.87
+1,All years,1371,"Almonds, in shell",904,Energy [kcal],591.94
+1,All years,1372,"Cashew nuts, in shell",203,Protein [g],16.075
+1,All years,1372,"Cashew nuts, in shell",208,Energy [kcal],2517.99
+1,All years,1372,"Cashew nuts, in shell",904,Energy [kcal],606.68
+1,All years,1373,"Chestnuts, in shell",203,Protein [g],4.405
+1,All years,1373,"Chestnuts, in shell",208,Energy [kcal],1154.145
+1,All years,1373,"Chestnuts, in shell",904,Energy [kcal],273.715
+1,All years,1374,"Hazelnuts, in shell",203,Protein [g],14.95
+1,All years,1374,"Hazelnuts, in shell",208,Energy [kcal],2698.5
+1,All years,1374,"Hazelnuts, in shell",904,Energy [kcal],653.95
+1,All years,1375,"Pistachios, in shell",203,Protein [g],20.27
+1,All years,1375,"Pistachios, in shell",208,Energy [kcal],2399.16
+1,All years,1375,"Pistachios, in shell",904,Energy [kcal],579.07
+1,All years,1376,"Walnuts, in shell",203,Protein [g],19.645
+1,All years,1376,"Walnuts, in shell",208,Energy [kcal],2771.87
+1,All years,1376,"Walnuts, in shell",904,Energy [kcal],671.265
+1,All years,1377,"Brazil nuts, in shell",203,Protein [g],14.32
+1,All years,1377,"Brazil nuts, in shell",208,Energy [kcal],2842.27
+1,All years,1377,"Brazil nuts, in shell",904,Energy [kcal],689.19
+1,All years,1379,"Other nuts (excluding wild edible nuts and groundnuts), in shell",203,Protein [g],1.316
+1,All years,1379,"Other nuts (excluding wild edible nuts and groundnuts), in shell",208,Energy [kcal],499.96
+1,All years,1379,"Other nuts (excluding wild edible nuts and groundnuts), in shell",904,Energy [kcal],118.19
+1,All years,141,Soya beans,203,Protein [g],36.49
+1,All years,141,Soya beans,208,Energy [kcal],1787.13
+1,All years,141,Soya beans,904,Energy [kcal],427.46
+1,All years,142,"Groundnuts, excluding shelled",203,Protein [g],25.5575
+1,All years,142,"Groundnuts, excluding shelled",208,Energy [kcal],2455.55
+1,All years,142,"Groundnuts, excluding shelled",904,Energy [kcal],593.1625
+1,All years,1422,Groundnuts in shell,203,Protein [g],25.5575
+1,All years,1422,Groundnuts in shell,208,Energy [kcal],2455.55
+1,All years,1422,Groundnuts in shell,904,Energy [kcal],593.1625
+1,All years,1442,Mustard seed,203,Protein [g],26.08
+1,All years,1442,Mustard seed,208,Energy [kcal],2151.8
+1,All years,1442,Mustard seed,904,Energy [kcal],518.4
+1,All years,1444,Sesame seed,203,Protein [g],17.73
+1,All years,1444,Sesame seed,208,Energy [kcal],2431.82
+1,All years,1444,Sesame seed,904,Energy [kcal],588.19
+1,All years,1445,Sunflower seed,203,Protein [g],20.78
+1,All years,1445,Sunflower seed,208,Energy [kcal],2520.05
+1,All years,1445,Sunflower seed,904,Energy [kcal],609.1
+1,All years,1446,Safflower seed,203,Protein [g],16.18
+1,All years,1446,Safflower seed,208,Energy [kcal],2280.47
+1,All years,1446,Safflower seed,904,Energy [kcal],547.89
+1,All years,1448,Poppy seed,203,Protein [g],17.1975
+1,All years,1448,Poppy seed,208,Energy [kcal],2385.6675
+1,All years,1448,Poppy seed,904,Energy [kcal],574.4475
+1,All years,1450,Olives,203,Protein [g],0.946667
+1,All years,1450,Olives,208,Energy [kcal],483.456667
+1,All years,1450,Olives,904,Energy [kcal],117.33
+1,All years,1460,"Coconuts, in shell",203,Protein [g],3.33
+1,All years,1460,"Coconuts, in shell",208,Energy [kcal],1473.48
+1,All years,1460,"Coconuts, in shell",904,Energy [kcal],357.61
+1,All years,1492,Copra,203,Protein [g],17.1975
+1,All years,1492,Copra,208,Energy [kcal],2385.6675
+1,All years,1492,Copra,904,Energy [kcal],574.4475
+1,All years,1510,Potatoes,203,Protein [g],1.9325
+1,All years,1510,Potatoes,208,Energy [kcal],304.9325
+1,All years,1510,Potatoes,904,Energy [kcal],72.0025
+1,All years,1520,Cassava,203,Protein [g],4.13
+1,All years,1520,Cassava,208,Energy [kcal],1076.89
+1,All years,1520,Cassava,904,Energy [kcal],253.93
+1,All years,1530,Sweet potatoes,203,Protein [g],4.235
+1,All years,1530,Sweet potatoes,208,Energy [kcal],916.445
+1,All years,1530,Sweet potatoes,904,Energy [kcal],216.215
+1,All years,1540,Yams,203,Protein [g],3.256667
+1,All years,1540,Yams,208,Energy [kcal],754.14
+1,All years,1540,Yams,904,Energy [kcal],177.896667
+1,All years,1591,Yautia,203,Protein [g],2.53625
+1,All years,1591,Yautia,208,Energy [kcal],481.2
+1,All years,1591,Yautia,904,Energy [kcal],113.675
+1,All years,1610,"Coffee, green",203,Protein [g],0.11
+1,All years,1610,"Coffee, green",208,Energy [kcal],7.51
+1,All years,1610,"Coffee, green",904,Energy [kcal],1.77
+1,All years,1620,tea leaves,203,Protein [g],0
+1,All years,1620,tea leaves,208,Energy [kcal],5.1
+1,All years,1620,tea leaves,904,Energy [kcal],1.2
+1,All years,1630,Mat� leaves,203,Protein [g],0
+1,All years,1630,Mat� leaves,208,Energy [kcal],5.1
+1,All years,1630,Mat� leaves,904,Energy [kcal],1.2
+1,All years,1640,Cocoa beans,203,Protein [g],19.6
+1,All years,1640,Cocoa beans,208,Energy [kcal],1525.6
+1,All years,1640,Cocoa beans,904,Energy [kcal],366.9
+1,All years,1651,"Pepper (Piper spp.), raw",203,Protein [g],10.39
+1,All years,1651,"Pepper (Piper spp.), raw",208,Energy [kcal],1249.35
+1,All years,1651,"Pepper (Piper spp.), raw",904,Energy [kcal],297.9
+1,All years,1652,"Chillies and peppers, dry (Capsicum spp. and Pimenta spp.), raw",203,Protein [g],12.01
+1,All years,1652,"Chillies and peppers, dry (Capsicum spp. and Pimenta spp.), raw",208,Energy [kcal],1561.07
+1,All years,1652,"Chillies and peppers, dry (Capsicum spp. and Pimenta spp.), raw",904,Energy [kcal],375.59
+1,All years,1653,"Nutmeg, mace, cardamoms, raw",203,Protein [g],7.77
+1,All years,1653,"Nutmeg, mace, cardamoms, raw",208,Energy [kcal],1808.43
+1,All years,1653,"Nutmeg, mace, cardamoms, raw",904,Energy [kcal],435.61
+1,All years,1654,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",203,Protein [g],17.745
+1,All years,1654,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",208,Energy [kcal],1530.63
+1,All years,1654,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, raw",904,Energy [kcal],368.1475
+1,All years,1655,"Cinnamon (canella), raw",203,Protein [g],3.99
+1,All years,1655,"Cinnamon (canella), raw",208,Energy [kcal],1005.84
+1,All years,1655,"Cinnamon (canella), raw",904,Energy [kcal],243.28
+1,All years,1656,"Cloves (whole stems), raw",203,Protein [g],5.98
+1,All years,1656,"Cloves (whole stems), raw",208,Energy [kcal],1577.02
+1,All years,1656,"Cloves (whole stems), raw",904,Energy [kcal],380.99
+1,All years,1657,"Ginger, raw",203,Protein [g],8.98
+1,All years,1657,"Ginger, raw",208,Energy [kcal],1400.18
+1,All years,1657,"Ginger, raw",904,Energy [kcal],332.36
+1,All years,1658,"Vanilla, raw",203,Protein [g],0.06
+1,All years,1658,"Vanilla, raw",208,Energy [kcal],1215.72
+1,All years,1658,"Vanilla, raw",904,Energy [kcal],292.14
+1,All years,1701,"Beans, dry",203,Protein [g],22.414211
+1,All years,1701,"Beans, dry",208,Energy [kcal],1314.905263
+1,All years,1701,"Beans, dry",904,Energy [kcal],311.852632
+1,All years,1702,"Broad beans and horse beans, dry",203,Protein [g],26.12
+1,All years,1702,"Broad beans and horse beans, dry",208,Energy [kcal],1266.58
+1,All years,1702,"Broad beans and horse beans, dry",904,Energy [kcal],301.41
+1,All years,1703,"Chick peas, dry",203,Protein [g],19.3
+1,All years,1703,"Chick peas, dry",208,Energy [kcal],1426.03
+1,All years,1703,"Chick peas, dry",904,Energy [kcal],339.36
+1,All years,1704,"Lentils, dry",203,Protein [g],25.375
+1,All years,1704,"Lentils, dry",208,Energy [kcal],1318.65
+1,All years,1704,"Lentils, dry",904,Energy [kcal],313.175
+1,All years,1705,"Peas, dry",203,Protein [g],24.55
+1,All years,1705,"Peas, dry",208,Energy [kcal],1257.06
+1,All years,1705,"Peas, dry",904,Energy [kcal],299.12
+1,All years,1708,"Bambara beans, dry",203,Protein [g],28.5125
+1,All years,1708,"Bambara beans, dry",208,Energy [kcal],1598.8275
+1,All years,1708,"Bambara beans, dry",904,Energy [kcal],378.655
+1,All years,1801,Sugar beet,203,Protein [g],0
+1,All years,1801,Sugar beet,208,Energy [kcal],1699.49
+1,All years,1801,Sugar beet,904,Energy [kcal],399.88
+1,All years,1802,Sugar cane,203,Protein [g],0
+1,All years,1802,Sugar cane,208,Energy [kcal],1699.49
+1,All years,1802,Sugar cane,904,Energy [kcal],399.88
+1,All years,1809,Other sugar crops n.e.,203,Protein [g],0.02
+1,All years,1809,Other sugar crops n.e.,208,Energy [kcal],1207.94
+1,All years,1809,Other sugar crops n.e.,904,Energy [kcal],284.23
+1,All years,2211,Raw milk of cattle,203,Protein [g],3.28
+1,All years,2211,Raw milk of cattle,208,Energy [kcal],270.23
+1,All years,2211,Raw milk of cattle,904,Energy [kcal],64.66
+1,All years,2212,Raw milk of buffalo,203,Protein [g],3.75
+1,All years,2212,Raw milk of buffalo,208,Energy [kcal],406.74
+1,All years,2212,Raw milk of buffalo,904,Energy [kcal],97.73
+1,All years,2291,Raw milk of sheep,203,Protein [g],5.98
+1,All years,2291,Raw milk of sheep,208,Energy [kcal],451.78
+1,All years,2291,Raw milk of sheep,904,Energy [kcal],108.36
+1,All years,2292,Raw milk of goats,203,Protein [g],3.56
+1,All years,2292,Raw milk of goats,208,Energy [kcal],289.35
+1,All years,2292,Raw milk of goats,904,Energy [kcal],69.3
+1,All years,2293,Raw milk of camel,203,Protein [g],3.215
+1,All years,2293,Raw milk of camel,208,Energy [kcal],263.015
+1,All years,2293,Raw milk of camel,904,Energy [kcal],62.905
+1,All years,2312,Other hen eggs in shell fresh,203,Protein [g],12.56
+1,All years,2312,Other hen eggs in shell fresh,208,Energy [kcal],577.63
+1,All years,2312,Other hen eggs in shell fresh,904,Energy [kcal],138.71
+1,All years,2322,Other eggs from other birds fresh in shell,203,Protein [g],13.3525
+1,All years,2322,Other eggs from other birds fresh in shell,208,Energy [kcal],708.115
+1,All years,2322,Other eggs from other birds fresh in shell,904,Energy [kcal],170.2925
+1,All years,2910,Natural honey,203,Protein [g],0.3
+1,All years,2910,Natural honey,208,Energy [kcal],1404.1
+1,All years,2910,Natural honey,904,Energy [kcal],330.4
+1,All years,2920,"Snails, fresh, chilled, frozen, dried, salted or in brine, except sea snails",203,Protein [g],16.25
+1,All years,2920,"Snails, fresh, chilled, frozen, dried, salted or in brine, except sea snails",208,Energy [kcal],324.7
+1,All years,2920,"Snails, fresh, chilled, frozen, dried, salted or in brine, except sea snails",904,Energy [kcal],76.65
+1,All years,4322,"Farmed rock lobster and other sea crawfish, live, fresh or chilled",203,Protein [g],16.4
+1,All years,4322,"Farmed rock lobster and other sea crawfish, live, fresh or chilled",208,Energy [kcal],320.628889
+1,All years,4322,"Farmed rock lobster and other sea crawfish, live, fresh or chilled",904,Energy [kcal],75.73
+1,All years,4492,"Other farmed molluscs, live, fresh or chilled",203,Protein [g],14.82
+1,All years,4492,"Other farmed molluscs, live, fresh or chilled",208,Energy [kcal],345.595
+1,All years,4492,"Other farmed molluscs, live, fresh or chilled",904,Energy [kcal],81.64625
+1,All years,4932,"Farmed seaweeds and other algae, fresh, frozen or dried, whether or not ground, fit for human consumption",203,Protein [g],4.45
+1,All years,4932,"Farmed seaweeds and other algae, fresh, frozen or dried, whether or not ground, fit for human consumption",208,Energy [kcal],193.83
+1,All years,4932,"Farmed seaweeds and other algae, fresh, frozen or dried, whether or not ground, fit for human consumption",904,Energy [kcal],45.79
+1,All years,17400,Ice and snow,203,Protein [g],0
+1,All years,17400,Ice and snow,208,Energy [kcal],0
+1,All years,17400,Ice and snow,904,Energy [kcal],0
+1,All years,18000,Natural water,203,Protein [g],0
+1,All years,18000,Natural water,208,Energy [kcal],0
+1,All years,18000,Natural water,904,Energy [kcal],0
+1,All years,21111,"Meat of cattle, fresh or chilled",203,Protein [g],18.5875
+1,All years,21111,"Meat of cattle, fresh or chilled",208,Energy [kcal],842.5825
+1,All years,21111,"Meat of cattle, fresh or chilled",904,Energy [kcal],202.39
+1,All years,21112,"Meat of buffalo, fresh or chilled",203,Protein [g],20.686667
+1,All years,21112,"Meat of buffalo, fresh or chilled",208,Energy [kcal],480.95
+1,All years,21112,"Meat of buffalo, fresh or chilled",904,Energy [kcal],114.133333
+1,All years,21113,"Meat of pigs, fresh or chilled",203,Protein [g],19.286667
+1,All years,21113,"Meat of pigs, fresh or chilled",208,Energy [kcal],814.793333
+1,All years,21113,"Meat of pigs, fresh or chilled",904,Energy [kcal],195.536667
+1,All years,21114,"Meat of rabbits and hares, fresh or chilled",203,Protein [g],20.92
+1,All years,21114,"Meat of rabbits and hares, fresh or chilled",208,Energy [kcal],510.755
+1,All years,21114,"Meat of rabbits and hares, fresh or chilled",904,Energy [kcal],121.335
+1,All years,21115,"Meat of sheep, fresh or chilled",203,Protein [g],18.236667
+1,All years,21115,"Meat of sheep, fresh or chilled",208,Energy [kcal],871.19
+1,All years,21115,"Meat of sheep, fresh or chilled",904,Energy [kcal],209.446667
+1,All years,21116,"Meat of goat, fresh or chilled",203,Protein [g],20.6
+1,All years,21116,"Meat of goat, fresh or chilled",208,Energy [kcal],438.05
+1,All years,21116,"Meat of goat, fresh or chilled",904,Energy [kcal],103.75
+1,All years,21117,"Meat of camels and camelids, fresh or chilled",203,Protein [g],21.39
+1,All years,21117,"Meat of camels and camelids, fresh or chilled",208,Energy [kcal],540.46
+1,All years,21117,"Meat of camels and camelids, fresh or chilled",904,Energy [kcal],128.52
+1,All years,21118,"Meat of horses and other equines, fresh or chilled",203,Protein [g],21.39
+1,All years,21118,"Meat of horses and other equines, fresh or chilled",208,Energy [kcal],540.46
+1,All years,21118,"Meat of horses and other equines, fresh or chilled",904,Energy [kcal],128.52
+1,All years,21119,"Other meat of mammals, fresh or chilled",203,Protein [g],23.536471
+1,All years,21119,"Other meat of mammals, fresh or chilled",208,Energy [kcal],505.8
+1,All years,21119,"Other meat of mammals, fresh or chilled",904,Energy [kcal],119.802941
+1,All years,21121,"Meat of chickens, fresh or chilled",203,Protein [g],19.3175
+1,All years,21121,"Meat of chickens, fresh or chilled",208,Energy [kcal],810.415
+1,All years,21121,"Meat of chickens, fresh or chilled",904,Energy [kcal],194.5175
+1,All years,21122,"Meat of ducks, fresh or chilled",203,Protein [g],11.49
+1,All years,21122,"Meat of ducks, fresh or chilled",208,Energy [kcal],1650.91
+1,All years,21122,"Meat of ducks, fresh or chilled",904,Energy [kcal],400.02
+1,All years,21123,"Meat of geese, fresh or chilled",203,Protein [g],15.86
+1,All years,21123,"Meat of geese, fresh or chilled",208,Energy [kcal],1513.56
+1,All years,21123,"Meat of geese, fresh or chilled",904,Energy [kcal],366.02
+1,All years,21124,"Meat of turkeys, fresh or chilled",203,Protein [g],20.603333
+1,All years,21124,"Meat of turkeys, fresh or chilled",208,Energy [kcal],627.483333
+1,All years,21124,"Meat of turkeys, fresh or chilled",904,Energy [kcal],149.808333
+1,All years,21125,"Meat of guinea fowl, fresh or chilled",203,Protein [g],23.4
+1,All years,21125,"Meat of guinea fowl, fresh or chilled",208,Energy [kcal],636.45
+1,All years,21125,"Meat of guinea fowl, fresh or chilled",904,Energy [kcal],151.65
+1,All years,21131,"Meat of cattle, frozen",203,Protein [g],18.5875
+1,All years,21131,"Meat of cattle, frozen",208,Energy [kcal],842.5825
+1,All years,21131,"Meat of cattle, frozen",904,Energy [kcal],202.39
+1,All years,21132,"Meat of buffalo, frozen",203,Protein [g],20.686667
+1,All years,21132,"Meat of buffalo, frozen",208,Energy [kcal],480.95
+1,All years,21132,"Meat of buffalo, frozen",904,Energy [kcal],114.133333
+1,All years,21133,"Meat of pigs, frozen",203,Protein [g],18.842
+1,All years,21133,"Meat of pigs, frozen",208,Energy [kcal],874.366
+1,All years,21133,"Meat of pigs, frozen",904,Energy [kcal],210.122
+1,All years,21134,"Meat of rabbits and hares, frozen",203,Protein [g],20.92
+1,All years,21134,"Meat of rabbits and hares, frozen",208,Energy [kcal],510.755
+1,All years,21134,"Meat of rabbits and hares, frozen",904,Energy [kcal],121.335
+1,All years,21135,"Meat of sheep, frozen",203,Protein [g],18.236667
+1,All years,21135,"Meat of sheep, frozen",208,Energy [kcal],871.19
+1,All years,21135,"Meat of sheep, frozen",904,Energy [kcal],209.446667
+1,All years,21136,"Meat of goat, frozen",203,Protein [g],20.6
+1,All years,21136,"Meat of goat, frozen",208,Energy [kcal],438.05
+1,All years,21136,"Meat of goat, frozen",904,Energy [kcal],103.75
+1,All years,21137,"Meat of camels and camelids, frozen",203,Protein [g],21.39
+1,All years,21137,"Meat of camels and camelids, frozen",208,Energy [kcal],540.46
+1,All years,21137,"Meat of camels and camelids, frozen",904,Energy [kcal],128.52
+1,All years,21138,"Meat of horses and other equines, frozen",203,Protein [g],21.39
+1,All years,21138,"Meat of horses and other equines, frozen",208,Energy [kcal],540.46
+1,All years,21138,"Meat of horses and other equines, frozen",904,Energy [kcal],128.52
+1,All years,21139,"Other meat of mammals, frozen",203,Protein [g],23.291875
+1,All years,21139,"Other meat of mammals, frozen",208,Energy [kcal],503.96875
+1,All years,21139,"Other meat of mammals, frozen",904,Energy [kcal],119.3875
+1,All years,21141,"Meat of chickens, frozen",203,Protein [g],19.3175
+1,All years,21141,"Meat of chickens, frozen",208,Energy [kcal],810.415
+1,All years,21141,"Meat of chickens, frozen",904,Energy [kcal],194.5175
+1,All years,21142,"Meat of ducks, frozen",203,Protein [g],14.455
+1,All years,21142,"Meat of ducks, frozen",208,Energy [kcal],1254.725
+1,All years,21142,"Meat of ducks, frozen",904,Energy [kcal],303.25
+1,All years,21143,"Meat of geese, frozen",203,Protein [g],15.86
+1,All years,21143,"Meat of geese, frozen",208,Energy [kcal],1513.56
+1,All years,21143,"Meat of geese, frozen",904,Energy [kcal],366.02
+1,All years,21144,"Meat of turkeys, frozen",203,Protein [g],20.603333
+1,All years,21144,"Meat of turkeys, frozen",208,Energy [kcal],627.483333
+1,All years,21144,"Meat of turkeys, frozen",904,Energy [kcal],149.808333
+1,All years,21145,"Meat of guinea fowl, frozen",203,Protein [g],23.4
+1,All years,21145,"Meat of guinea fowl, frozen",208,Energy [kcal],636.45
+1,All years,21145,"Meat of guinea fowl, frozen",904,Energy [kcal],151.65
+1,All years,21151,"Edible offal of cattle, fresh, chilled or frozen",203,Protein [g],14.229
+1,All years,21151,"Edible offal of cattle, fresh, chilled or frozen",208,Energy [kcal],856.94
+1,All years,21151,"Edible offal of cattle, fresh, chilled or frozen",904,Energy [kcal],206.43
+1,All years,21152,"Edible offal of buffalo, fresh, chilled or frozen",203,Protein [g],14.229
+1,All years,21152,"Edible offal of buffalo, fresh, chilled or frozen",208,Energy [kcal],856.94
+1,All years,21152,"Edible offal of buffalo, fresh, chilled or frozen",904,Energy [kcal],206.43
+1,All years,21153,"Edible offal of pigs, fresh, chilled or frozen",203,Protein [g],16.023846
+1,All years,21153,"Edible offal of pigs, fresh, chilled or frozen",208,Energy [kcal],894.216923
+1,All years,21153,"Edible offal of pigs, fresh, chilled or frozen",904,Energy [kcal],215.222308
+1,All years,21155,"Edible offal of sheep, fresh, chilled or frozen",203,Protein [g],15.961429
+1,All years,21155,"Edible offal of sheep, fresh, chilled or frozen",208,Energy [kcal],479.938571
+1,All years,21155,"Edible offal of sheep, fresh, chilled or frozen",904,Energy [kcal],114.512857
+1,All years,21156,"Edible offal of goat, fresh, chilled or frozen",203,Protein [g],15.961429
+1,All years,21156,"Edible offal of goat, fresh, chilled or frozen",208,Energy [kcal],479.938571
+1,All years,21156,"Edible offal of goat, fresh, chilled or frozen",904,Energy [kcal],114.512857
+1,All years,21159,"Edible offal of mammals, fresh, chilled or frozen, n.e.",203,Protein [g],14.229
+1,All years,21159,"Edible offal of mammals, fresh, chilled or frozen, n.e.",208,Energy [kcal],856.94
+1,All years,21159,"Edible offal of mammals, fresh, chilled or frozen, n.e.",904,Energy [kcal],206.43
+1,All years,21160,"Edible offal of poultry, fresh, chilled or frozen",203,Protein [g],16.377778
+1,All years,21160,"Edible offal of poultry, fresh, chilled or frozen",208,Energy [kcal],784.134444
+1,All years,21160,"Edible offal of poultry, fresh, chilled or frozen",904,Energy [kcal],188.291111
+1,All years,21170,"Other meat and edible offal, fresh, chilled or frozen",203,Protein [g],17.8875
+1,All years,21170,"Other meat and edible offal, fresh, chilled or frozen",208,Energy [kcal],980.4475
+1,All years,21170,"Other meat and edible offal, fresh, chilled or frozen",904,Energy [kcal],236.07
+1,All years,21181,"Pig meat, cuts, salted, dried or smoked (bacon and ham)",203,Protein [g],16.081429
+1,All years,21181,"Pig meat, cuts, salted, dried or smoked (bacon and ham)",208,Energy [kcal],1243.295714
+1,All years,21181,"Pig meat, cuts, salted, dried or smoked (bacon and ham)",904,Energy [kcal],300.234286
+1,All years,21182,"Bovine meat, salted, dried or smoked",203,Protein [g],32.15
+1,All years,21182,"Bovine meat, salted, dried or smoked",208,Energy [kcal],1165.24
+1,All years,21182,"Bovine meat, salted, dried or smoked",904,Energy [kcal],278.33
+1,All years,21183,"Other meat and edible meat offal, salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",203,Protein [g],20.396667
+1,All years,21183,"Other meat and edible meat offal, salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",208,Energy [kcal],1174.183333
+1,All years,21183,"Other meat and edible meat offal, salted, in brine, dried or smoked; edible flours and meals of meat or meat offal",904,Energy [kcal],282.7
+1,All years,21184,"Sausages and similar products of meat, offal or blood",203,Protein [g],15.14
+1,All years,21184,"Sausages and similar products of meat, offal or blood",208,Energy [kcal],1286.094375
+1,All years,21184,"Sausages and similar products of meat, offal or blood",904,Energy [kcal],310.541875
+1,All years,21185,"Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates",203,Protein [g],9.16
+1,All years,21185,"Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates",208,Energy [kcal],497.65375
+1,All years,21185,"Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates",904,Energy [kcal],118.35125
+1,All years,21186,Prepared dishes and meals based on meat,203,Protein [g],20.76625
+1,All years,21186,Prepared dishes and meals based on meat,208,Energy [kcal],1004.81875
+1,All years,21186,Prepared dishes and meals based on meat,904,Energy [kcal],241.35
+1,All years,21189,"Other prepared or preserved meat, meat offal or blood",203,Protein [g],25.734
+1,All years,21189,"Other prepared or preserved meat, meat offal or blood",208,Energy [kcal],882.501333
+1,All years,21189,"Other prepared or preserved meat, meat offal or blood",904,Energy [kcal],210.892667
+1,All years,21219,"Other fish, frozen",203,Protein [g],18.774848
+1,All years,21219,"Other fish, frozen",208,Energy [kcal],504.584545
+1,All years,21219,"Other fish, frozen",904,Energy [kcal],120.131212
+1,All years,21221,"Fish fillets and fish meat (whether or not minced), fresh or chilled",203,Protein [g],18.7472
+1,All years,21221,"Fish fillets and fish meat (whether or not minced), fresh or chilled",208,Energy [kcal],492.8876
+1,All years,21221,"Fish fillets and fish meat (whether or not minced), fresh or chilled",904,Energy [kcal],117.2832
+1,All years,21222,"Fish fillets, frozen",203,Protein [g],18.66
+1,All years,21222,"Fish fillets, frozen",208,Energy [kcal],498.609231
+1,All years,21222,"Fish fillets, frozen",904,Energy [kcal],118.689615
+1,All years,21223,"Fish meat, whether or not minced, frozen",203,Protein [g],18.532963
+1,All years,21223,"Fish meat, whether or not minced, frozen",208,Energy [kcal],497.871481
+1,All years,21223,"Fish meat, whether or not minced, frozen",904,Energy [kcal],118.53
+1,All years,21224,"Fish fillets, dried, salted or in brine, but not smoked",203,Protein [g],35.3
+1,All years,21224,"Fish fillets, dried, salted or in brine, but not smoked",208,Energy [kcal],1099.45
+1,All years,21224,"Fish fillets, dried, salted or in brine, but not smoked",904,Energy [kcal],262.6
+1,All years,21225,"Fish livers and roes, fresh or chilled",203,Protein [g],19.46
+1,All years,21225,"Fish livers and roes, fresh or chilled",208,Energy [kcal],652.5
+1,All years,21225,"Fish livers and roes, fresh or chilled",904,Energy [kcal],155.65
+1,All years,21226,"Fish livers and roes, frozen",203,Protein [g],19.46
+1,All years,21226,"Fish livers and roes, frozen",208,Energy [kcal],652.5
+1,All years,21226,"Fish livers and roes, frozen",904,Energy [kcal],155.65
+1,All years,21227,"Fish livers and roes dried, smoked, salted or in brine",203,Protein [g],24.6
+1,All years,21227,"Fish livers and roes dried, smoked, salted or in brine",208,Energy [kcal],1140
+1,All years,21227,"Fish livers and roes dried, smoked, salted or in brine",904,Energy [kcal],273.5
+1,All years,21232,"Fish including fillets, smoked",203,Protein [g],21.021667
+1,All years,21232,"Fish including fillets, smoked",208,Energy [kcal],593.728333
+1,All years,21232,"Fish including fillets, smoked",904,Energy [kcal],141.406667
+1,All years,21233,Edible fish meal,203,Protein [g],18.333333
+1,All years,21233,Edible fish meal,208,Energy [kcal],597.976667
+1,All years,21233,Edible fish meal,904,Energy [kcal],142.97
+1,All years,21234,"Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal",203,Protein [g],30.8825
+1,All years,21234,"Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal",208,Energy [kcal],803.495833
+1,All years,21234,"Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal",904,Energy [kcal],191.254167
+1,All years,21241,"Prepared dishes and meals based on fish, molluscs and crustaceans",203,Protein [g],16.22
+1,All years,21241,"Prepared dishes and meals based on fish, molluscs and crustaceans",208,Energy [kcal],807.095
+1,All years,21241,"Prepared dishes and meals based on fish, molluscs and crustaceans",904,Energy [kcal],193.006667
+1,All years,21242,"Fish, otherwise prepared or preserved",203,Protein [g],22.508889
+1,All years,21242,"Fish, otherwise prepared or preserved",208,Energy [kcal],652.086389
+1,All years,21242,"Fish, otherwise prepared or preserved",904,Energy [kcal],155.439444
+1,All years,21243,Caviar and caviar substitutes,203,Protein [g],24.6
+1,All years,21243,Caviar and caviar substitutes,208,Energy [kcal],1140
+1,All years,21243,Caviar and caviar substitutes,904,Energy [kcal],273.5
+1,All years,21259,"Other crustaceans, frozen, dried, salted or in brine",203,Protein [g],18.424211
+1,All years,21259,"Other crustaceans, frozen, dried, salted or in brine",208,Energy [kcal],367.870526
+1,All years,21259,"Other crustaceans, frozen, dried, salted or in brine",904,Energy [kcal],86.904211
+1,All years,21262,"Oysters, frozen, smoked, dried, salted or in brine",203,Protein [g],5.465
+1,All years,21262,"Oysters, frozen, smoked, dried, salted or in brine",208,Energy [kcal],223.34
+1,All years,21262,"Oysters, frozen, smoked, dried, salted or in brine",904,Energy [kcal],53.03
+1,All years,21268,"Other molluscs, frozen, smoked, dried, salted or in brine",203,Protein [g],15.03625
+1,All years,21268,"Other molluscs, frozen, smoked, dried, salted or in brine",208,Energy [kcal],367.38375
+1,All years,21268,"Other molluscs, frozen, smoked, dried, salted or in brine",904,Energy [kcal],86.84875
+1,All years,21269,"Other aquatic invertebrates, frozen, dried, salted or in brine",203,Protein [g],9.25
+1,All years,21269,"Other aquatic invertebrates, frozen, dried, salted or in brine",208,Energy [kcal],216.9
+1,All years,21269,"Other aquatic invertebrates, frozen, dried, salted or in brine",904,Energy [kcal],51.3
+1,All years,21270,"Crustaceans, otherwise prepared or preserved",203,Protein [g],20.2475
+1,All years,21270,"Crustaceans, otherwise prepared or preserved",208,Energy [kcal],606.49875
+1,All years,21270,"Crustaceans, otherwise prepared or preserved",904,Energy [kcal],144.36625
+1,All years,21280,"Molluscs and other aquatic invertebrates, otherwise prepared or preserved",203,Protein [g],19.053
+1,All years,21280,"Molluscs and other aquatic invertebrates, otherwise prepared or preserved",208,Energy [kcal],600.499
+1,All years,21280,"Molluscs and other aquatic invertebrates, otherwise prepared or preserved",904,Energy [kcal],142.628
+1,All years,21311,"Beans, frozen",203,Protein [g],5.02
+1,All years,21311,"Beans, frozen",208,Energy [kcal],337.293846
+1,All years,21311,"Beans, frozen",904,Energy [kcal],80.03
+1,All years,21312,"Peas, frozen",203,Protein [g],4.1675
+1,All years,21312,"Peas, frozen",208,Energy [kcal],234.31
+1,All years,21312,"Peas, frozen",904,Energy [kcal],55.7075
+1,All years,21313,"Potatoes, frozen",203,Protein [g],2.113333
+1,All years,21313,"Potatoes, frozen",208,Energy [kcal],289.32
+1,All years,21313,"Potatoes, frozen",904,Energy [kcal],68.273333
+1,All years,21319,"Other vegetables and pulses, frozen",203,Protein [g],2.651111
+1,All years,21319,"Other vegetables and pulses, frozen",208,Energy [kcal],218.138889
+1,All years,21319,"Other vegetables and pulses, frozen",904,Energy [kcal],51.775926
+1,All years,21321,Tomato juice,203,Protein [g],0.76
+1,All years,21321,Tomato juice,208,Energy [kcal],83.25
+1,All years,21321,Tomato juice,904,Energy [kcal],19.65
+1,All years,21329,Other vegetable juices,203,Protein [g],0.726667
+1,All years,21329,Other vegetable juices,208,Energy [kcal],113.726667
+1,All years,21329,Other vegetable juices,904,Energy [kcal],26.886667
+1,All years,21330,Vegetables provisionally preserved,203,Protein [g],1.012727
+1,All years,21330,Vegetables provisionally preserved,208,Energy [kcal],288.372727
+1,All years,21330,Vegetables provisionally preserved,904,Energy [kcal],69.122727
+1,All years,21340,"Vegetables, pulses and potatoes, preserved by vinegar or acetic acid",203,Protein [g],0.997273
+1,All years,21340,"Vegetables, pulses and potatoes, preserved by vinegar or acetic acid",208,Energy [kcal],563.095455
+1,All years,21340,"Vegetables, pulses and potatoes, preserved by vinegar or acetic acid",904,Energy [kcal],135.936364
+1,All years,21392,"Flour, meal, powder, flakes, granules and pellets of potatoes",203,Protein [g],6.9
+1,All years,21392,"Flour, meal, powder, flakes, granules and pellets of potatoes",208,Energy [kcal],1489.48
+1,All years,21392,"Flour, meal, powder, flakes, granules and pellets of potatoes",904,Energy [kcal],351.26
+1,All years,21393,Dried vegetables,203,Protein [g],14.894545
+1,All years,21393,Dried vegetables,208,Energy [kcal],1349.172727
+1,All years,21393,Dried vegetables,904,Energy [kcal],319.931818
+1,All years,21394,"Potatoes, otherwise prepared or preserved",203,Protein [g],3.381875
+1,All years,21394,"Potatoes, otherwise prepared or preserved",208,Energy [kcal],980.778125
+1,All years,21394,"Potatoes, otherwise prepared or preserved",904,Energy [kcal],234.565625
+1,All years,21395,"Beans, otherwise prepared or preserved, not frozen",203,Protein [g],3.6925
+1,All years,21395,"Beans, otherwise prepared or preserved, not frozen",208,Energy [kcal],280.24625
+1,All years,21395,"Beans, otherwise prepared or preserved, not frozen",904,Energy [kcal],66.48
+1,All years,21396,"Peas, otherwise prepared or preserved, not frozen",203,Protein [g],4.315
+1,All years,21396,"Peas, otherwise prepared or preserved, not frozen",208,Energy [kcal],234.6025
+1,All years,21396,"Peas, otherwise prepared or preserved, not frozen",904,Energy [kcal],55.755
+1,All years,21397,"Mushrooms and truffles, otherwise prepared or preserved",203,Protein [g],2.51
+1,All years,21397,"Mushrooms and truffles, otherwise prepared or preserved",208,Energy [kcal],125.73
+1,All years,21397,"Mushrooms and truffles, otherwise prepared or preserved",904,Energy [kcal],29.9975
+1,All years,21399,"Other vegetables and pulses, preserved other than by vinegar, acetic acid or sugar, n.e.",203,Protein [g],1.782222
+1,All years,21399,"Other vegetables and pulses, preserved other than by vinegar, acetic acid or sugar, n.e.",208,Energy [kcal],158.652222
+1,All years,21399,"Other vegetables and pulses, preserved other than by vinegar, acetic acid or sugar, n.e.",904,Energy [kcal],38.21
+1,All years,21411,Raisins,203,Protein [g],2.1775
+1,All years,21411,Raisins,208,Energy [kcal],813.365
+1,All years,21411,Raisins,904,Energy [kcal],191.9425
+1,All years,21412,"Plums, dried",203,Protein [g],3.7
+1,All years,21412,"Plums, dried",208,Energy [kcal],1604.1
+1,All years,21412,"Plums, dried",904,Energy [kcal],377.65
+1,All years,21419,"Other dried fruit, n.e.",203,Protein [g],2.816667
+1,All years,21419,"Other dried fruit, n.e.",208,Energy [kcal],1245.559167
+1,All years,21419,"Other dried fruit, n.e.",904,Energy [kcal],294.751667
+1,All years,21421,"Groundnuts, shelled",203,Protein [g],25.5575
+1,All years,21421,"Groundnuts, shelled",208,Energy [kcal],2455.55
+1,All years,21421,"Groundnuts, shelled",904,Energy [kcal],593.1625
+1,All years,21422,"Almonds, shelled",203,Protein [g],21.22
+1,All years,21422,"Almonds, shelled",208,Energy [kcal],2447.87
+1,All years,21422,"Almonds, shelled",904,Energy [kcal],591.94
+1,All years,21423,"Hazelnuts, shelled",203,Protein [g],14.95
+1,All years,21423,"Hazelnuts, shelled",208,Energy [kcal],2698.5
+1,All years,21423,"Hazelnuts, shelled",904,Energy [kcal],653.95
+1,All years,21424,"Cashew nuts, shelled",203,Protein [g],16.075
+1,All years,21424,"Cashew nuts, shelled",208,Energy [kcal],2517.99
+1,All years,21424,"Cashew nuts, shelled",904,Energy [kcal],606.68
+1,All years,21429,Other shelled nuts,203,Protein [g],8.880667
+1,All years,21429,Other shelled nuts,208,Energy [kcal],2059.072
+1,All years,21429,Other shelled nuts,904,Energy [kcal],496.107333
+1,All years,21431,Orange juice,203,Protein [g],0.965
+1,All years,21431,Orange juice,208,Energy [kcal],284.39
+1,All years,21431,Orange juice,904,Energy [kcal],66.996667
+1,All years,21432,Grapefruit juice,203,Protein [g],0.8925
+1,All years,21432,Grapefruit juice,208,Energy [kcal],292.0825
+1,All years,21432,Grapefruit juice,904,Energy [kcal],68.8025
+1,All years,21433,Pineapple juice,203,Protein [g],0.605
+1,All years,21433,Pineapple juice,208,Energy [kcal],362.3
+1,All years,21433,Pineapple juice,904,Energy [kcal],85.3125
+1,All years,21434,Grape juice,203,Protein [g],0.395
+1,All years,21434,Grape juice,208,Energy [kcal],379.2825
+1,All years,21434,Grape juice,904,Energy [kcal],89.315
+1,All years,21435,Apple juice,203,Protein [g],0.305
+1,All years,21435,Apple juice,208,Energy [kcal],457.185
+1,All years,21435,Apple juice,904,Energy [kcal],107.67
+1,All years,21439,"Other fruit juices, n.e.",203,Protein [g],0.3625
+1,All years,21439,"Other fruit juices, n.e.",208,Energy [kcal],147.9875
+1,All years,21439,"Other fruit juices, n.e.",904,Energy [kcal],34.95
+1,All years,21491,"Pineapples, otherwise prepared or preserved",203,Protein [g],0.401667
+1,All years,21491,"Pineapples, otherwise prepared or preserved",208,Energy [kcal],271.046667
+1,All years,21491,"Pineapples, otherwise prepared or preserved",904,Energy [kcal],63.91
+1,All years,21492,"Peaches, otherwise prepared or preserved",203,Protein [g],0.473333
+1,All years,21492,"Peaches, otherwise prepared or preserved",208,Energy [kcal],252.365
+1,All years,21492,"Peaches, otherwise prepared or preserved",904,Energy [kcal],59.538333
+1,All years,21493,"Fruits and nuts, uncooked or cooked, frozen",203,Protein [g],6.84963
+1,All years,21493,"Fruits and nuts, uncooked or cooked, frozen",208,Energy [kcal],1251.04
+1,All years,21493,"Fruits and nuts, uncooked or cooked, frozen",904,Energy [kcal],301.617037
+1,All years,21494,"Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes",203,Protein [g],2.455
+1,All years,21494,"Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes",208,Energy [kcal],1356.93
+1,All years,21494,"Jams, fruit jellies, marmalades, fruit or nut purree and fruit or nut pastes",904,Energy [kcal],321.5475
+1,All years,21495,"Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared n.e.",203,Protein [g],20.071786
+1,All years,21495,"Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared n.e.",208,Energy [kcal],2522.876786
+1,All years,21495,"Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared n.e.",904,Energy [kcal],609.316071
+1,All years,21496,"Fruit and nuts, provisionally preserved, not for immediate consumption",203,Protein [g],0.943478
+1,All years,21496,"Fruit and nuts, provisionally preserved, not for immediate consumption",208,Energy [kcal],205.931304
+1,All years,21496,"Fruit and nuts, provisionally preserved, not for immediate consumption",904,Energy [kcal],48.862609
+1,All years,21499,"Other prepared and preserved fruit and nuts, n.e.",203,Protein [g],0.549574
+1,All years,21499,"Other prepared and preserved fruit and nuts, n.e.",208,Energy [kcal],286.207872
+1,All years,21499,"Other prepared and preserved fruit and nuts, n.e.",904,Energy [kcal],67.54766
+1,All years,21511,"Fats, of pig and poultry, unrendered",203,Protein [g],0.584
+1,All years,21511,"Fats, of pig and poultry, unrendered",208,Energy [kcal],3620.314
+1,All years,21511,"Fats, of pig and poultry, unrendered",904,Energy [kcal],880.538
+1,All years,21512,"Cattle fat, unrendered",203,Protein [g],0.75
+1,All years,21512,"Cattle fat, unrendered",208,Energy [kcal],3605.15
+1,All years,21512,"Cattle fat, unrendered",904,Energy [kcal],876.8
+1,All years,21513,"Buffalo fat, unrendered",203,Protein [g],0
+1,All years,21513,"Buffalo fat, unrendered",208,Energy [kcal],3700
+1,All years,21513,"Buffalo fat, unrendered",904,Energy [kcal],900
+1,All years,21514,"Sheep fat, unrendered",203,Protein [g],0
+1,All years,21514,"Sheep fat, unrendered",208,Energy [kcal],3700
+1,All years,21514,"Sheep fat, unrendered",904,Energy [kcal],900
+1,All years,21515,"Goat fat, unrendered",203,Protein [g],0
+1,All years,21515,"Goat fat, unrendered",208,Energy [kcal],3700
+1,All years,21515,"Goat fat, unrendered",904,Energy [kcal],900
+1,All years,21519,"Other animal fats, unrendered, n.e.",203,Protein [g],0
+1,All years,21519,"Other animal fats, unrendered, n.e.",208,Energy [kcal],3700
+1,All years,21519,"Other animal fats, unrendered, n.e.",904,Energy [kcal],900
+1,All years,21521,"Pig fat, rendered",203,Protein [g],1.46
+1,All years,21521,"Pig fat, rendered",208,Energy [kcal],3515.585
+1,All years,21521,"Pig fat, rendered",904,Energy [kcal],854.945
+1,All years,21522,"Poultry fat, rendered",203,Protein [g],0
+1,All years,21522,"Poultry fat, rendered",208,Energy [kcal],3692.6
+1,All years,21522,"Poultry fat, rendered",904,Energy [kcal],898.2
+1,All years,21523,Tallow,203,Protein [g],0
+1,All years,21523,Tallow,208,Energy [kcal],3700
+1,All years,21523,Tallow,904,Energy [kcal],900
+1,All years,21524,Fish-liver oils and their fractions,203,Protein [g],0
+1,All years,21524,Fish-liver oils and their fractions,208,Energy [kcal],3700
+1,All years,21524,Fish-liver oils and their fractions,904,Energy [kcal],900
+1,All years,21525,"Fats and oils and their fractions, of fish, other than liver oils",203,Protein [g],0
+1,All years,21525,"Fats and oils and their fractions, of fish, other than liver oils",208,Energy [kcal],3700
+1,All years,21525,"Fats and oils and their fractions, of fish, other than liver oils",904,Energy [kcal],900
+1,All years,21526,"Fats and oils and their fractions, of marine mammals",203,Protein [g],0.19
+1,All years,21526,"Fats and oils and their fractions, of marine mammals",208,Energy [kcal],3678.88
+1,All years,21526,"Fats and oils and their fractions, of marine mammals",904,Energy [kcal],894.8225
+1,All years,21529,"Other animal fats, rendered",203,Protein [g],0
+1,All years,21529,"Other animal fats, rendered",208,Energy [kcal],3700
+1,All years,21529,"Other animal fats, rendered",904,Energy [kcal],900
+1,All years,21590,"Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared./n /n /n",203,Protein [g],0
+1,All years,21590,"Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared./n /n /n",208,Energy [kcal],3700
+1,All years,21590,"Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared./n /n /n",904,Energy [kcal],900
+1,All years,21611,"Soya bean oil, crude",203,Protein [g],0
+1,All years,21611,"Soya bean oil, crude",208,Energy [kcal],3700
+1,All years,21611,"Soya bean oil, crude",904,Energy [kcal],900
+1,All years,21612,"Soya bean oil, refined",203,Protein [g],0
+1,All years,21612,"Soya bean oil, refined",208,Energy [kcal],3700
+1,All years,21612,"Soya bean oil, refined",904,Energy [kcal],900
+1,All years,21621,"Groundnut oil, crude",203,Protein [g],0
+1,All years,21621,"Groundnut oil, crude",208,Energy [kcal],3700
+1,All years,21621,"Groundnut oil, crude",904,Energy [kcal],900
+1,All years,21622,"Groundnut oil, refined",203,Protein [g],0
+1,All years,21622,"Groundnut oil, refined",208,Energy [kcal],3700
+1,All years,21622,"Groundnut oil, refined",904,Energy [kcal],900
+1,All years,21631,"Sunflower-seed and safflower-seed oil, crude",203,Protein [g],0
+1,All years,21631,"Sunflower-seed and safflower-seed oil, crude",208,Energy [kcal],3700
+1,All years,21631,"Sunflower-seed and safflower-seed oil, crude",904,Energy [kcal],900
+1,All years,21632,"Sunflower-seed and safflower-seed oil, refined",203,Protein [g],0
+1,All years,21632,"Sunflower-seed and safflower-seed oil, refined",208,Energy [kcal],3700
+1,All years,21632,"Sunflower-seed and safflower-seed oil, refined",904,Energy [kcal],900
+1,All years,21641,"Rape, colza and mustard oil, crude",203,Protein [g],0
+1,All years,21641,"Rape, colza and mustard oil, crude",208,Energy [kcal],3700
+1,All years,21641,"Rape, colza and mustard oil, crude",904,Energy [kcal],900
+1,All years,21642,"Rape, colza and mustard oil, refined",203,Protein [g],0
+1,All years,21642,"Rape, colza and mustard oil, refined",208,Energy [kcal],3700
+1,All years,21642,"Rape, colza and mustard oil, refined",904,Energy [kcal],900
+1,All years,21651,"Palm oil, crude",203,Protein [g],0
+1,All years,21651,"Palm oil, crude",208,Energy [kcal],3700
+1,All years,21651,"Palm oil, crude",904,Energy [kcal],900
+1,All years,21652,"Palm oil, refined",203,Protein [g],0
+1,All years,21652,"Palm oil, refined",208,Energy [kcal],3700
+1,All years,21652,"Palm oil, refined",904,Energy [kcal],900
+1,All years,21661,"Coconut oil, crude",203,Protein [g],0
+1,All years,21661,"Coconut oil, crude",208,Energy [kcal],3698.377143
+1,All years,21661,"Coconut oil, crude",904,Energy [kcal],899.597143
+1,All years,21662,"Coconut oil, refined",203,Protein [g],0
+1,All years,21662,"Coconut oil, refined",208,Energy [kcal],3698.377143
+1,All years,21662,"Coconut oil, refined",904,Energy [kcal],899.597143
+1,All years,21672,"Olive oil, refined",203,Protein [g],0
+1,All years,21672,"Olive oil, refined",208,Energy [kcal],3700
+1,All years,21672,"Olive oil, refined",904,Energy [kcal],900
+1,All years,21673,Oil of olive residues,203,Protein [g],0
+1,All years,21673,Oil of olive residues,208,Energy [kcal],3700
+1,All years,21673,Oil of olive residues,904,Energy [kcal],900
+1,All years,21681,"Cottonseed oil, crude",203,Protein [g],0
+1,All years,21681,"Cottonseed oil, crude",208,Energy [kcal],3700
+1,All years,21681,"Cottonseed oil, crude",904,Energy [kcal],900
+1,All years,21682,"Cottonseed oil, refined",203,Protein [g],0
+1,All years,21682,"Cottonseed oil, refined",208,Energy [kcal],3700
+1,All years,21682,"Cottonseed oil, refined",904,Energy [kcal],900
+1,All years,21691,"Other vegetable oils, crude and refiend",203,Protein [g],0
+1,All years,21691,"Other vegetable oils, crude and refiend",208,Energy [kcal],3700
+1,All years,21691,"Other vegetable oils, crude and refiend",904,Energy [kcal],900
+1,All years,21693,"Vegetable oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared.",203,Protein [g],0.189091
+1,All years,21693,"Vegetable oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared.",208,Energy [kcal],3568.100455
+1,All years,21693,"Vegetable oils and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared.",904,Energy [kcal],867.878182
+1,All years,21700,Margarine and similar preparations,203,Protein [g],0.168333
+1,All years,21700,Margarine and similar preparations,208,Energy [kcal],3179.054167
+1,All years,21700,Margarine and similar preparations,904,Energy [kcal],773.2125
+1,All years,22110,Processed liquid milk,203,Protein [g],3.294167
+1,All years,22110,Processed liquid milk,208,Energy [kcal],202.4975
+1,All years,22110,Processed liquid milk,904,Energy [kcal],48.1575
+1,All years,22120,"Cream, fresh",203,Protein [g],2.616
+1,All years,22120,"Cream, fresh",208,Energy [kcal],1028.508
+1,All years,22120,"Cream, fresh",904,Energy [kcal],249.116
+1,All years,22130,Whey,203,Protein [g],0.805
+1,All years,22130,Whey,208,Energy [kcal],109.22
+1,All years,22130,Whey,904,Energy [kcal],25.765
+1,All years,22211,Whole milk powder,203,Protein [g],26.32
+1,All years,22211,Whole milk powder,208,Energy [kcal],2088.85
+1,All years,22211,Whole milk powder,904,Energy [kcal],499.35
+1,All years,22212,Skim milk and whey powder,203,Protein [g],28.954286
+1,All years,22212,Skim milk and whey powder,208,Energy [kcal],1508.52
+1,All years,22212,Skim milk and whey powder,904,Energy [kcal],355.147143
+1,All years,22221,Evaporated milk,203,Protein [g],6.995
+1,All years,22221,Evaporated milk,208,Energy [kcal],506.8025
+1,All years,22221,Evaporated milk,904,Energy [kcal],120.93
+1,All years,22222,Condensed milk,203,Protein [g],7.91
+1,All years,22222,Condensed milk,208,Energy [kcal],1381.17
+1,All years,22222,Condensed milk,904,Energy [kcal],327.54
+1,All years,22230,Yoghurt and other fermented or acidified milk and cream,203,Protein [g],4.105937
+1,All years,22230,Yoghurt and other fermented or acidified milk and cream,208,Energy [kcal],403.036562
+1,All years,22230,Yoghurt and other fermented or acidified milk and cream,904,Energy [kcal],95.623125
+1,All years,22241,Butter and other fats and oils derived from milk of cattle,203,Protein [g],0.66
+1,All years,22241,Butter and other fats and oils derived from milk of cattle,208,Energy [kcal],3239.533333
+1,All years,22241,Butter and other fats and oils derived from milk of cattle,904,Energy [kcal],787.9
+1,All years,22242,Butter and other fats and oils derived from milk of buffalo,203,Protein [g],0.66
+1,All years,22242,Butter and other fats and oils derived from milk of buffalo,208,Energy [kcal],3239.533333
+1,All years,22242,Butter and other fats and oils derived from milk of buffalo,904,Energy [kcal],787.9
+1,All years,22249,Butter and other fats and oils derived from other milk,203,Protein [g],0.66
+1,All years,22249,Butter and other fats and oils derived from other milk,208,Energy [kcal],3239.533333
+1,All years,22249,Butter and other fats and oils derived from other milk,904,Energy [kcal],787.9
+1,All years,22251,"Cheese from milk of cattle, fresh or processed",203,Protein [g],21.301875
+1,All years,22251,"Cheese from milk of cattle, fresh or processed",208,Energy [kcal],1348.13875
+1,All years,22251,"Cheese from milk of cattle, fresh or processed",904,Energy [kcal],324.34
+1,All years,22253,"Cheese from milk of sheep, fresh or processed",203,Protein [g],17.875
+1,All years,22253,"Cheese from milk of sheep, fresh or processed",208,Energy [kcal],1316.16
+1,All years,22253,"Cheese from milk of sheep, fresh or processed",904,Energy [kcal],317.32
+1,All years,22254,"Cheese from milk of goats, fresh or processed",203,Protein [g],23.54
+1,All years,22254,"Cheese from milk of goats, fresh or processed",208,Energy [kcal],1474.39
+1,All years,22254,"Cheese from milk of goats, fresh or processed",904,Energy [kcal],355.396667
+1,All years,22260,Casein,203,Protein [g],36.16
+1,All years,22260,Casein,208,Energy [kcal],1526.87
+1,All years,22260,Casein,904,Energy [kcal],359.49
+1,All years,22270,Ice cream and other edible ice,203,Protein [g],2.975
+1,All years,22270,Ice cream and other edible ice,208,Energy [kcal],860.5825
+1,All years,22270,Ice cream and other edible ice,904,Energy [kcal],205.54
+1,All years,23110,Wheat and meslin flour,203,Protein [g],11.0475
+1,All years,23110,Wheat and meslin flour,208,Energy [kcal],1472.1725
+1,All years,23110,Wheat and meslin flour,904,Energy [kcal],347.21375
+1,All years,23120,Other cereal flours,203,Protein [g],10.891667
+1,All years,23120,Other cereal flours,208,Energy [kcal],1475.725
+1,All years,23120,Other cereal flours,904,Energy [kcal],349.225
+1,All years,23130,"Groats, meal and pellets of wheat and other cereals",203,Protein [g],10.47
+1,All years,23130,"Groats, meal and pellets of wheat and other cereals",208,Energy [kcal],1470.513333
+1,All years,23130,"Groats, meal and pellets of wheat and other cereals",904,Energy [kcal],347.351667
+1,All years,23140,Other cereal grain products (including corn flakes),203,Protein [g],11.729655
+1,All years,23140,Other cereal grain products (including corn flakes),208,Energy [kcal],1507.563103
+1,All years,23140,Other cereal grain products (including corn flakes),904,Energy [kcal],356.684828
+1,All years,23161,"Rice, semi- or wholly milled",203,Protein [g],6.923333
+1,All years,23161,"Rice, semi- or wholly milled",208,Energy [kcal],1490.358889
+1,All years,23161,"Rice, semi- or wholly milled",904,Energy [kcal],351.045556
+1,All years,23162,Husked rice,203,Protein [g],7.72
+1,All years,23162,Husked rice,208,Energy [kcal],1507.86
+1,All years,23162,Husked rice,904,Energy [kcal],356.02
+1,All years,23170,Other vegetable flours and meals,203,Protein [g],10.521176
+1,All years,23170,Other vegetable flours and meals,208,Energy [kcal],1419.611176
+1,All years,23170,Other vegetable flours and meals,904,Energy [kcal],337.742941
+1,All years,23180,Mixes and doughs for the preparation of bakers' wares,203,Protein [g],4.725
+1,All years,23180,Mixes and doughs for the preparation of bakers' wares,208,Energy [kcal],1629.9
+1,All years,23180,Mixes and doughs for the preparation of bakers' wares,904,Energy [kcal],386.35
+1,All years,23210,Glucose and glucose syrup, fructose and fructose syrup, lactose and lactose syrup, invert sugar
+1,All years,23210,Glucose and glucose syrup, fructose and fructose syrup, lactose and lactose syrup, invert sugar
+1,All years,23210,Glucose and glucose syrup, fructose and fructose syrup, lactose and lactose syrup, invert sugar
+1,All years,23220,Starches, inulin, wheat gluten, dextrins and other modified starches
+1,All years,23220,Starches, inulin, wheat gluten, dextrins and other modified starches
+1,All years,23220,Starches, inulin, wheat gluten, dextrins and other modified starches
+1,All years,23230,"Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, siftings or similar forms",203,Protein [g],0.19
+1,All years,23230,"Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, siftings or similar forms",208,Energy [kcal],1503.6
+1,All years,23230,"Tapioca and substitutes therefor prepared from starch, in the form of flakes, grains, siftings or similar forms",904,Energy [kcal],353.9
+1,All years,23410,"Crispbread; rusks, toasted bread and similar toasted products",203,Protein [g],10.133333
+1,All years,23410,"Crispbread; rusks, toasted bread and similar toasted products",208,Energy [kcal],1456.033333
+1,All years,23410,"Crispbread; rusks, toasted bread and similar toasted products",904,Energy [kcal],344.566667
+1,All years,23420,Gingerbread and the like, sweet biscuits, waffles and wafers,203
+1,All years,23420,Gingerbread and the like, sweet biscuits, waffles and wafers,208
+1,All years,23420,Gingerbread and the like, sweet biscuits, waffles and wafers,904
+1,All years,23430,Pastry goods and cakes,203,Protein [g],4.44
+1,All years,23430,Pastry goods and cakes,208,Energy [kcal],1192.542222
+1,All years,23430,Pastry goods and cakes,904,Energy [kcal],283.901111
+1,All years,23490,Bread and other bakers' wares,203,Protein [g],9.244167
+1,All years,23490,Bread and other bakers' wares,208,Energy [kcal],1358.133333
+1,All years,23490,Bread and other bakers' wares,904,Energy [kcal],322.645833
+1,All years,23511,Cane sugar,203,Protein [g],0
+1,All years,23511,Cane sugar,208,Energy [kcal],1699.49
+1,All years,23511,Cane sugar,904,Energy [kcal],399.88
+1,All years,23512,Beet sugar,203,Protein [g],0
+1,All years,23512,Beet sugar,208,Energy [kcal],1699.49
+1,All years,23512,Beet sugar,904,Energy [kcal],399.88
+1,All years,23520,Refined sugar,203,Protein [g],0
+1,All years,23520,Refined sugar,208,Energy [kcal],1699.49
+1,All years,23520,Refined sugar,904,Energy [kcal],399.88
+1,All years,23530,"Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup",203,Protein [g],0
+1,All years,23530,"Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup",208,Energy [kcal],1699.49
+1,All years,23530,"Refined cane or beet sugar, in solid form, containing added flavouring or colouring matter; maple sugar and maple syrup",904,Energy [kcal],399.88
+1,All years,23540,"Molasses (from beet, cane and maize)",203,Protein [g],0
+1,All years,23540,"Molasses (from beet, cane and maize)",208,Energy [kcal],1274.11
+1,All years,23540,"Molasses (from beet, cane and maize)",904,Energy [kcal],299.82
+1,All years,23610,"Cocoa paste, whether or not defatted",203,Protein [g],19.6
+1,All years,23610,"Cocoa paste, whether or not defatted",208,Energy [kcal],1525.6
+1,All years,23610,"Cocoa paste, whether or not defatted",904,Energy [kcal],366.9
+1,All years,23620,"Cocoa butter, fat and oil",203,Protein [g],19.6
+1,All years,23620,"Cocoa butter, fat and oil",208,Energy [kcal],1525.6
+1,All years,23620,"Cocoa butter, fat and oil",904,Energy [kcal],366.9
+1,All years,23630,"Cocoa powder, not sweetened",203,Protein [g],19.6
+1,All years,23630,"Cocoa powder, not sweetened",208,Energy [kcal],1525.6
+1,All years,23630,"Cocoa powder, not sweetened",904,Energy [kcal],366.9
+1,All years,23640,"Cocoa powder, sweetened",203,Protein [g],19.6
+1,All years,23640,"Cocoa powder, sweetened",208,Energy [kcal],1525.6
+1,All years,23640,"Cocoa powder, sweetened",904,Energy [kcal],366.9
+1,All years,23650,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms",203,Protein [g],6.773333
+1,All years,23650,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms",208,Energy [kcal],2211.296667
+1,All years,23650,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms",904,Energy [kcal],530.143333
+1,All years,23660,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms",203,Protein [g],6.0104
+1,All years,23660,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms",208,Energy [kcal],2036.2672
+1,All years,23660,"Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), other than in bulk forms",904,Energy [kcal],487.1704
+1,All years,23670,"Sugar confectionery (including white chocolate), not containing cocoa; vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar",203,Protein [g],3.303077
+1,All years,23670,"Sugar confectionery (including white chocolate), not containing cocoa; vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar",208,Energy [kcal],1633.807692
+1,All years,23670,"Sugar confectionery (including white chocolate), not containing cocoa; vegetables, fruit, nuts, fruit-peel and other parts of plants, preserved by sugar",904,Energy [kcal],386.961538
+1,All years,23710,"Uncooked pasta, not stuffed or otherwise prepared",203,Protein [g],11.141
+1,All years,23710,"Uncooked pasta, not stuffed or otherwise prepared",208,Energy [kcal],1518.372
+1,All years,23710,"Uncooked pasta, not stuffed or otherwise prepared",904,Energy [kcal],358.134
+1,All years,23721,"Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish); couscous, except as a complete dish",203,Protein [g],5.336923
+1,All years,23721,"Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish); couscous, except as a complete dish",208,Energy [kcal],688.783846
+1,All years,23721,"Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish); couscous, except as a complete dish",904,Energy [kcal],162.890769
+1,All years,23722,Prepared dishes containing stuffed pasta, prepared couscous dishes,203,Protein [g]
+1,All years,23722,Prepared dishes containing stuffed pasta, prepared couscous dishes,208,Energy [kcal]
+1,All years,23722,Prepared dishes containing stuffed pasta, prepared couscous dishes,904,Energy [kcal]
+1,All years,23911,"Coffee, decaffeinated or roasted",203,Protein [g],0.1
+1,All years,23911,"Coffee, decaffeinated or roasted",208,Energy [kcal],10.2
+1,All years,23911,"Coffee, decaffeinated or roasted",904,Energy [kcal],2.4
+1,All years,23912,"Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof",203,Protein [g],6.603333
+1,All years,23912,"Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof",208,Energy [kcal],1447.283333
+1,All years,23912,"Coffee substitutes containing coffee; extracts, essences and concentrates of coffee, and preparations with a basis thereof or with a basis of coffee; roasted chicory and other roasted coffee substitutes, and extracts, essences and concentrates thereof",904,Energy [kcal],341.766667
+1,All years,23913,"Green tea (not fermented), black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",203,Protein [g],4.38125
+1,All years,23913,"Green tea (not fermented), black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",208,Energy [kcal],1354.57375
+1,All years,23913,"Green tea (not fermented), black tea (fermented) and partly fermented tea, in immediate packings of a content not exceeding 3 kg",904,Energy [kcal],319.0475
+1,All years,23921,"Pepper (piper spp.), processed",203,Protein [g],10.4
+1,All years,23921,"Pepper (piper spp.), processed",208,Energy [kcal],1285.43
+1,All years,23921,"Pepper (piper spp.), processed",904,Energy [kcal],306.16
+1,All years,23922,"Chillies and peppers, dry (capsicum spp., pimenta), processed",203,Protein [g],14.14
+1,All years,23922,"Chillies and peppers, dry (capsicum spp., pimenta), processed",208,Energy [kcal],1321.04
+1,All years,23922,"Chillies and peppers, dry (capsicum spp., pimenta), processed",904,Energy [kcal],318.73
+1,All years,23923,"Nutmeg, mace, cardamoms, processed",203,Protein [g],7.77
+1,All years,23923,"Nutmeg, mace, cardamoms, processed",208,Energy [kcal],1808.43
+1,All years,23923,"Nutmeg, mace, cardamoms, processed",904,Energy [kcal],435.61
+1,All years,23924,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed",203,Protein [g],17.745
+1,All years,23924,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed",208,Energy [kcal],1530.63
+1,All years,23924,"Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed",904,Energy [kcal],368.1475
+1,All years,23925,"Cinnamon (canella), processed",203,Protein [g],3.99
+1,All years,23925,"Cinnamon (canella), processed",208,Energy [kcal],1005.84
+1,All years,23925,"Cinnamon (canella), processed",904,Energy [kcal],243.28
+1,All years,23926,"Cloves (whole stems), processed",203,Protein [g],5.98
+1,All years,23926,"Cloves (whole stems), processed",208,Energy [kcal],1577.02
+1,All years,23926,"Cloves (whole stems), processed",904,Energy [kcal],380.99
+1,All years,23927,"Ginger, processed",203,Protein [g],8.98
+1,All years,23927,"Ginger, processed",208,Energy [kcal],1400.18
+1,All years,23927,"Ginger, processed",904,Energy [kcal],332.36
+1,All years,23928,"Vanilla, processed",203,Protein [g],0.06
+1,All years,23928,"Vanilla, processed",208,Energy [kcal],1215.72
+1,All years,23928,"Vanilla, processed",904,Energy [kcal],292.14
+1,All years,23929,"Other spices and aromatics, processed",203,Protein [g],11.353333
+1,All years,23929,"Other spices and aromatics, processed",208,Energy [kcal],1382.082222
+1,All years,23929,"Other spices and aromatics, processed",904,Energy [kcal],330.936667
+1,All years,23991,"Homogenized preparations of meat, vegetables, fruit or nuts; preparations of milk, flour, meal, starch or malt extract, for infant use n.e.; homogenized composite food preparations",203,Protein [g],6.258947
+1,All years,23991,"Homogenized preparations of meat, vegetables, fruit or nuts; preparations of milk, flour, meal, starch or malt extract, for infant use n.e.; homogenized composite food preparations",208,Energy [kcal],341.355789
+1,All years,23991,"Homogenized preparations of meat, vegetables, fruit or nuts; preparations of milk, flour, meal, starch or malt extract, for infant use n.e.; homogenized composite food preparations",904,Energy [kcal],81.364211
+1,All years,23993,"Eggs, not in shell, and egg yolks, fresh or preserved; egg albumin",203,Protein [g],27.563333
+1,All years,23993,"Eggs, not in shell, and egg yolks, fresh or preserved; egg albumin",208,Energy [kcal],1112.801111
+1,All years,23993,"Eggs, not in shell, and egg yolks, fresh or preserved; egg albumin",904,Energy [kcal],266.574444
+1,All years,23995,Sauces, mixed condiments, mustard flour and meal, prepared mustard
+1,All years,23995,Sauces, mixed condiments, mustard flour and meal, prepared mustard
+1,All years,23995,Sauces, mixed condiments, mustard flour and meal, prepared mustard
+1,All years,24131,"Spirits, liqueurs and other spirituous beverages of an alcoholic strength by volume of about 40% vol",203,Protein [g],0
+1,All years,24131,"Spirits, liqueurs and other spirituous beverages of an alcoholic strength by volume of about 40% vol",208,Energy [kcal],1020.5
+1,All years,24131,"Spirits, liqueurs and other spirituous beverages of an alcoholic strength by volume of about 40% vol",904,Energy [kcal],246.325
+1,All years,24139,Other spirituous beverages and undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol,203,Protein [g],0
+1,All years,24139,Other spirituous beverages and undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol,208,Energy [kcal],1020.5
+1,All years,24139,Other spirituous beverages and undenatured ethyl alcohol of an alcoholic strength by volume of less than 80% vol,904,Energy [kcal],246.325
+1,All years,24211,Sparkling wine of fresh grapes,203,Protein [g],0.07
+1,All years,24211,Sparkling wine of fresh grapes,208,Energy [kcal],343.58
+1,All years,24211,Sparkling wine of fresh grapes,904,Energy [kcal],82.66
+1,All years,24212,"Wine of fresh grapes, except sparkling wine; grape must",203,Protein [g],0.135
+1,All years,24212,"Wine of fresh grapes, except sparkling wine; grape must",208,Energy [kcal],505.2525
+1,All years,24212,"Wine of fresh grapes, except sparkling wine; grape must",904,Energy [kcal],121.155
+1,All years,24220,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,203,Protein [g],0.2
+1,All years,24220,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,208,Energy [kcal],679.83
+1,All years,24220,Vermouth and other wine of fresh grapes flavoured with plats or aromatic substances,904,Energy [kcal],162.66
+1,All years,24230,"Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt",203,Protein [g],0.1
+1,All years,24230,"Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt",208,Energy [kcal],196.81
+1,All years,24230,"Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt",904,Energy [kcal],46.37
+1,All years,24310,Beer made from malt,203,Protein [g],0.33
+1,All years,24310,Beer made from malt,208,Energy [kcal],145.934
+1,All years,24310,Beer made from malt,904,Energy [kcal],34.948
+1,All years,24320,"Malt, whether or not roasted",203,Protein [g],10.28
+1,All years,24320,"Malt, whether or not roasted",208,Energy [kcal],1510.04
+1,All years,24320,"Malt, whether or not roasted",904,Energy [kcal],356.68
+1,All years,24410,"Bottled waters, not sweetened or flavoured",203,Protein [g],0
+1,All years,24410,"Bottled waters, not sweetened or flavoured",208,Energy [kcal],0
+1,All years,24410,"Bottled waters, not sweetened or flavoured",904,Energy [kcal],0
+1,All years,24490,Other non-alcoholic caloric beverages,203,Protein [g],0.040667
+1,All years,24490,Other non-alcoholic caloric beverages,208,Energy [kcal],117.330667
+1,All years,24490,Other non-alcoholic caloric beverages,904,Energy [kcal],27.611333

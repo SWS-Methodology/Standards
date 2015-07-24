@@ -5,10 +5,23 @@ classoption: landscape
 ---
 
 # TO DO
-- The trade figures I quote here are based on the US data, but not exactly.  We have HS6 trade data, and I can map that to CPC.  However, some HS6 codes map to many CPC codes.  My understanding is that the historical approach has been to not use split factors and to simply map the quantity straight into one of the CPC codes.  For this simple example, I map the HS data to CPC and randomly split it.
-- The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.
+## Important Tasks
 - We need to include proteins/fats/calories
 - We should include an example where the primary product is eaten as such.
+- Implement calculation for tourist element.
+- Implement calculation for industrial element.
+- Implement calculation for feed element.
+- Implement calculation for residual element.
+- Review trade portion from Alex and incorporate into this document.
+- Discuss trade for countries with access to customs and without.
+- Balancing algorithm: determine a good way to choose the tolerance automatically.  It's manually tuned in this example, and that clearly won't work for general food balance sheet processes.
+- Add text/content to the document to provide more explanation of each example.
+
+## Minor Tasks
+- Loss module: clean up the functions in the one script and put them into individual files with roxygen-style documentation (even if very sparse at the moment).  This is crucial for transferring this work back to an R module on the system.
+- All modules: clean up hard-coded numbers, column names, etc.
+- The trade figures I quote here are based on the US data, but not exactly.  We have HS6 trade data, and I can map that to CPC.  However, some HS6 codes map to many CPC codes.  My understanding is that the historical approach has been to not use split factors and to simply map the quantity straight into one of the CPC codes.  For this simple example, I map the HS data to CPC and randomly split it.
+- The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.  At the least, it would be good to have a tree for processing and a tree for standardization (some elements, for example beer, bran, etc. don't standardize up to the same thing they were processed from).
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -582,10 +595,6 @@ printTable(toPrint, params)
 })})
 ```
 
-
-
-NOTE (Josh): At this point, we should also compute calories/proteins/fats.
-
 Now, the final step is aggregating this full table back into primary equivalent.  For most elements, this is trivial: for example, the final stock change for wheat will simply be the current stock change because there is no stock change for processed products.  However, there are three elements that must be handled differently: imports, exports, and food.  Note that the final value for wheat equivalent production is simply the current value for wheat production: this is because ``production'' of flour (or any other processed product) isn't really production in the sense that the flour is acquired from a different commodity (whereas production of wheat is truly a production as it is not derived from anything else).  Also, food processing will not be standardized as it is more of an accounting variable that specifies how much of a commodity at one level should be processed into a different commodity.
 
 To standardize trade and food, we can simply aggregate the trade and food of the children commodities up into their primary equivalent by dividing by the extraction rate.  We add these primary equivalents to the current value of trade/food of wheat, and we have our final, primary equivalent trade/food of wheat.  Also, feed is not standardized back into wheat equivalent as it is accounted for **???**.
@@ -609,6 +618,24 @@ finalValues = finalValues[timePointYears == "2011", ]
 printTable(finalValues, standParams = params)
 })})
 ```
+
+NOTE (Josh): At this point, we should also compute calories/proteins/fats.
+We can also compute calories, fats, and proteins at this point.  First, we apply a calorie/fat/protein content factor to each individual element:
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+
+nutrient = fread(paste0(workingDir, "nutrientData.csv"),
+                 colClasses = c(rep("character", 6), "numeric"))
+nutrient = nutrient[, c("measuredItemCPC", "Nutrient", "Value"), with = FALSE]
+nutrient[, measuredItemCPC]
+
+toPrint = wheatData[timePointYears == "2011" & element == params$foodCode, ]
+toPrint = merge(toPrint, nutrient, by = params$itemVar)
+
+})})
+```
+
 
 ```{r, echo = FALSE}
 ## We're done with wheat, so let's remove that data to make sure we don't
