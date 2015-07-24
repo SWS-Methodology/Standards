@@ -1,6 +1,6 @@
 ---
 title: "Food Balance Sheets"
-output: pdf_document
+output: word_document
 classoption: landscape
 ---
 
@@ -59,9 +59,12 @@ if(Sys.info()[7] == "josh"){ # Josh Work
     workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
     workingDir = "~/Github/privateFAO/OrangeBook/"
+} else if(Sys.info()[7] == "Golini"){ # Josh virtual & home
+    workingDir = "~/Github/privateFAO/OrangeBook/"
 } else {
     stop("No working dir for current user!")
 }
+
 ## Source AUPUS files
 files = dir(paste0(workingDir, "../../faoswsAupus/R"), full.names = TRUE)
 ## Assign to temp so as to prevent writing to screen
@@ -87,6 +90,7 @@ sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
               "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
               "01809", "F7162", "F7163")
 fullData = fread(paste0(workingDir, "standardizationData.csv"))
+names(fullData)
 fullData = fullData[timePointYears == currentYear &
                         geographicAreaM49 == currentCountry, ]
 ## Coerce food from logical (default since all NA) to numeric
@@ -175,7 +179,7 @@ wheatData = tidyr::spread(data = wheatData, key = "variableType", value = "value
 ## Remove alot of the data, and "impute" it later
 wheatData[, Value := rep(0, nrow(wheatData))]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -198,7 +202,7 @@ toPrint[measuredItemCPC == "23110" & element %in% c("5312", "5421"), Value := NA
 toPrint[measuredItemCPC == "23110" & element == "5510", Value := 
     fullData[measuredItemCPC == "23110" & timePointYears == currentYear &
                  geographicAreaM49 == currentCountry, Value_measuredElement_5510]]
-printProductionTable(toPrint, params)
+printProductionTable(toPrint, params, workingDir = workingDir)
 
 })})
 ```
@@ -212,7 +216,7 @@ suppressWarnings({suppressMessages({
 toPrint[measuredItemCPC == "0111" & element == "5421", Value := 
     fullData[measuredItemCPC == "0111" & timePointYears == currentYear &
                  geographicAreaM49 == currentCountry, Value_measuredElement_5421]]
-printProductionTable(toPrint, params)
+printProductionTable(toPrint, params, workingDir = workingDir)
 
 })})
 ```
@@ -226,7 +230,7 @@ suppressWarnings({suppressMessages({
 toPrint[measuredItemCPC == "0111" & element == "5510", Value := 
     fullData[measuredItemCPC == "0111" & timePointYears == currentYear &
                  geographicAreaM49 == currentCountry, Value_measuredElement_5510]]
-printProductionTable(toPrint, params)
+printProductionTable(toPrint, params, workingDir = workingDir)
 
 })})
 ```
@@ -265,7 +269,7 @@ suppressWarnings({suppressMessages({
 #                        productionImputationParameters = prodIParams)
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5510"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 
 })})
 ```
@@ -304,7 +308,7 @@ wheatData = wheatData[geographicAreaM49 == currentCountry, ]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element %in% c("5600", "5900")]
 ## Print the trade data
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -326,7 +330,7 @@ replaceData(wheatData,
 wheatData[element == "71" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "71"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -351,7 +355,7 @@ replaceData(wheatData,
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5141" & Value > 0]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -372,7 +376,7 @@ wheatData[element == "5120" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5120"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 warning("Standard error for loss data is currently just 10% of loss value, it ",
         "is not estimated in any way.")
@@ -400,7 +404,7 @@ wheatData[element == "5525" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5525"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -446,7 +450,7 @@ We first start with the pre-standardized table:
 # load(paste0(workingDir, "preStandardizedWheat.RData"))
 suppressWarnings({suppressMessages({
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -460,7 +464,7 @@ computeProcessedProduction(data = wheatData, tree = tree, standParams = params)
 wheatData[element == "5510" & Value < 0, Value := 0]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := (element == "5510" & Value < 18000000)]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -475,7 +479,7 @@ distributionTable = toPrint[measuredItemCPC %in% c(flourCode, bulgurCode,
 setnames(distributionTable, c("Item", "prodMean", "prodSd"))
 distributionTable[, wheatMean := prodMean / c(.72, .95, 1, .22)]
 distributionTable[, wheatSd := prodSd / c(.72, .95, 1, .22)]
-printStandardizationTable(distributionTable, params)
+printStandardizationTable(distributionTable, params, workingDir = workingDir)
 })})
 ```
 
@@ -488,7 +492,7 @@ toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := (element == params$foodProcCode &
                              measuredItemCPC == "0111")]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 invisible(toPrint[, updateFlag := NULL])
 })})
 ```
@@ -552,7 +556,7 @@ sink()
 distributionTable[is.na(adjustment), adjustment := 0]
 distributionTable[, wheatMean := wheatMean + adjustment]
 distributionTable[, prodMean := prodMean + adjustment * c(.72, .95, 1, .22)]
-printStandardizationTable(distributionTable, params)
+printStandardizationTable(distributionTable, params, workingDir = workingDir)
 })})
 ```
 
@@ -581,7 +585,7 @@ toPrint[, updateFlag := (measuredItemCPC == germCode) |
             (element %in% c(params$foodCode, params$productionCode, params$feedCode) &
                  measuredItemCPC %in% c(bulgurCode, germCode, cerealsCode, branCode) &
                  Value > 0)]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -594,7 +598,7 @@ finalSuaBalance(wheatData, standParams = params,
 toPrint = wheatData[timePointYears == "2011", ]
 toPrint[, updateFlag := element == params$foodCode &
             measuredItemCPC %in% c(starchCode, flourCode)]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -618,7 +622,7 @@ params$elementPrefix = ""
 finalValues = finalStandardizationToPrimary(data = wheatData, tree = standTree,
                                             standParams = params)
 finalValues = finalValues[timePointYears == "2011", ]
-printTable(finalValues, standParams = params)
+printTable(finalValues, standParams = params, workingDir)
 })})
 ```
 
@@ -701,7 +705,7 @@ sugarData = tidyr::spread(data = sugarData, key = "variableType", value = "value
 ## Remove alot of the data, and "impute" it later
 sugarData[, Value := rep(0, nrow(sugarData))]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -721,7 +725,7 @@ sugarData[element == "5510" & Value == 0, Value := NA]
 sugarData[, Value_measuredElement_5510 := NULL]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5510"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 
 })})
 ```
@@ -760,7 +764,7 @@ sugarData = sugarData[geographicAreaM49 == currentCountry, ]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element %in% c("5600", "5900")]
 ## Print the trade data
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -782,7 +786,7 @@ replaceData(sugarData,
 sugarData[element == "71" & Value == 0, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "71"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -807,7 +811,7 @@ replaceData(sugarData,
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5141" & Value > 0]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -828,7 +832,7 @@ sugarData[element == "5120" & Value == 0, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5120"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 warning("Standard error for loss data is currently just 10% of loss value, it ",
         "is not estimated in any way.")
@@ -855,7 +859,7 @@ sugarData[element == "5525" & Value == 0, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5525"]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 warning("Standard error for seed data is currently just 10% of seed value, it ",
         "is not estimated in any way.")
@@ -904,7 +908,7 @@ We first start with the pre-standardized table:
 # load(paste0(workingDir, "preStandardizedSugar.RData"))
 suppressWarnings({suppressMessages({
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -934,7 +938,7 @@ invisible(toPrint[measuredItemCPC == 23520 &
         c("Value", "updateFlag") := list(
             toPrint[measuredItemCPC == 23210.04 &
                         element == params$productionCode, Value], TRUE)])
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -965,7 +969,7 @@ invisible(toPrint[measuredItemCPC == 23512 &
         c("Value", "updateFlag") := list(
             toPrint[measuredItemCPC == 23520 &
                         element == params$productionCode, Value]/.92, TRUE)])
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -1004,7 +1008,7 @@ toPrint[measuredItemCPC == "01801" & element == params$foodProcCode,
 toPrint[measuredItemCPC == "01802" & element == params$foodProcCode,
         c("Value", "updateFlag") := list(10395634, TRUE)]
 })
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 ```
 
 ```{r, echo = FALSE}
@@ -1020,7 +1024,7 @@ toPrint[, updateFlag := (element == params$foodProcCode & Value > 0)]
 
 ```{r, echo = FALSE, eval = FALSE}
 ## Set eval to TRUE to verify the two processes give the same result.
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 ```
 
 Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for each of the elements for wheat:
@@ -1081,7 +1085,7 @@ toPrint[, updateFlag := (measuredItemCPC == germCode) |
             (element %in% c(params$foodCode, params$productionCode, params$feedCode) &
                  measuredItemCPC %in% c(bulgurCode, germCode, cerealsCode, branCode) &
                  Value > 0)]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
@@ -1092,7 +1096,7 @@ finalSuaBalance(sugarData, standParams = params,
 toPrint = sugarData[timePointYears == "2011", ]
 toPrint[, updateFlag := element == params$foodCode &
             measuredItemCPC %in% c(starchCode, flourCode)]
-printTable(toPrint, params)
+printTable(toPrint, params, workingDir)
 })})
 ```
 
