@@ -22,4 +22,8 @@ key = DatasetKey(domain = "suafbs", dataset = "nutrient_factors_cpc",
                      Dimension(name = "measuredItemCPC", keys = cpcCodes),
                      Dimension(name = "timePointFake", keys = "1")
                  ))
-nutrientData = GetData(key)
+nutrientData = GetData(key, normalized = FALSE)
+setnames(nutrientData, paste0("Value_measuredElementNutritive_", c(203, 204, 208, 904)),
+         c("Protein", "Fat", "Energy", "Energy2"))
+nutrientData[, Energy2 := NULL] # Maybe kiloJoules???  Seems to be 4.18 times greater than the other...
+save(nutrientData, file = "~/Documents/Github/privateFAO/OrangeBook/nutrientData.RData")
