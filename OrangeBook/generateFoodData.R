@@ -18,7 +18,7 @@ GetTestEnvironment(
 
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
-cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
+cattleKeys = c("02111", "21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
 palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
                 "21700.02", "F1243", "34550", "F1275", "34120")
@@ -194,9 +194,9 @@ foodEstimates[, measuredItemCPC := faoswsUtil::fcl2cpc(
     formatC(as.numeric(measuredItemFS), width = 4, flag = "0"))]
 
 if(Sys.info()[7] == "rockc_000"){
-    save(foodEstimates, file = "~/GitHub/Working/OrangeBook/foodEstimates.RData")
+    save(foodEstimates, file = "~/GitHub/privateFAO/OrangeBook/foodEstimates.RData")
 } else if(Sys.info()[7] == "josh"){
-    save(foodEstimates, file = "~/Documents/Github/Working/OrangeBook/foodEstimates.RData")
+    save(foodEstimates, file = "~/Documents/Github/privateFAO/OrangeBook/foodEstimates.RData")
 } else {
     stop("Need path for this user!")
 }

@@ -17,7 +17,7 @@ if(Sys.info()[7] == "josh"){ # Josh Work
 
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
-cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
+cattleKeys = c("02111", "21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
 palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
                 "21700.02", "F1243", "34550", "F1275", "34120")
@@ -40,7 +40,9 @@ key = DatasetKey(
                                      "geographicAreaM49")[type == "country", code]),
         Dimension(name = "measuredElement", keys = c("5113", "5025", "5312", "5510", "5421",
                                                      "5520", "5525", "5023", "5327", "5016",
-                                                     "5141", "5120")),
+                                                     "5141", "5120",
+                                                     # Cattle: head, carcass weight, born
+                                                     "5031", "5417", "5518")),
         Dimension(name = "measuredItemCPC", keys = c(wheatKeys, cattleKeys,
                                                      palmOilKeys, sugarKeys)),
         ## 15 years
@@ -167,21 +169,3 @@ shareData = rbind(shareData,
     ))
 
 write.csv(shareData, file = paste0(workingDir, "shareData.csv"), row.names = FALSE)
-
-
-###############################################################################
-# Nutrient Factors                                                            #
-###############################################################################
-
-nutrCodes = GetCodeList("suafbs", "nutrient_factors_cpc",
-                        "measuredElementNutritive")
-nutrCodes = nutrCodes[description %in% c("Energy [kcal]", "Protein [g]",
-                                         "Carbohydrate, by difference [g]"),
-                      code]
-GetCodeList("suafbs", "nutrient_factors_cpc",
-                        "measuredItemHS")
-GetCodeList("suafbs", "nutrient_factors_cpc",
-                        "timePointFake")
-key = DatasetKey(domain = "suafbs", dataset = "nutrient_factors_cpc",
-                 dimensions = list(
-                     Dimension("measuredElementNutritive",

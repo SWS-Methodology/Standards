@@ -6,7 +6,7 @@ library(magrittr)
 library(reshape2)
 library(igraph)
 
-buildModel = FALSE
+buildModel = TRUE
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
 cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
@@ -29,6 +29,8 @@ elementAgVar = "measuredElement"
 valuePrefix = "Value_"
 flagObsPrefix = "flagObservationStatus_"
 flagMethodPrefix = "flagMethod_"
+
+modelType = "numericYear"
 
 if(Sys.info()[7] == "rockc_000"){
     lossModelPath = "//hqlprsws1.hq.un.fao.org/sws_r_share/browningj/loss/lossModel.RData"
@@ -439,14 +441,7 @@ imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
     imputedData = copy(data)
     
     fact = sapply(imputedData,function(x)is.factor(x))
-    factOk = imputedData[,names(which(fact == "TRUE"))] 
-    
-    lossLmeModelPartial =
-      lmer(log(Value_measuredElement_5120) ~ as.numeric(timePointYears) +
-               log(Value_measuredElement_5510 + 1) +
-             (-1 + log(Value_measuredElement_5510 + 1)|
-                foodPerishableGroup/foodGroupName/measuredItemCPC/geographicAreaM49Name),
-           data = finalModelData)
+    factOk = imputedData[, names(which(fact == "TRUE"))] 
     
     imputedData[, lossPredicted := exp(predict(lossModel, newdata = imputedData,
                                 allow.new.levels = TRUE))]
