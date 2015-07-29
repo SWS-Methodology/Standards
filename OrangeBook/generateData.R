@@ -11,8 +11,10 @@ if(Sys.info()[7] == "josh"){ # Josh Work
     workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
     workingDir = "~/Github/privateFAO/OrangeBook/"
+} else if(Sys.info()[7] == "Golini"){ # Nata work
+  workingDir = "~/Github/privateFAO/OrangeBook/"
 } else {
-    stop("No working dir for current user!")
+  stop("No working dir for current user!")
 }
 
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
