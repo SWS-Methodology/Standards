@@ -136,19 +136,9 @@ suaTree[parentID == "0111" & childID %in% c("23110", "39120.01", "23140.01"),
 suaTree[parentID == "21111.01" & childID %in% c("21111.02", "21512.01"),
         groupID := "21111.01-21111.02"]
 ## Manually adjust some values, in particular to prevent infinite rates
-suaTree[parentID == "0111" & childID == "23140.02", extractionRate := 0.06]
+suaTree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
 suaTree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
-toAdd = data.table(
-    childID = c(),
-    target = "B",
-    extractionRate = c(),
-    parentID = c(),
-    calorieExtractionRate = 1)
     
-suaTree = suaTree[order(parentID, childID), ]
-otherTree = fread("~/Desktop/rightTree.csv", colClasses = c("character", "character", "numeric", "character", "character", "character"))
-otherTree = otherTree[order(parentID, childID), ]
-compare = merge(suaTree, otherTree, by = c("childID", "parentID"), all = TRUE)
 write.csv(suaTree, file = paste0(workingDir, "standardizationTree.csv"),
           row.names = FALSE)
 
