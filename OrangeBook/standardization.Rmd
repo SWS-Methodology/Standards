@@ -580,7 +580,7 @@ toPrint[, updateFlag := (measuredItemCPC == germCode) |
 printTable(toPrint, params, workingDir)
 })})
 ```
-
+ 
 Our food balance sheet is nearly completed, except that some commodities haven't been handled yet.  In particular, wheat starch had imports exceeding exports and so we have not balanced that commodity yet; also, wheat flour has official production and so we haven't modified that commodity either.  These unbalanced elements must be updated, and since the production is already fixed (either because it's an official figure or because it's 0) the balancing is very straight-forward: the uncertainty will be entirely allocated to food (or, in general, to either food or feed).
 
 ```{r, echo = FALSE}
@@ -702,17 +702,17 @@ For production data, we first fill in the table with any available official figu
 suppressWarnings({suppressMessages({
     
 toPrint = cattleData[geographicAreaM49 == currentCountry & timePointYears == currentYear &
-                        measuredItemCPC %in% c("0111", "23110"), ]
+                        measuredItemCPC %in% c("02111", "21111"), ]
 ## Force cattle to be missing except for area harvested
-toPrint[measuredItemCPC == "0111" & element %in% c("5510", "5421"), Value := 0]
-toPrint[measuredItemCPC == "0111" & element == "5312", Value := 
-    fullData[measuredItemCPC == "0111" & timePointYears == currentYear &
-                 geographicAreaM49 == currentCountry, Value_measuredElement_5312]]
+# toPrint[measuredItemCPC == "0111" & element %in% c("5510", "5421"), Value := 0]
+# toPrint[measuredItemCPC == "0111" & element == "5312", Value := 
+#     fullData[measuredItemCPC == "0111" & timePointYears == currentYear &
+#                  geographicAreaM49 == currentCountry, Value_measuredElement_5312]]
 ## Force flour to be missing except for production
-toPrint[measuredItemCPC == "23110" & element %in% c("5312", "5421"), Value := NA]
-toPrint[measuredItemCPC == "23110" & element == "5510", Value := 
-    fullData[measuredItemCPC == "23110" & timePointYears == currentYear &
-                 geographicAreaM49 == currentCountry, Value_measuredElement_5510]]
+# toPrint[measuredItemCPC == "23110" & element %in% c("5312", "5421"), Value := NA]
+# toPrint[measuredItemCPC == "23110" & element == "5510", Value := 
+#     fullData[measuredItemCPC == "23110" & timePointYears == currentYear &
+#                  geographicAreaM49 == currentCountry, Value_measuredElement_5510]]
 printProductionTable(toPrint, params, workingDir = workingDir)
 
 })})

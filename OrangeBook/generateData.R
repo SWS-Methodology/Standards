@@ -42,7 +42,7 @@ key = DatasetKey(
                                                      "5520", "5525", "5023", "5327", "5016",
                                                      "5141", "5120",
                                                      # Cattle: head, carcass weight, born
-                                                     "5031", "5417", "5518")),
+                                                     "5031", "5417", "5514")),
         Dimension(name = "measuredItemCPC", keys = c(wheatKeys, cattleKeys,
                                                      palmOilKeys, sugarKeys)),
         ## 15 years
