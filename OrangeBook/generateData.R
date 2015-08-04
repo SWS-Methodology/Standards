@@ -135,6 +135,10 @@ suaTree[parentID == "0111" & childID %in% c("23110", "39120.01", "23140.01"),
         groupID := "0111-23110"]
 suaTree[parentID == "21111.01" & childID %in% c("21111.02", "21512.01"),
         groupID := "21111.01-21111.02"]
+## Manually adjust some values, in particular to prevent infinite rates
+suaTree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
+suaTree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
+    
 write.csv(suaTree, file = paste0(workingDir, "standardizationTree.csv"),
           row.names = FALSE)
 
