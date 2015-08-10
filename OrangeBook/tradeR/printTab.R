@@ -1,7 +1,18 @@
-# Wrapper around pander::table to reduce some typing
+# Wrapper around pander::pandoc.table to reduce some typing
 #
 # style "grid" produces LibreOffice friendly tables
 
-printTab <- function(tbl, style = "grid", ...) {
-  pander::table(tbl, style = style, ...)
+printTab <- function(tbl, 
+                     style,
+                     split.table = Inf,
+                     ...) {
+  
+  output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
+  
+  if(output_format == "latex") return(knitr::kable(tbl, ...))
+
+  if(output_format == "docx") return(pander::pandoc.table(tbl, 
+                       style = "grid", 
+                       split.table = Inf, 
+                       ...))
 }

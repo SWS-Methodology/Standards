@@ -80,7 +80,7 @@ FAO receives data on trade flows from [United Nations Statistical Division](http
 
 One can freely download this standardised statistics from the [open data base](http://comtrade.un.org/data/). Statistical Division of FAO gets unstandardised data.
 
-```{r example_raw_data}
+```{r example_raw_data, results = "asis"}
 tbl(trade_src, sql("select 
 year, reporter, partner, hs, flow, weight, qty, qunit, value 
  from tariffline
@@ -105,7 +105,7 @@ Harmonized system classification is declared by WCO up to 6 digits. A country ma
 
 [^meta_copyright]: http://madb.europa.eu Descriptions of country-specific HS-codes are provided by Market Access Database and copyrighted by Mendel Verlag, Germany.
 
-```{r hscodes_us}
+```{r hscodes_us, results = "asis"}
 getMadbExport("US", "0202") %>% 
   mutate(desc = stringr::str_replace(desc, "and entered pursuant to its provisions", "...")) %>% 
   rename(Description = desc) %>% 
@@ -151,7 +151,7 @@ Quality of data is estimated by following indicators:
 
 There are cases when a country reports itself as a partner to exports or imports. Such situations can occur due to mistakes or when an entrepôt exists.
 
-```{r examples_of_selftrade}
+```{r examples_of_selftrade, results = "asis"}
 orange %>% 
   filter(reporter_name == partner_name) %>% 
   group_by(reporter_name, flow) %>% 
@@ -258,7 +258,7 @@ orange %>%
   filter(reporter_name == "United States" & out_range) %>% 
   nrow` trade flows with UV-outliers.
   
-```{r us_outliers_example}
+```{r us_outliers_example, results = "asis"}
 out_tab <- orange %>% 
   filter(reporter_name == "United States" & out_range & !is.na(partner_name)) %>% 
   select(Reporter = reporter_name, 
@@ -281,7 +281,7 @@ out_tab %>%
 
 Now we correct weight of this outlied trade flows with help of median reporter unit value for a given commodity.
 
-```{r outlier_corrections}
+```{r outlier_corrections, results = "asis"}
 out_tab %>% 
   mutate(Weight_corr = round(Value / UV_me, 0),
          Weight_diff = Weight - Weight_corr) %>%
