@@ -38,9 +38,12 @@ trade_src <- src_postgres("sws_data", "localhost", 5432, "trade", .pwd,
 
 cttl <- tbl(trade_src, sql("select * from tariffline"))
 
+agri_db <- tbl(trade_src, sql("select * from ess.agri"))
 
-
-
+orange <- agri_db %>%
+  filter(year == "2011",
+         hs2 %in% c('02', '10', '15')) %>% 
+  collect()
 ```
 
 
