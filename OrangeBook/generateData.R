@@ -138,7 +138,23 @@ suaTree[parentID == "21111.01" & childID %in% c("21111.02", "21512.01"),
 ## Manually adjust some values, in particular to prevent infinite rates
 suaTree[parentID == "0111" & childID == "23140.01", extractionRate := 0.06]
 suaTree[parentID == "0111" & childID == "39120.01", extractionRate := 0.22]
-    
+## Update sugar extraction rates
+suaTree[parentID == "01801" & childID == "23512", extractionRate := 0.14]
+suaTree[parentID == "01801" & childID == "23540",
+        c("extractionRate", "target") := list(0.04, "F")]
+suaTree[parentID == "01801" & childID == "39140.01",
+        c("extractionRate", "target") := list(0.07, "F")]
+suaTree[parentID == "01801", groupID := "01801-23512"]
+suaTree[parentID == "01802" & childID == "23511.01", extractionRate := 0.11]
+suaTree[parentID == "01802" & childID == "23540",
+        c("extractionRate", "target") := list(0.05, "F")]
+suaTree[parentID == "01802" & childID == "39140.02",
+        c("extractionRate", "target") := list(0.25, "F")]
+suaTree[parentID == "01802" & childID %in% c("23511.01", "23540", "39140.02"),
+        groupID := "01802-23511.01"]
+## If processing forward, shares will be required
+suaTree[target == "F", share := 1]
+
 write.csv(suaTree, file = paste0(workingDir, "standardizationTree.csv"),
           row.names = FALSE)
 
