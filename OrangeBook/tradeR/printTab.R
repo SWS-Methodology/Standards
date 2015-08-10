@@ -9,10 +9,16 @@ printTab <- function(tbl,
   
   output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
   
-  if(output_format == "latex") return(knitr::kable(tbl, ...))
-
-  if(output_format == "docx") return(pander::pandoc.table(tbl, 
+  if(output_format == "latex") return(
+    pander::pandoc.table(tbl, 
+                         style = "rmarkdown", 
+                         split.table = split.table, 
+                         ...))
+  
+  if(output_format == "docx") {
+    return(pander::pandoc.table(tbl, 
                        style = "grid", 
-                       split.table = Inf, 
+                       split.table = split.table, 
                        ...))
+  }
 }

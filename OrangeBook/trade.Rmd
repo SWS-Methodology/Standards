@@ -1,6 +1,6 @@
 ---
 title: "Agricultural trade data processing"
-output: word_document
+output: pdf_document
 date: "July 9, 2015"
 ---
 
@@ -12,6 +12,9 @@ knitr::opts_chunk$set(list(echo = FALSE,
                            message = FALSE,
                            fig.height = 10,
                            fig.width = 12))
+
+pander::panderOptions("missing", "-") # How to print missing values in pander output
+
 ```
 
 Last update: `r Sys.time()`
@@ -32,6 +35,16 @@ source(file.path(Sys.getenv("HOME"), "r_adhoc", "trade_prevalid_testing", "setup
 if(length(lapply(dir(file.path(Sys.getenv("HOME"), "r_adhoc", "privateFAO", subdir, sourcedir), 
                      full.names = T), 
                  source)) == 0) stop("Files for sourcing not found")
+
+if(length(lapply(dir(file.path(Sys.getenv("HOME"), 
+                               "sws", 
+                               "sws_r_api", 
+                               "r_modules", 
+                               "trade_prevalidation",
+                               "R"), 
+                     full.names = T), 
+                 source)) == 0) stop("Files from Prevalidation SWS Module for sourcing not found")
+
 
 trade_src <- src_postgres("sws_data", "localhost", 5432, "trade", .pwd, 
                           options = "-c search_path=ess")
@@ -109,11 +122,11 @@ Harmonized system classification is declared by WCO up to 6 digits. A country ma
 getMadbExport("US", "0202") %>% 
   mutate(desc = stringr::str_replace(desc, "and entered pursuant to its provisions", "...")) %>% 
   rename(Description = desc) %>% 
-  printTab(caption = "Extension of HS codes by the US")
+  printTab(caption = "Extension of HS codes by the US", justify = "left")
 
 getMadbExport("BR", "0202") %>% 
   rename(Description = desc) %>% 
-  printTab(caption = "Extension of HS codes by Brazil")
+  printTab(caption = "Extension of HS codes by Brazil", justify = "left")
 ```
 
 The set of HS-codes from the US is wider, than Brazilian one. For boneless meat Brazil doesn't extend standard code 0202.30, when the US use here seven additional codes.
