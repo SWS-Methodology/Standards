@@ -1,6 +1,6 @@
 ---
 title: "Agricultural trade data processing"
-output: pdf_document
+output: word_document
 date: "July 9, 2015"
 ---
 
