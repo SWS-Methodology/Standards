@@ -1,6 +1,6 @@
 ---
 title: "Agricultural trade data processing"
-output: pdf_document
+output: html_document
 date: "July 9, 2015"
 ---
 
@@ -32,8 +32,6 @@ source(file.path(Sys.getenv("HOME"), "r_adhoc", "trade_prevalid_testing", "setup
 if(length(lapply(dir(file.path(Sys.getenv("HOME"), "r_adhoc", "privateFAO", subdir, sourcedir), 
                      full.names = T), 
                  source)) == 0) stop("Files for sourcing not found")
-
-printTab <- function(tbl, ...) knitr::kable(tbl, ...)
 
 trade_src <- src_postgres("sws_data", "localhost", 5432, "trade", .pwd, 
                           options = "-c search_path=ess")
