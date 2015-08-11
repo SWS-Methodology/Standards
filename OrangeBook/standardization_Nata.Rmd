@@ -462,8 +462,6 @@ printTable(toPrint, params, workingDir)
 
 ```{r, echo = FALSE}
 load(paste0(workingDir, "/industrialEstimates.RData"))
-industrialEstimates[, Value_measuredElement_ind :=
-                   Value_measuredElement_5150]
 industrialEstimates[, standardDeviation_measuredElement_ind :=
                    Value_measuredElement_ind * 0.1]
 replaceData(wheatData,
