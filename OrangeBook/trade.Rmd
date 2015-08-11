@@ -412,3 +412,26 @@ tmp_tbl %>%
                          "UV median"))
 ```
 
+
+```{r wheat_flour_problems_tradeflows, results = "asis"}
+orange %>% 
+  filter(reporter_name == "United States" &
+           hs4 == "1008" &
+           (out_range | no_quant)) %>% 
+  select(year, 
+         partner_name, 
+         flow,
+         hs,
+         weight,
+         value,
+         uv,
+         uv_reporter) %>% 
+  printTab(col.names = c("Year",
+                         "Trade partner",
+                         "Flow",
+                         "HS-code",
+                         "Weight, kg",
+                         "Value, $US",
+                         "Unit Value",
+                         "UV median"))
+```
