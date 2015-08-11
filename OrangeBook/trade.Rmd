@@ -286,24 +286,64 @@ out_tab <- orange %>%
     mutate_each(funs(rnd = round(., 2)), 
               starts_with("UV")) 
 out_tab %>% 
-  printTab(caption = "Example trade flows with outlied unit values")
+  printTab(caption = "Example trade flows with outlying unit values")
 
 ```
 
 ## Imputing using reporter median unit values
 
-Now we correct weight of this outlied trade flows with help of median reporter unit value for a given commodity.
+Now we correct weight of this outlying trade flows with help of median reporter unit value for a given commodity.
 
 
-$$ Weight = \frac{Value}{UV_{reporter}} $$
+$$ Weight = \frac{Weight}{UV_{reporter}} $$
 
 ```{r outlier_corrections, results = "asis"}
 out_tab %>% 
   mutate(Weight_corr = round(Value / UV_me, 0),
          Weight_diff = Weight - Weight_corr) %>%
   select(-Value, -UV, -UV_me) %>% 
-  printTab(caption = "Example trade flows with corrected weight")
+  printTab(caption = "Example trade flows with corrected weight",
+           col.names = c("Reporter", 
+                         "Parnter", 
+                         "Flow",
+                         "HS-code",
+                         "Weight, kg",
+                         "Corrected, kg",
+                         "Difference, kg"))
 ```
 
 ## Imputing using data from trade partner (mirroring)
 
+
+Another approach to impute missing or outlying quantities of a reporter is to use mirror data from trade partner. Let's check are there any such trade flows related to wheat among reported by the US.
+
+```{r us_problems_tradeflows, results = "asis"}
+orange %>% 
+  filter(reporter_name == "United States" &
+           hs6 %in% c("100110", "100190") &
+           (out_range | no_quant)) %>% 
+  select(year, 
+         partner_name, 
+         flow,
+         hs,
+         weight,
+         value,
+         uv,
+         uv_reporter) %>% 
+  printTab(col.names = c("Year",
+                         "Trade partner",
+                         "Flow",
+                         "HS-code",
+                         "Weight, kg",
+                         "Value, $US",
+                         "Unit Value",
+                         "UV median"))
+```
+
+Outlier detection algorithm shows, that the price (unit value) in this trade flow differs too much from the median price of trade flows of this commodity, reported by the US: 760 $US per kg versus 1.5 $US per kg.
+
+The commodity code _1001902096_ is country-specific and is used only by the US. It is not listed in the recent Harmonized Tariff Schedule of the United States[^hs_us_2015]. It means this HS-subheading was removed from Harmonized Tariff Schedule and had not been used any more. Panjiva website reports last use of the code was fixed in 2011 and gives description of it[^panjiva]. _1001.90.20.96_ stands for wheat and meslin not mentioned in any other subheadings of _1001.90.20_.
+
+[^hs_us_2015]: http://hts.usitc.gov/?query=wheat Harmonized Tariff Schedule (2015 HTSA Revision 1 Edition) 
+
+[^panjiva]: https://panjiva.com/trendspotting/imports/United-States/1001.90.20.96/Cereals-Wheat-and-meslin-Other-Other-Other-Other/1368 Trend report HTS Code 1001.90.20.96

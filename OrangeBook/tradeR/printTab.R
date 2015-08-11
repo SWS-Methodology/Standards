@@ -3,22 +3,22 @@
 # style "grid" produces LibreOffice friendly tables
 
 printTab <- function(tbl, 
-                     style,
+                     col.names = NULL,
+                     style = NULL,
                      split.table = Inf,
                      ...) {
   
   output_format <- knitr::opts_knit$get("rmarkdown.pandoc.to")
   
-  if(output_format == "latex") return(
-    pander::pandoc.table(tbl, 
-                         style = "rmarkdown", 
-                         split.table = split.table, 
-                         ...))
-  
-  if(output_format == "docx") {
-    return(pander::pandoc.table(tbl, 
-                       style = "grid", 
-                       split.table = split.table, 
-                       ...))
+  if(is.null(style)) {
+    style <- "rmarkdown" # For latex
+    if(output_format == "docx") style <- "grid"
   }
+    
+  if(!is.null(col.names)) colnames(tbl) <- col.names #Pandoc.table doesn't have it
+  
+  pander::pandoc.table(tbl, 
+                       style = style, 
+                       split.table = split.table, 
+                       ...)
 }

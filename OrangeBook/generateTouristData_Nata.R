@@ -250,6 +250,12 @@ caloriesByOrig = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
 caloriesByDest = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
                        by = c("year", "dest", "item")]
 
+# caloriesByOrig %>%
+#   filter(item == 23110 & orig == 840)
+# 
+# caloriesByDest %>%
+#   filter(item == 23110 & dest == 840)
+
 
 ## Why we have calorories for 0111? 
 # as.data.frame(
@@ -282,8 +288,8 @@ caloriesByDest = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
 # caloriesByOrigFinal = merge(as.data.frame(caloriesByOrig), as.data.frame(nutrientData),
 #                              by.x = "item", by.y = "measuredItemCPC")
 # 
-# ## NATA: seems that measuredElementNutritive == "208" indicates Kcal
-# ## and measuredElementNutritive == "904" Kjoules
+# ## NATA: seems that measuredElementNutritive == "208" indicates Kjoules
+# ## and measuredElementNutritive == "904" Kcal
 # caloriesByOrigFinal = filter(caloriesByOrigFinal, measuredElementNutritive == "208")
 
 # NATA: Here I used the nutrientData.RData
@@ -294,32 +300,51 @@ load(paste0(workingDir, "nutrientData.RData"))
 #str(nutrientData)
 #head(nutrientData)
 
-caloriesByOrigFinal = merge(as.data.frame(caloriesByOrig), as.data.frame(nutrientData),
-                              by.x = "item", by.y = "measuredItemCPC",
+
+nutrientData[, Energy_Kcal := Energy * 0.23900573614]
+
+nutrientData = nutrientData %>%
+                  select(measuredItemCPC,Energy_Kcal)
+
+setnames(caloriesByOrig, c("timePointYear","orig","measuredItemCPC","Value"))
+
+caloriesByOrigFinal = merge(caloriesByOrig, nutrientData,
+                              by = "measuredItemCPC",
                             all =TRUE)
-caloriesByOrigFinal$meanValueOrig = caloriesByOrigFinal$V1 / caloriesByOrigFinal$Energy
 
-caloriesByOrigFinal %>%
-  filter(orig == 840 & item == 0111)
 
-caloriesByDestFinal = merge(as.data.frame(caloriesByDest), as.data.frame(nutrientData),
-                            by.x = "item", by.y = "measuredItemCPC", 
+caloriesByOrigFinal[,quantityValueOrig := (Value / Energy_Kcal) / 100000]
+
+
+setnames(caloriesByDest, c("timePointYear","dest","measuredItemCPC","Value"))
+
+caloriesByDestFinal = merge(caloriesByDest, nutrientData,
+                            by = "measuredItemCPC",
                             all = TRUE)
-caloriesByDestFinal$meanValueDest = caloriesByDestFinal$V1 / caloriesByDestFinal$Energy
 
-data8 = merge(caloriesByDestFinal[,c(1:3,9)],caloriesByOrigFinal[,c(1:3,9)],
-                        by.x = c("item","year","dest"),by.y = c("item","year","orig"),
+caloriesByDestFinal[,quantityValueDest := (Value / Energy_Kcal) / 100000]
+
+caloriesByOrigFinal = caloriesByOrigFinal %>%
+  select(measuredItemCPC,timePointYear,orig,quantityValueOrig)
+
+
+caloriesByDestFinal = caloriesByDestFinal %>%
+  select(measuredItemCPC,timePointYear,dest,quantityValueDest)
+
+data8 = merge(as.data.frame(caloriesByDestFinal),as.data.frame(caloriesByOrigFinal),
+                        by.x = c("measuredItemCPC","timePointYear","dest"),
+                        by.y = c("measuredItemCPC","timePointYear","orig"),
                         all = TRUE)
 
 
 ## NATA: it makes sense to set to NAs equal to 0? 
 
-data8$meanValueDest[is.na(data8$meanValueDest)] = 0
-data8$meanValueOrig[is.na(data8$meanValueOrig)] = 0
+data8$quantityValueDest[is.na(data8$quantityValueDest)] = 0
+data8$quantityValueOrig[is.na(data8$quantityValueOrig)] = 0
 
-data8$touristPredicted = data8$meanValueDest - data8$meanValueOrig
+data8$touristPredicted = data8$quantityValueDest - data8$quantityValueOrig
 
-colnames(data8) = c("measuredItemCPC","timePointYears","geographicAreaM49","meanValueDest","meanValueOrig",
+colnames(data8) = c("measuredItemCPC","timePointYears","geographicAreaM49","quantityValueDest","quantityValueOrig",
                               "touristPredicted")
 
 wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
@@ -336,10 +361,19 @@ sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
 selectedTourist = data8 %>%
                     filter(geographicAreaM49 == 840 &  measuredItemCPC %in% c(wheatKeys, cattleKeys, sugarKeys, palmOilKeys))
 
-colnames(selectedTourist) = c("measuredItemCPC","timePointYears","geographicAreaM49","meanValueDest","meanValueOrig",
+colnames(selectedTourist) = c("measuredItemCPC","timePointYears","geographicAreaM49","quantityValueDest","quantityValueOrig",
   "Value_measuredElement_tou")
 
 touristEstimates = data.table(selectedTourist)
+
+# touristEstimates %>%
+#   filter(measuredItemCPC == 23110)
+# 
+# touristEstimates %>%
+#   filter(measuredItemCPC == 0111)
+# 
+# sum(touristEstimates$Value_measuredElement_tou)
+  
 
 # touristEstimates %>%
 #   filter (measuredItemCPC == "0111")
