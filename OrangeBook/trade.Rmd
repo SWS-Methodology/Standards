@@ -55,7 +55,7 @@ agri_db <- tbl(trade_src, sql("select * from ess.agri"))
 
 orange <- agri_db %>%
   filter(year == "2011",
-         hs2 %in% c('02', '10', '15')) %>% 
+         hs2 %in% c('02', '04', '10', '15')) %>% # 4th chapter for demo with Japan
   collect()
 
 orange <- orange %>% 
@@ -166,6 +166,7 @@ There are cases when a country reports itself as a partner to exports or imports
 
 ```{r examples_of_selftrade, results = "asis"}
 orange %>% 
+  filter(hs2 != "04") %>% 
   filter(reporter_name == partner_name) %>% 
   group_by(reporter_name, flow) %>% 
   summarize(ntradeflows = n()) %>% 
@@ -189,6 +190,7 @@ orange <- orange %>%
            missingIndicator(qty, NA))  
 
 missing_qty <- orange %>% 
+  filter(hs2 != "04") %>% 
   group_by(reporter_name) %>% 
   summarize(missing_prop = sum(no_quant) / n()) %>% 
   ungroup() %>% 
@@ -221,13 +223,14 @@ orange <- orange %>%
     qty_all = ifelse(!is.na(weight), weight, qty),
     uv = value / qty_all) %>% 
   select(-qty_all) %>% 
-  group_by(reporter_name, hs) %>% 
+  group_by(reporter_name, hs, flow) %>% 
   mutate(
     uv_reporter = median(uv, na.rm = T),
     out_range = uv %in% boxplot.stats(uv, coef = out_coef, do.conf = F)) %>% 
   ungroup()
 
 orange %>%
+  filter(hs2 != "04") %>% 
   group_by(reporter_name) %>% 
   summarize(prop_of_outs = sum(out_range) / n()) %>%
   top_n(30, prop_of_outs) %>%
@@ -242,6 +245,7 @@ orange %>%
 
 ```{r missings_outliers_together}
 orange %>% 
+  filter(hs2 != "04") %>% 
   group_by(reporter_name) %>% 
   summarize(prop_of_miss = sum(no_quant) / n(),
             prop_of_outs = sum(out_range) / n()) %>% 
@@ -265,14 +269,17 @@ orange %>%
 
 In data reported by USA for 2011 year in HS chapters 2, 10 and 15 there are `r 
 orange %>% 
+  filter(hs2 != "04") %>% 
   filter(reporter_name == "United States" & no_quant) %>% 
   nrow` trade flows with missing quantity and `r 
 orange %>% 
+  filter(hs2 != "04") %>% 
   filter(reporter_name == "United States" & out_range) %>% 
   nrow` trade flows with UV-outliers.
   
 ```{r us_outliers_example, results = "asis"}
 out_tab <- orange %>% 
+  filter(hs2 != "04") %>% 
   filter(reporter_name == "United States" & out_range & !is.na(partner_name)) %>% 
   select(Reporter = reporter_name, 
          Partner  = partner_name,
@@ -283,7 +290,7 @@ out_tab <- orange %>%
          UV       = uv,
          UV_me    = uv_reporter) %>% 
   sample_n(10) %>% 
-    mutate_each(funs(rnd = round(., 2)), 
+  mutate_each(funs(rnd = round(., 2)), 
               starts_with("UV")) 
 out_tab %>% 
   printTab(caption = "Example trade flows with outlying unit values")
@@ -342,8 +349,66 @@ orange %>%
 
 Outlier detection algorithm shows, that the price (unit value) in this trade flow differs too much from the median price of trade flows of this commodity, reported by the US: 760 $US per kg versus 1.5 $US per kg.
 
-The commodity code _1001902096_ is country-specific and is used only by the US. It is not listed in the recent Harmonized Tariff Schedule of the United States[^hs_us_2015]. It means this HS-subheading was removed from Harmonized Tariff Schedule and had not been used any more. Panjiva website reports last use of the code was fixed in 2011 and gives description of it[^panjiva]. _1001.90.20.96_ stands for wheat and meslin not mentioned in any other subheadings of _1001.90.20_.
+The commodity code _1001.90.20.96_ is country-specific and is used only by the US. It is not listed in the recent Harmonized Tariff Schedule of the United States[^hs_us_2015]. It means this HS-subheading was removed from Harmonized Tariff Schedule and had not been used any more. Panjiva website reports last use of the code was fixed in 2011 and gives description of it[^panjiva]. _1001.90.20.96_ stands for wheat and meslin not mentioned in any other subheadings of _1001.90.20_.
 
 [^hs_us_2015]: http://hts.usitc.gov/?query=wheat Harmonized Tariff Schedule (2015 HTSA Revision 1 Edition) 
 
 [^panjiva]: https://panjiva.com/trendspotting/imports/United-States/1001.90.20.96/Cereals-Wheat-and-meslin-Other-Other-Other-Other/1368 Trend report HTS Code 1001.90.20.96
+
+We want to check characteristics of this trade flow from a partner's side. But Japan didn't report any export of wheat-related commodities to the US in 2011. We expand our search to all trade flows from Japan to the US with nearly the same quantity and value. We find suitable trade flow what is not reported by the US.
+
+```{r results = "asis"}
+orange %>% 
+  filter(reporter_name == "Japan" &
+           partner_name == "United States" &
+           year == "2011" &
+         weight < 100 &
+         value < 70000 &
+         value > 30000)%>% 
+  select(year, 
+         partner_name, 
+         flow,
+         hs,
+         weight,
+         value,
+         uv,
+         uv_reporter) %>% 
+  printTab(col.names = c("Year",
+                         "Trade partner",
+                         "Flow",
+                         "HS-code",
+                         "Weight, kg",
+                         "Value, $US",
+                         "Unit Value",
+                         "UV median"))
+# 輸出統計品目表 (2011年版). 
+
+```
+
+_0410.00.000_ Edible products of animal origin (not especially specified) [^jp_hs].
+
+[^jp_hs]: http://www.customs.go.jp/yusyutu/2011/data/e201101j_04.htm  
+
+```{r results = "asis"}
+tmp_tbl <- orange %>%
+  filter(reporter_name == "Japan" &
+           hs == "041000000" &
+           year == "2011" ) %>% 
+    select(year, 
+         partner_name, 
+         weight,
+         value,
+         uv,
+         uv_reporter) 
+
+tmp_tbl$partner_name[is.na(tmp_tbl$partner_name)] <- "Other Asia" # Taken from Comtrade public API
+
+tmp_tbl %>% 
+  printTab(col.names = c("Year",
+                         "Trade partner",
+                         "Weight, kg",
+                         "Value, $US",
+                         "Unit Value",
+                         "UV median"))
+```
+
