@@ -1,6 +1,6 @@
 ---
 title: "Agricultural trade data processing"
-output: html_document
+output: pdf_document
 date: "July 9, 2015"
 ---
 
@@ -12,6 +12,9 @@ knitr::opts_chunk$set(list(echo = FALSE,
                            message = FALSE,
                            fig.height = 10,
                            fig.width = 12))
+
+pander::panderOptions("missing", "-") # How to print missing values in pander output
+
 ```
 
 Last update: `r Sys.time()`
@@ -33,12 +36,50 @@ if(length(lapply(dir(file.path(Sys.getenv("HOME"), "r_adhoc", "privateFAO", subd
                      full.names = T), 
                  source)) == 0) stop("Files for sourcing not found")
 
+if(length(lapply(dir(file.path(Sys.getenv("HOME"), 
+                               "sws", 
+                               "sws_r_api", 
+                               "r_modules", 
+                               "trade_prevalidation",
+                               "R"), 
+                     full.names = T), 
+                 source)) == 0) stop("Files from Prevalidation SWS Module for sourcing not found")
+
+
 trade_src <- src_postgres("sws_data", "localhost", 5432, "trade", .pwd, 
                           options = "-c search_path=ess")
 
 cttl <- tbl(trade_src, sql("select * from tariffline"))
 
+agri_db <- tbl(trade_src, sql("select * from ess.agri"))
 
+orange <- agri_db %>%
+  filter(year == "2011",
+         hs2 %in% c('02', '10', '15')) %>% 
+  collect()
+
+orange <- orange %>% 
+  left_join(getComtradeM49()  %>%
+              mutate(
+                reporter_name = countrycode::countrycode(name,
+                                                       "country.name",
+                                                       "country.name",
+                                                       warn = F)) %>% 
+              select(-name),
+            by= c("reporter" = "code")) %>% 
+  left_join(getOfficialM49() %>% 
+              select(-name) %>% 
+              mutate(
+                # We take iso3 as source because it provides the best cover (only 2 NA)
+                partner_name = countrycode::countrycode(iso3,
+                                                        "iso3c",
+                                                        "country.name",
+                                                        warn = F)) %>% 
+              select(-iso3),
+            by = c("partner" = "code")) %>% 
+  mutate(flow = factor(flow, levels = c(1, 2, 3, 4), 
+                       labels = c("Import", "Export",
+                                  "Re-Import", "Re-Export")))
 
 
 ```
@@ -52,7 +93,7 @@ FAO receives data on trade flows from [United Nations Statistical Division](http
 
 One can freely download this standardised statistics from the [open data base](http://comtrade.un.org/data/). Statistical Division of FAO gets unstandardised data.
 
-```{r example_raw_data}
+```{r example_raw_data, results = "asis"}
 tbl(trade_src, sql("select 
 year, reporter, partner, hs, flow, weight, qty, qunit, value 
  from tariffline
@@ -77,15 +118,15 @@ Harmonized system classification is declared by WCO up to 6 digits. A country ma
 
 [^meta_copyright]: http://madb.europa.eu Descriptions of country-specific HS-codes are provided by Market Access Database and copyrighted by Mendel Verlag, Germany.
 
-```{r hscodes_us}
+```{r hscodes_us, results = "asis"}
 getMadbExport("US", "0202") %>% 
   mutate(desc = stringr::str_replace(desc, "and entered pursuant to its provisions", "...")) %>% 
   rename(Description = desc) %>% 
-  printTab(caption = "Extension of HS codes by the US")
+  printTab(caption = "Extension of HS codes by the US", justify = "left")
 
 getMadbExport("BR", "0202") %>% 
   rename(Description = desc) %>% 
-  printTab(caption = "Extension of HS codes by Brazil")
+  printTab(caption = "Extension of HS codes by Brazil", justify = "left")
 ```
 
 The set of HS-codes from the US is wider, than Brazilian one. For boneless meat Brazil doesn't extend standard code 0202.30, when the US use here seven additional codes.
@@ -108,37 +149,161 @@ Partners' codes in Tariffline data are not standardised and presented as they we
 
 [^m49]: http://rpubs.com/malexan/m49 Matrunich A. (2015). M49 country codes in Tariffline
 
-# Validation of trade data
 
-### Self-trade
+# Initial validation of trade data
+
+At prevalidation step we are to make a decision should we accept data from a specific country for the further processing or not. A country could provide data of good quality for one part of commodities and inadequate level of quality for another part. We want to estimate quality differences between commodities of a country.
+
+Quality of data is estimated by following indicators:
+
+* Share per cent of missing quantities
+* Share per cent of unit value outliers
+
+
+## Self-trade
 
 There are cases when a country reports itself as a partner to exports or imports. Such situations can occur due to mistakes or when an entrepôt exists.
 
-In case of the US 2011 there are no cases of self-trade.
+```{r examples_of_selftrade, results = "asis"}
+orange %>% 
+  filter(reporter_name == partner_name) %>% 
+  group_by(reporter_name, flow) %>% 
+  summarize(ntradeflows = n()) %>% 
+  ungroup() %>% 
+  arrange(desc(ntradeflows)) %>% 
+  rename(Reporter = reporter_name, 
+         Flow = flow, 
+         Total = ntradeflows) %>% 
+  printTab(caption = "Self-trade of commodities from 2nd, 10th and 15th HS chapters in 2011")
+```
 
+## Missing quantity
+
+We identify which reporters provide data of insufficient quality. Firstly for every reporter proportion of trade flows with missing quantity is calculated. 
+
+```{r missing_quantity_props_per_country, cache = F, fig.width = 5, fig.height = 5, dpi = 200}
+no_quant_threshold <- .02
+
+orange <- orange %>% 
+  mutate(no_quant = missingIndicator(weight, NA) &
+           missingIndicator(qty, NA))  
+
+missing_qty <- orange %>% 
+  group_by(reporter_name) %>% 
+  summarize(missing_prop = sum(no_quant) / n()) %>% 
+  ungroup() %>% 
+  filter(missing_prop > no_quant_threshold) %>% 
+  arrange(desc(missing_prop))
+
+missing_qty %>% 
+  mutate(reporter_name = stringr::str_replace(
+    reporter_name, ",.*$", "...")) %>% 
+  ggplot(aes(missing_prop, reorder(reporter_name, missing_prop))) +
+  geom_point() +
+  scale_x_continuous("Trade flows with missing quantities",
+                     labels = scales::percent) +
+  scale_y_discrete("")
+```
 
 ## Detection of outliers
 
-## Imputing of missing quantities and replacement of outliers
+We define outliers as observations located outside the range:
 
-The United Nations collect 
-```{r}
-noqty <- data.frame(hs = getAgriHSCodes(), stringsAsFactors = F) %>% 
-  inner_join(tbl(trade_src, sql("select 
-year, reporter, partner, hs, flow, weight, qty, qunit, value 
- from tariffline
-where year = '2011' and 
-reporter = '842' and weight is null and qty is null")) %>% 
-  collect()  %>% 
-  mutate(hs6 = stringr::str_extract(hs, "^.{6}"),
-         hs2 = stringr::str_extract(hs, "^.{2}")),
-by = c("hs" = "hs6")) %>% 
-  filter(hs2 %in% c('02', '10', '15'))
+$$ [ Q_1 - k (Q_3 - Q_1 ) , Q_3 + k (Q_3 - Q_1 ) ] $$
 
+where $Q_1$ and $Q_3$ are the lower and upper quartiles respectively, and $k$ is a non negative constant. In this paper we use $k$ equals 1.5. 
+
+```{r prop_of_outliers_per_country, fig.width = 5, fig.height = 5, dpi = 300}
+out_coef <- 1.5
+
+orange <- orange %>% 
+  mutate(
+    qty_all = ifelse(!is.na(weight), weight, qty),
+    uv = value / qty_all) %>% 
+  select(-qty_all) %>% 
+  group_by(reporter_name, hs) %>% 
+  mutate(
+    uv_reporter = median(uv, na.rm = T),
+    out_range = uv %in% boxplot.stats(uv, coef = out_coef, do.conf = F)) %>% 
+  ungroup()
+
+orange %>%
+  group_by(reporter_name) %>% 
+  summarize(prop_of_outs = sum(out_range) / n()) %>%
+  top_n(30, prop_of_outs) %>%
+  ggplot(aes(prop_of_outs, reorder(reporter_name, prop_of_outs))) +
+  geom_point() +
+  scale_x_continuous("Trade flows with unit value outliers",
+                     labels = scales::percent) +
+  scale_y_discrete("")
+```
+
+## Missing quantites and outliers combined
+
+```{r missings_outliers_together}
+orange %>% 
+  group_by(reporter_name) %>% 
+  summarize(prop_of_miss = sum(no_quant) / n(),
+            prop_of_outs = sum(out_range) / n()) %>% 
+  filter(prop_of_miss > .001 & prop_of_outs > .001) %>% 
+  ggplot(aes(x = prop_of_miss, 
+             y = prop_of_outs,
+             label = reporter_name)) +
+  geom_text(size = 5) + 
+  scale_x_log10(
+    "Trade flows with missing quantity. Log10 scale",
+    breaks = c(.002, .01, .1, .5, 1),
+    labels = scales::percent) +
+  scale_y_continuous(
+    "Trade flows with UV-outliers",
+    labels = scales::percent)
 ```
 
 
-# Aggregation of trade data
 
-## Reliability index
+# Imputing of missing quantities and replacement of outliers
+
+In data reported by USA for 2011 year in HS chapters 2, 10 and 15 there are `r 
+orange %>% 
+  filter(reporter_name == "United States" & no_quant) %>% 
+  nrow` trade flows with missing quantity and `r 
+orange %>% 
+  filter(reporter_name == "United States" & out_range) %>% 
+  nrow` trade flows with UV-outliers.
+  
+```{r us_outliers_example, results = "asis"}
+out_tab <- orange %>% 
+  filter(reporter_name == "United States" & out_range & !is.na(partner_name)) %>% 
+  select(Reporter = reporter_name, 
+         Partner  = partner_name,
+         Flow     = flow,
+         Commodity = hs,
+         Weight   = weight,
+         Value    = value,
+         UV       = uv,
+         UV_me    = uv_reporter) %>% 
+  sample_n(10) %>% 
+    mutate_each(funs(rnd = round(., 2)), 
+              starts_with("UV")) 
+out_tab %>% 
+  printTab(caption = "Example trade flows with outlied unit values")
+
+```
+
+## Imputing using reporter median unit values
+
+Now we correct weight of this outlied trade flows with help of median reporter unit value for a given commodity.
+
+
+$$ Weight = \frac{Value}{UV_{reporter}} $$
+
+```{r outlier_corrections, results = "asis"}
+out_tab %>% 
+  mutate(Weight_corr = round(Value / UV_me, 0),
+         Weight_diff = Weight - Weight_corr) %>%
+  select(-Value, -UV, -UV_me) %>% 
+  printTab(caption = "Example trade flows with corrected weight")
+```
+
+## Imputing using data from trade partner (mirroring)
 
