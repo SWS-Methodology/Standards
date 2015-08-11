@@ -294,6 +294,9 @@ out_tab %>%
 
 Now we correct weight of this outlied trade flows with help of median reporter unit value for a given commodity.
 
+
+$$ Weight = \frac{Value}{UV_{reporter}} $$
+
 ```{r outlier_corrections, results = "asis"}
 out_tab %>% 
   mutate(Weight_corr = round(Value / UV_me, 0),
