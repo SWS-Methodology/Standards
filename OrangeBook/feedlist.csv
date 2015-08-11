@@ -1,0 +1,209 @@
+item,itemname,ENERGY,PROTEIN,feedClassification
+15,Wheat,13.8,12.6,Potential Feed
+17,Bran Wheat,14.3,17.3,FeedOnly
+19,Germ Wheat,15.6,29.5,Potential Feed
+21,Bulgur,13.8,12.6,Potential Feed
+24,Wheat Gluten,15.5,37.3,Potential Feed
+27,"Rice, Paddy",13.3,8.3,Potential Feed
+32,"Rice,Broken",13.6,10.4,Potential Feed
+33,Rice Gluten,6.2,6.7,Potential Feed
+35,Bran Rice,15.5,14.2,FeedOnly
+37,Cake Ricebrn,16.1,14.2,FeedOnly
+44,Barley,14,11.8,Potential Feed
+45,Pot Barley,14,11.8,Potential Feed
+46,"Barley,Pearl",15.9,21.4,Potential Feed
+47,Bran Barley,15.9,21.4,FeedOnly
+56,Maize,14.3,10.5,Potential Feed
+57,Germ Maize,14.4,15.1,Potential Feed
+59,Bran Maize,14.3,21.7,FeedOnly
+61,Cake Maize,14.3,21.7,FeedOnly
+63,Maize Gluten,12,21.7,Potential Feed
+71,Rye,13.6,10.3,Potential Feed
+73,Bran Rye,14,16.9,FeedOnly
+75,Oats,14,11,Potential Feed
+77,Bran Oats,15,19.3,FeedOnly
+79,Millet,14.3,12.5,Potential Feed
+81,Bran Millet,14.4,13.7,FeedOnly
+83,Sorghum,14.3,10.8,Potential Feed
+85,Bran Sorghum,14.2,11.7,FeedOnly
+89,Buckwheat,14.3,10.8,Potential Feed
+91,Bran Buckwht,14.3,10.8,FeedOnly
+94,Fonio,11.8,8.5,Potential Feed
+96,Bran Fonio,12.3,15.3,FeedOnly
+97,Triticale,13.7,11.7,Potential Feed
+99,Bran Tritica,14.3,10,FeedOnly
+101,Canary Seed,12.5,10,Potential Feed
+103,Mixed Grain,14.3,10,Potential Feed
+105,Bran Mix Gr,12.3,15.3,FeedOnly
+108,Cereals nes,14.3,10,Potential Feed
+112,Bran Cereal,12.3,15.3,FeedOnly
+113,Cer Prep nes,14.3,10,Potential Feed
+114,Mixes And Do,14.3,10,FeedOnly
+116,Potatoes,12.8,10.8,Potential Feed
+122,Sweet Potato,13.2,5.5,Potential Feed
+125,Cassava,13,2.6,Potential Feed
+127,Cassava Tap,13,2.6,Potential Feed
+128,Cassava Dr.,12.7,2.9,Potential Feed
+135,Yautia(Coc.),15.8,13.7,Potential Feed
+136,Taro,13,5.4,Potential Feed
+137,Yams,16.3,12,Potential Feed
+149,Roots Tub Ns,13,5.4,Potential Feed
+151,Roots Tub Dr,13,5.4,Potential Feed
+156,Sugar Cane,13.8,4.1,Potential Feed
+157,Sugar Beets,12.8,7.8,Potential Feed
+159,Beet Sugar,15.2,0,Potential Feed
+161,Sugar Crops,15.2,0,Potential Feed
+162,"Sugar,C. Raw",15.2,7.8,Potential Feed
+163,"Sugar,N-Cent",15.2,0,Potential Feed
+164,Sugar Refind,12.8,7.8,Potential Feed
+165,Molasses,11.1,5.5,Potential Feed
+169,Beet P.Dry,12.9,9.3,Potential Feed
+170,Bagasse,14,1.8,Potential Feed
+176,"Beans, Dry",14.1,24.8,Potential Feed
+181,"Brd Beans,Dr",14,24.5,Potential Feed
+187,"Peas, Dry",13.7,8.2,Potential Feed
+191,Chick-Peas,14.9,22.1,Potential Feed
+195,"Cow Peas,Dry",14.9,22.1,Potential Feed
+197,Pigeon Peas,9.8,18.5,Potential Feed
+201,Lentils,14,26.9,Potential Feed
+205,Vetches,14.1,23,Potential Feed
+210,Lupins,14.3,21.5,Potential Feed
+211,Pulses nes,14.3,21.5,Potential Feed
+213,Bran Pulses,14.3,21.5,Potential Feed
+236,Soybeans,14.3,13.7,Potential Feed
+237,Oil Soyabean,15.8,49.3,Potential Feed
+238,Cake Soybean,14.9,51.8,FeedOnly
+242,Groundnuts,20.9,27,Potential Feed
+243,Groundnt She,2.7,6.9,Potential Feed
+245,Cake Groundt,13.7,17.5,FeedOnly
+249,Coconuts,15.2,8.6,Potential Feed
+251,Copra,24.3,8.6,Potential Feed
+253,Cake Coconut,15.2,22.4,FeedOnly
+256,Palm Kernels,8.3,9.4,Potential Feed
+259,"Cake,Plm Ker",15.2,16.7,FeedOnly
+265,Castor Beans,16.1,23.7,Potential Feed
+267,Sunflwr Seed,21.8,16.6,Potential Feed
+269,Cake Sunf Sd,14.7,32.4,FeedOnly
+270,Rapeseed,14.7,32.4,Potential Feed
+271,Oil Rapeseed,14.7,32.4,Potential Feed
+272,Cake Rapesed,14.7,38.3,FeedOnly
+273,Olive Resid,4.5,7.8,Potential Feed
+274,Oil Oliveres,4.1,7.8,Potential Feed
+280,Safflower,10.6,12.6,Potential Feed
+281,Oil Safflwr,8.3,24.8,Potential Feed
+282,Cake Safflwr,8.3,24.8,FeedOnly
+289,Sesame Seed,20.8,23.5,Potential Feed
+290,Oil Ses Sd,14.7,32.4,Potential Feed
+291,Cake Ses Sd,14.7,38.3,FeedOnly
+292,Mustard Seed,21.5,23.4,Potential Feed
+294,Cake Mustard,15.4,34.9,FeedOnly
+296,Poppy Seed,18.6,26.8,Potential Feed
+299,Melonseed,0,16.4,Potential Feed
+314,Cake Kapok,10.2,34.1,FeedOnly
+329,Cottonseed,18,21.8,Potential Feed
+332,Cake Cotton,16.1,45,FeedOnly
+333,Linseed,19,23.7,Potential Feed
+335,Cake Linseed,20.5,23.7,FeedOnly
+336,Hempseed,20.5,23.7,Potential Feed
+338,Cake Hempsd,16.1,23.7,FeedOnly
+339,Oilseeds nes,20.5,23.7,Potential Feed
+340,Oil Vg Or Ns,14.7,32.4,Potential Feed
+341,Cak Oilsd Ns,20.5,23.7,FeedOnly
+343,Oil Meals,20.5,23.7,FeedOnly
+358,Cabbages,20.5,23.7,Potential Feed
+372,Lettuce,20.5,23.7,Potential Feed
+388,Tomatoes,3.9,16.7,Potential Feed
+393,Cauliflower,3.9,16.7,Potential Feed
+394,Pumpk+Sq+Grd,13.5,14.5,Potential Feed
+397,Cucmbr+Gherk,13.5,14.5,Potential Feed
+402,"Onions,Green",13.5,14.5,Potential Feed
+403,"Onions, Dry",13.5,14.5,Potential Feed
+407,Leeks And Ot,13.7,8.2,Potential Feed
+414,"Beans, Green",13.7,8.2,Potential Feed
+417,"Peas, Green",13.7,8.2,Potential Feed
+420,"Brd Bean,Grn",13.7,8.2,Potential Feed
+426,Carrots,12.2,11.7,Potential Feed
+430,Okra,6.5,14.7,Potential Feed
+446,Green Corn,12.2,11.7,Potential Feed
+459,Chicory Root,12.2,11.7,Potential Feed
+460,Veg Pr Fr Dr,12.2,11.7,Potential Feed
+461,Carobs,12.2,9.5,Potential Feed
+463,Vegetables F,12.2,9.5,Potential Feed
+486,Bananas,13,5.2,Potential Feed
+489,Plantains,13.3,20.4,Potential Feed
+490,Oranges,13.9,6.8,Potential Feed
+515,Apples,13.8,6.7,Potential Feed
+521,Pears,13.8,6.7,Potential Feed
+526,Apricots,13.8,6.7,Potential Feed
+530,Sour Cherry,13.8,6.7,Potential Feed
+531,Cherries,13.8,6.7,Potential Feed
+534,Peaches,13.8,6.7,Potential Feed
+536,Plums,13.8,6.7,Potential Feed
+563,Must Grapes,8,13.7,Potential Feed
+566,Grape Marc,6.2,14,Potential Feed
+567,Watermelons,13.8,6.7,Potential Feed
+568,Melons,13.8,6.7,Potential Feed
+569,Figs,7.9,11.9,Potential Feed
+570,"Figs, Dried",7.9,11.9,Potential Feed
+571,Mangoes,14.2,4.7,Potential Feed
+572,Avocados,14.2,4.7,Potential Feed
+577,Dates,14.2,4.7,Potential Feed
+584,Mango Pulp,14.2,4.2,Potential Feed
+603,Frt Trop nes,14.2,4.7,Potential Feed
+619,Fruit nes,14.2,4.2,Potential Feed
+623,Fruit Pr nes,14.2,4.7,Potential Feed
+628,Fr Pulp Feed,14.2,4.2,Potential Feed
+636,Maize Fd+Sil,14.3,10.5,Forage
+637,Sorghum Fs,14.3,10.8,Forage
+641,Alfalfa Fs,9.4,20.6,Forage
+642,G Oilseed Fs,14.7,32.4,Forage
+643,Legumin Fs,14.3,21.5,Forage
+644,Cabbage Fod,13.8,6.7,Forage
+646,Turnips Fod,13.8,6.7,Forage
+647,Beets Fodder,13.8,6.7,Forage
+648,Carrots Fod,12.2,11.7,Forage
+649,Swedes Fod,13.8,6.7,Forage
+651,Forage Prod,13.8,6.7,Forage
+652,Veg Prod,13.8,6.7,Potential Feed
+655,Veg Root Fod,13.8,6.7,Potential Feed
+660,Coffee Husks,14.8,9.4,Potential Feed
+663,Cocoa Husks,14.8,9.4,Potential Feed
+677,Hops,9.8,24.1,Potential Feed
+767,Cotton Lint,13.8,6.7,Potential Feed
+840,Com Feed Cat,14.8,9.4,Forage
+841,Com Feed Pou,14.8,9.4,Forage
+842,Com Feed Pig,14.8,9.4,Forage
+845,Com Feed Oth,14.8,9.4,Forage
+846,Glut Feed&Me,17.7,67,Forage
+850,Feed Sup,14.8,9.4,Forage
+852,Concentr nes,14.8,9.4,Forage
+862,Alfalfa Meal,13.6,18.3,Forage
+882,Cow Milk,12.2,12.5,Potential Feed
+887,"Ghee, Cows",12.2,12.5,Potential Feed
+888,Sk Milk Cows,12.2,12.5,Potential Feed
+890,"Whey,Condens",12.2,12.5,Potential Feed
+893,"Butterm,Curd",12.2,12.5,Potential Feed
+894,"Wh Milk,Evap",12.2,12.5,Potential Feed
+896,Sk Milk Cond,12.2,12.5,Potential Feed
+897,Cowmilk Dry,12.2,12.5,Potential Feed
+898,Milk Sk Dr C,12.2,12.5,Potential Feed
+899,Dry Buttermk,12.2,12.5,Potential Feed
+900,Dry Whey,12.2,12.5,Potential Feed
+903,"Whey, Fresh",12.2,12.5,Potential Feed
+909,Prod.Of Nat.,12.2,12.5,Potential Feed
+951,Buffalo Milk,12.2,12.5,Potential Feed
+954,Milk Sk Buff,12.2,12.5,Potential Feed
+982,Sheep Milk,12.2,12.5,Potential Feed
+985,Sk Milk Shee,12.2,12.5,Potential Feed
+1020,Goat Milk,12.2,12.5,Potential Feed
+1036,Offals Pigs,12.2,12.5,Potential Feed
+1037,Fat Pigs,12.2,12.5,Potential Feed
+1040,Pig But Fat,12.2,12.5,Potential Feed
+1062,Hen Eggs,12.2,12.5,Potential Feed
+1091,Eggs Poultry,12.2,12.5,Potential Feed
+1115,Suckmilk Equ,12.2,12.5,Potential Feed
+1130,Camel Milk,12.2,12.5,Potential Feed
+1168,Oils Animal,12.2,12.5,Potential Feed
+1173,Meat Meal,12.2,12.5,Potential Feed
+1174,Fish Meal,15,48.3,Potential Feed
+1223,Oils Fish,10,54.9,Potential Feed
