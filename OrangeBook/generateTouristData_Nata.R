@@ -315,7 +315,7 @@ caloriesByOrigFinal = merge(caloriesByOrig, nutrientData,
                             all =TRUE)
 
 
-caloriesByOrigFinal[,quantityValueOrig := (Value / Energy_Kcal) / 100000]
+caloriesByOrigFinal[,quantityValueOrig := (Value / Energy_Kcal) / 10000]
 
 
 setnames(caloriesByDest, c("timePointYear","dest","measuredItemCPC","Value"))
@@ -324,7 +324,7 @@ caloriesByDestFinal = merge(caloriesByDest, nutrientData,
                             by = "measuredItemCPC",
                             all = TRUE)
 
-caloriesByDestFinal[,quantityValueDest := (Value / Energy_Kcal) / 100000]
+caloriesByDestFinal[,quantityValueDest := (Value / Energy_Kcal) / 10000]
 
 caloriesByOrigFinal = caloriesByOrigFinal %>%
   select(measuredItemCPC,timePointYear,orig,quantityValueOrig)
@@ -368,13 +368,13 @@ colnames(selectedTourist) = c("measuredItemCPC","timePointYears","geographicArea
 
 touristEstimates = data.table(selectedTourist)
 
-# touristEstimates %>%
-#   filter(measuredItemCPC == 23110)
-# 
-# touristEstimates %>%
-#   filter(measuredItemCPC == 0111)
-# 
-# sum(touristEstimates$Value_measuredElement_tou)
+#  touristEstimates %>%
+#    filter(measuredItemCPC == 23110)
+#  
+#  touristEstimates %>%
+#    filter(measuredItemCPC == 0111)
+#  
+#  sum(touristEstimates$Value_measuredElement_tou)
   
 
 # touristEstimates %>%
