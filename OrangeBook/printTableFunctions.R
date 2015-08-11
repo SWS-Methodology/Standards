@@ -12,7 +12,8 @@ printTable = function(data, standParams, workingDir){
                     standParams$seedCode, standParams$wasteCode,
                     standParams$foodCode, standParams$stockCode,
                     standParams$importCode, standParams$exportCode,
-                    standParams$foodProcCode)
+                    standParams$foodProcCode, standParams$industrialCode,
+                    standParams$touristCode)
 
     ## Add bold style to updated values, round to no decimals, NA to "-"
     printDT[, Value := as.character(round(as.numeric(Value), 0))]
@@ -26,7 +27,7 @@ printTable = function(data, standParams, workingDir){
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
              c("Production", "Feed", "Seed", "Waste",
                "Food", "StockChange", "Imports", "Exports",
-               "Food Processing"))
+               "Food Processing", "Industrial", "Tourist"))
     setnames(printDT, "measuredItemCPC", "Item")
 
     description = fread(paste0(workingDir, "/elementDescription.csv"),

@@ -47,6 +47,7 @@ beetCode = "01801"
 caneCode = "01802"
 beetSugarCode = "23512"
 caneSugarCode = "23511.01"
+refinedSugarCode = "23520"
 molassesCode = "23540"
 
 currentCountry = "840"
@@ -102,6 +103,13 @@ fullData[, c(stockVar) := NA_real_]
 ## Set up empty variable for food processing
 foodProcVar = paste0(params$elementPrefix, params$foodProcCode)
 fullData[, c(foodProcVar) := NA_real_]
+## Set up empty variable for industrial utilization
+indVar = paste0(params$elementPrefix, params$industrialCode)
+fullData[, c(indVar) := NA_real_]
+## Set up empty variable for tourist consumption
+touVar = paste0(params$elementPrefix, params$touristCode)
+fullData[, c(touVar) := NA_real_]
+
 pulledElements = c("5113", "5025", "5312", "5510", "5421", "5520", "5525",
                    "5023", "5327", "5016", "5141", "5120", "f???")
 
@@ -279,13 +287,13 @@ newTradeData = fullData[measuredItemCPC %in% wheatKeys,
                         c("Value_measuredElement_5600", params$mergeKey),
                         with = FALSE]
 newTradeData[, standardDeviation_measuredElement_5600 := 0]
-replaceData(originalData = wheatData, newData = newTradeData,
+wheatData = replaceData(wheatData, newData = newTradeData,
             mergeKey = params$mergeKey)
 newTradeData = fullData[measuredItemCPC %in% wheatKeys,
                         c("Value_measuredElement_5900", params$mergeKey),
                         with = FALSE]
 newTradeData[, standardDeviation_measuredElement_5900 := 0]
-replaceData(originalData = wheatData, newData = newTradeData,
+wheatData = replaceData(wheatData, newData = newTradeData,
             mergeKey = params$mergeKey)
 ## Manually tweak trade to create a deficit.  Makes standardization more
 ## interesting later.
@@ -316,12 +324,12 @@ suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/stockEstimates.RData"))
 setnames(stockEstimates, c("Value", "sdEstimate"),
          paste0(c("Value", "standardDeviation"), "_measuredElement_71"))
-replaceData(wheatData,
-            stockEstimates[, c("Value_measuredElement_71",
-                               "standardDeviation_measuredElement_71",
-                               params$mergeKey),
-                           with = FALSE],
-            mergeKey = params$mergeKey)
+wheatData = replaceData(wheatData,
+    stockEstimates[, c("Value_measuredElement_71",
+                       "standardDeviation_measuredElement_71",
+                       params$mergeKey),
+                   with = FALSE],
+    mergeKey = params$mergeKey)
 wheatData[element == "71" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "71"]
@@ -339,7 +347,7 @@ load(paste0(workingDir, "/foodEstimates.RData"))
 setnames(foodEstimates, c("mean", "var"),
          paste0(c("Value", "standardDeviation"), "_measuredElement_5141"))
 foodEstimates = foodEstimates[geographicAreaM49 == "840", ]
-replaceData(wheatData,
+wheatData = replaceData(wheatData,
             foodEstimates[, c("Value_measuredElement_5141",
                                "standardDeviation_measuredElement_5141",
                                params$mergeKey),
@@ -349,7 +357,29 @@ replaceData(wheatData,
 # wheatData[element == "5141" & Value == 0, Value := NA]
 toPrint = wheatData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-toPrint[, updateFlag := element == "5141" & Value > 0]
+toPrint[, updateFlag := element == "5141"]
+printTable(toPrint, params, workingDir)
+})})
+```
+
+
+### Feed
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/feedEstimates.RData"))
+feedEstimates[, standardDeviation_measuredElement_5520 :=
+                  Value_measuredElement_5520 * .1]
+wheatData = replaceData(wheatData,
+            feedEstimates[, c("Value_measuredElement_5520",
+                               "standardDeviation_measuredElement_5520",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+wheatData[element == "5520" & Value == 0, Value := NA]
+toPrint = wheatData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5520"]
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -361,7 +391,7 @@ suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/lossEstimates.RData"))
 lossEstimates[, standardDeviation_measuredElement_5120 :=
                   Value_measuredElement_5120 * .1]
-replaceData(wheatData,
+wheatData = replaceData(wheatData,
             lossEstimates[, c("Value_measuredElement_5120",
                                "standardDeviation_measuredElement_5120",
                                params$mergeKey),
@@ -373,13 +403,7 @@ toPrint = wheatData[geographicAreaM49 == currentCountry &
 toPrint[, updateFlag := element == "5120"]
 printTable(toPrint, params, workingDir)
 })})
-warning("Standard error for loss data is currently just 10% of loss value, it ",
-        "is not estimated in any way.")
 ```
-
-### Feed
-
-Feed allocation must be done at this phase in order to ensure that we have reduced the feed demand by the corresponding amounts of feed products (i.e. wheat bran, wheat germ, etc.).
 
 ### Seed
 
@@ -389,7 +413,7 @@ load(paste0(workingDir, "/seedEstimates_Nata.RData"))
 seedEstimates[, Value_measuredElement_5525 := seedPredicted]
 seedEstimates[, standardDeviation_measuredElement_5525 :=
                   exp(seedVariance)]
-replaceData(wheatData,
+wheatData = replaceData(wheatData,
             seedEstimates[, c("Value_measuredElement_5525",
                                "standardDeviation_measuredElement_5525",
                                params$mergeKey),
@@ -405,11 +429,55 @@ printTable(toPrint, params, workingDir)
 
 ### Industrial Utilization
 
-Work in progress...
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/industrialEstimates.RData"))
+industrialEstimates[, standardDeviation_measuredElement_ind :=
+                        Value_measuredElement_ind * .1]
+setnames(industrialEstimates, "Value_measuredElement_ind",
+         "Value_measuredElement_i???")
+setnames(industrialEstimates, "standardDeviation_measuredElement_ind",
+         "standardDeviation_measuredElement_i???")
+wheatData = replaceData(wheatData,
+            industrialEstimates[, c("Value_measuredElement_i???",
+                                    "standardDeviation_measuredElement_i???",
+                                    params$mergeKey),
+                                with = FALSE],
+            mergeKey = params$mergeKey)
+wheatData[element == "i???" & Value == 0, Value := NA]
+toPrint = wheatData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "i???"]
+printTable(toPrint, params, workingDir)
+})})
+```
 
 ### Tourist Consumption
 
-The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, that country will certainly have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/touristEstimates.RData"))
+touristEstimates[, standardDeviation_measuredElement_tou :=
+                     abs(Value_measuredElement_tou) * .1]
+setnames(touristEstimates, "Value_measuredElement_tou",
+         "Value_measuredElement_t???")
+setnames(touristEstimates, "standardDeviation_measuredElement_tou",
+         "standardDeviation_measuredElement_t???")
+wheatData = replaceData(wheatData,
+            touristEstimates[, c("Value_measuredElement_t???",
+                                 "standardDeviation_measuredElement_t???",
+                                    params$mergeKey),
+                                with = FALSE],
+            mergeKey = params$mergeKey)
+wheatData[element == "t???" & Value == 0, Value := NA]
+toPrint = wheatData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "t???"]
+printTable(toPrint, params, workingDir)
+})})
+```
 
 ### Residual Other Uses
 
@@ -510,10 +578,11 @@ toPrint = toPrint[element %in% c(params$productionCode, params$exportCode,
                                  params$industrialCode, params$touristCode,
                                  params$residualCode, params$foodProcCode), ]
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
-toPrint[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
-          sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
-          lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
-          optimize = "constrOptim", constrTol = 1e-6)]
+toPrint[, balancedValue := balancing(param1 = sapply(Value, na2zero),
+              param2 = sapply(standardDeviation, na2zero),
+              sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
+              lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
+              optimize = "constrOptim", constrTol = 1e-6)]
 sink()
 toPrint[, adjustment := balancedValue - Value]
 wheatData = merge(wheatData,
@@ -605,10 +674,10 @@ To standardize trade and food, we can simply aggregate the trade and food of the
 suppressMessages({suppressWarnings({
 params$elementPrefix = ""
 invisible({
-tree[, c(params$geoVar) := "840"]
-tree[, c(params$yearVar) := "2011"]
-tree[, share := 1]
 standTree = copy(tree)
+standTree[, c(params$geoVar) := "840"]
+standTree[, c(params$yearVar) := "2011"]
+standTree[, share := 1]
 ## Don't standardize back germ and bran
 standTree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
 standTree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
@@ -664,23 +733,6 @@ rm(wheatData)
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-## Palm Oil
-
-```{r, echo = FALSE}
-rm(palmData)
-```
 
 
 
@@ -751,13 +803,13 @@ newTradeData = fullData[measuredItemCPC %in% sugarKeys,
                         c("Value_measuredElement_5600", params$mergeKey),
                         with = FALSE]
 newTradeData[, standardDeviation_measuredElement_5600 := 0]
-replaceData(originalData = sugarData, newData = newTradeData,
+sugarData = replaceData(originalData = sugarData, newData = newTradeData,
             mergeKey = params$mergeKey)
 newTradeData = fullData[measuredItemCPC %in% sugarKeys,
                         c("Value_measuredElement_5900", params$mergeKey),
                         with = FALSE]
 newTradeData[, standardDeviation_measuredElement_5900 := 0]
-replaceData(originalData = sugarData, newData = newTradeData,
+sugarData = replaceData(originalData = sugarData, newData = newTradeData,
             mergeKey = params$mergeKey)
 ## Manually tweak trade to create a deficit.  Makes standardization more
 ## interesting later.
@@ -788,7 +840,7 @@ suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/stockEstimates.RData"))
 setnames(stockEstimates, c("Value", "sdEstimate"),
          paste0(c("Value", "standardDeviation"), "_measuredElement_71"))
-replaceData(sugarData,
+sugarData = replaceData(sugarData,
             stockEstimates[, c("Value_measuredElement_71",
                                "standardDeviation_measuredElement_71",
                                params$mergeKey),
@@ -811,7 +863,7 @@ load(paste0(workingDir, "/foodEstimates.RData"))
 setnames(foodEstimates, c("mean", "var"),
          paste0(c("Value", "standardDeviation"), "_measuredElement_5141"))
 foodEstimates = foodEstimates[geographicAreaM49 == "840", ]
-replaceData(sugarData,
+sugarData = replaceData(sugarData,
             foodEstimates[, c("Value_measuredElement_5141",
                                "standardDeviation_measuredElement_5141",
                                params$mergeKey),
@@ -826,6 +878,27 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
+### Feed
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/feedEstimates.RData"))
+feedEstimates[, standardDeviation_measuredElement_5520 :=
+                  Value_measuredElement_5520 * .1]
+sugarData = replaceData(sugarData,
+            feedEstimates[, c("Value_measuredElement_5520",
+                               "standardDeviation_measuredElement_5520",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "5520" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5520"]
+printTable(toPrint, params, workingDir)
+})})
+```
+
 ### Losses
 
 ```{r, echo = FALSE}
@@ -833,7 +906,7 @@ suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/lossEstimates.RData"))
 lossEstimates[, standardDeviation_measuredElement_5120 :=
                   Value_measuredElement_5120 * .1]
-replaceData(sugarData,
+sugarData = replaceData(sugarData,
             lossEstimates[, c("Value_measuredElement_5120",
                                "standardDeviation_measuredElement_5120",
                                params$mergeKey),
@@ -845,13 +918,7 @@ toPrint = sugarData[geographicAreaM49 == currentCountry &
 toPrint[, updateFlag := element == "5120"]
 printTable(toPrint, params, workingDir)
 })})
-warning("Standard error for loss data is currently just 10% of loss value, it ",
-        "is not estimated in any way.")
 ```
-
-### Feed
-
-Feed allocation must be done at this phase in order to ensure that we have reduced the feed demand by the corresponding amounts of feed products (i.e. wheat bran, wheat germ, etc.).
 
 ### Seed
 
@@ -860,7 +927,7 @@ suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/seedEstimates.RData"))
 seedEstimates[, standardDeviation_measuredElement_5525 :=
                   Value_measuredElement_5525 * .1]
-replaceData(sugarData,
+sugarData = replaceData(sugarData,
             seedEstimates[, c("Value_measuredElement_5525",
                                "standardDeviation_measuredElement_5525",
                                params$mergeKey),
@@ -872,18 +939,59 @@ toPrint = sugarData[geographicAreaM49 == currentCountry &
 toPrint[, updateFlag := element == "5525"]
 printTable(toPrint, params, workingDir)
 })})
-warning("Standard error for seed data is currently just 10% of seed value, it ",
-        "is not estimated in any way.")
 ```
 
 ### Industrial Utilization
 
-Work in progress...
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/industrialEstimates.RData"))
+industrialEstimates[, standardDeviation_measuredElement_ind :=
+                        Value_measuredElement_ind * .1]
+setnames(industrialEstimates, "Value_measuredElement_ind",
+         "Value_measuredElement_i???")
+setnames(industrialEstimates, "standardDeviation_measuredElement_ind",
+         "standardDeviation_measuredElement_i???")
+sugarData = replaceData(sugarData,
+            industrialEstimates[, c("Value_measuredElement_i???",
+                                    "standardDeviation_measuredElement_i???",
+                                    params$mergeKey),
+                                with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "i???" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "i???"]
+printTable(toPrint, params, workingDir)
+})})
+```
 
 ### Tourist Consumption
 
-The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, that country will certainly have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
 
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "/touristEstimates.RData"))
+touristEstimates[, standardDeviation_measuredElement_tou :=
+                     abs(Value_measuredElement_tou) * .1]
+setnames(touristEstimates, "Value_measuredElement_tou",
+         "Value_measuredElement_t???")
+setnames(touristEstimates, "standardDeviation_measuredElement_tou",
+         "standardDeviation_measuredElement_t???")
+sugarData = replaceData(sugarData,
+            touristEstimates[, c("Value_measuredElement_t???",
+                                 "standardDeviation_measuredElement_t???",
+                                    params$mergeKey),
+                                with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "t???" & Value == 0, Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "t???"]
+printTable(toPrint, params, workingDir)
+})})
+```
 ### Residual Other Uses
 
 Work in progress...
@@ -926,11 +1034,13 @@ printTable(toPrint, params, workingDir)
 The processing for sugar works slightly differently than most commodities.  Sugar cane and sugar beet are, in almost every case, converted into cane sugar or beet sugar (i.e. they are not eaten as such nor are they processed into other products).  Thus, in this case, rather than standardizing values back to sugar cane and sugar beet, we instead assume all sugar cane and sugar beet is first converted into the corresponding sugar and we perform the balances at this level.
 
 ```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
 output = processForward(sugarData, tree, standParams = params)
 sugarData = output$data
 tree = output$tree
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 printTable(toPrint, params, workingDir)
+})})
 ```
 
 The next step in this process is to balance the processed commodities by creating production values.  These production values will require an amount of food processing from the parent commodities.  We must start this process at the bottom of the tree, in this case considering "Sugar and Syrups nes" and "Sugar Confectionary" and going up to "Refined Sugar".
@@ -939,18 +1049,13 @@ The next step in this process is to balance the processed commodities by creatin
 suppressWarnings({suppressMessages({
 
 # Manually input the production/food processing values to show the process.
-toPrint[, tempProd := na2zero(.SD[element == params$exportCode, Value]) -
-            na2zero(.SD[element == params$importCode, Value]) +
-            na2zero(.SD[element == params$stockCode, Value]) +
-            na2zero(.SD[element == params$foodCode, Value]) +
-            na2zero(.SD[element == params$foodProcCode, Value]) +
-            na2zero(.SD[element == params$feedCode, Value]) +
-            na2zero(.SD[element == params$wasteCode, Value]) +
-            na2zero(.SD[element == params$seedCode, Value]) +
-            na2zero(.SD[element == params$industrialCode, Value]) +
-            na2zero(.SD[element == params$touristCode, Value]) +
-            na2zero(.SD[element == params$residualCode, Value]),
-        by = c(params$mergeKey)]
+toPrint[, tempProd := sum(Value *
+    ifelse(element %in% c(params$exportCode, params$stockCode, params$foodCode,
+                          params$foodProcCode, params$feedCode, params$wasteCode,
+                          params$seedCode, params$industrialCode, params$touristCode,
+                          params$residualCode), 1,
+           ifelse(element == params$importCode, -1, 0)), na.rm = TRUE),
+    by = c(params$mergeKey)]
 invisible(toPrint[measuredItemCPC == 23210.04 &
             element == params$productionCode,
         c("Value", "updateFlag") := list(tempProd, TRUE)])
@@ -981,18 +1086,13 @@ suppressWarnings({suppressMessages({
 
 toPrint[, updateFlag := FALSE]
 # Manually input the production/food processing values to show the process.
-toPrint[, tempProd := na2zero(.SD[element == params$exportCode, Value]) -
-            na2zero(.SD[element == params$importCode, Value]) +
-            na2zero(.SD[element == params$stockCode, Value]) +
-            na2zero(.SD[element == params$foodCode, Value]) +
-            na2zero(.SD[element == params$foodProcCode, Value]) +
-            na2zero(.SD[element == params$feedCode, Value]) +
-            na2zero(.SD[element == params$wasteCode, Value]) +
-            na2zero(.SD[element == params$seedCode, Value]) +
-            na2zero(.SD[element == params$industrialCode, Value]) +
-            na2zero(.SD[element == params$touristCode, Value]) +
-            na2zero(.SD[element == params$residualCode, Value]),
-        by = c(params$mergeKey)]
+toPrint[, tempProd := sum(Value *
+    ifelse(element %in% c(params$exportCode, params$stockCode, params$foodCode,
+                          params$foodProcCode, params$feedCode, params$wasteCode,
+                          params$seedCode, params$industrialCode, params$touristCode,
+                          params$residualCode), 1,
+           ifelse(element == params$importCode, -1, 0)), na.rm = TRUE),
+    by = c(params$mergeKey)]
 invisible(toPrint[measuredItemCPC == 23520 &
             element == params$productionCode,
         c("Value", "updateFlag") := list(tempProd, TRUE)])
@@ -1026,53 +1126,66 @@ toPrint[, updateFlag := (element == params$foodProcCode & Value > 0)]
 printTable(toPrint, params, workingDir)
 ```
 
-Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for each of the elements for wheat:
+Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for sugar beet (top) and sugar cane (bottom):
 
 ```{r, echo = FALSE}
-toPrintBeet = toPrint[measuredItemCPC == "01801", ]
+toPrintBeet = toPrint[measuredItemCPC == beetSugarCode, ]
 printDistributionTable(toPrintBeet, params)
-toPrintCane = toPrint[measuredItemCPC == "01802", ]
+toPrintCane = toPrint[measuredItemCPC == caneSugarCode, ]
 printDistributionTable(toPrintCane, params)
 ```
 
-```{r, echo = FALSE, eval = FALSE}
+After balancing the above tables, we're left with the following values.  Note that only waste and food processing are adjusted, and food processing takes the majority of the change because it has a substantially higher variability.
+
+```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
-toPrint = toPrint[element %in% c(params$productionCode, params$exportCode,
+toPrintBeet = toPrintBeet[element %in% c(params$productionCode, params$exportCode,
                                  params$importCode, params$stockCode,
                                  params$foodCode, params$feedCode,
                                  params$wasteCode, params$seedCode,
                                  params$industrialCode, params$touristCode,
                                  params$residualCode, params$foodProcCode), ]
-toPrint[is.na(Value), Value := 0]
+toPrintCane = toPrintCane[element %in% c(params$productionCode, params$exportCode,
+                                 params$importCode, params$stockCode,
+                                 params$foodCode, params$feedCode,
+                                 params$wasteCode, params$seedCode,
+                                 params$industrialCode, params$touristCode,
+                                 params$residualCode, params$foodProcCode), ]
+toPrintBeet[is.na(Value), Value := 0]
+toPrintCane[is.na(Value), Value := 0]
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
-toPrint[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
+toPrintBeet[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
+          sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
+          lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
+          optimize = "constrOptim")]
+toPrintCane[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
           sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
           lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
           optimize = "constrOptim")]
 sink()
-toPrint[, adjustment := balancedValue - Value]
+toPrintBeet[, adjustment := balancedValue - Value]
+toPrintCane[, adjustment := balancedValue - Value]
 sugarData = merge(sugarData,
-                  toPrint[, !c("Value", "metFlag", "obsFlag", "standardDeviation"),
-                          with = FALSE],
+                  rbind(toPrintBeet, toPrintCane)[, c(params$mergeKey, "element",
+                                                      "balancedValue", "adjustment"),
+                                                  with = FALSE],
                   by = c(params$mergeKey, "element"), all.x = TRUE)
 sugarData[!is.na(balancedValue), Value := balancedValue]
 sugarData[, balancedValue := NULL]
-toPrint[, Value := balancedValue]
-toPrint[, c("adjustment", "balancedValue") := NULL]
-printDistributionTable(toPrint, params)
+toPrintBeet[, Value := balancedValue]
+toPrintCane[, Value := balancedValue]
+toPrintBeet[, c("adjustment", "balancedValue") := NULL]
+toPrintCane[, c("adjustment", "balancedValue") := NULL]
+printDistributionTable(toPrintBeet, params)
+printDistributionTable(toPrintCane, params)
 })})
 ```
 
 ```{r, echo = FALSE, eval = FALSE}
 suppressMessages({suppressWarnings({
-## Add in default shares for all processing activities
-invisible({
-tree[, share := NA_real_]
-tree[groupID == "0111-23110", share := .90]
-tree[groupID == "0111-23140.02", share := .05]
-tree[groupID == "0111-23140.03", share := .05]
-})
 ## Allocate down the adjustments in the true/automated way
+# save(sugarData, tree, file = paste0(workingDir, "standardizedSugar1.RData"))
+# load(paste0(workingDir, "standardizedSugar1.RData"))
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
 sugarData = rollDownFoodDelta(data = sugarData, tree = tree,
                               standParams = params,

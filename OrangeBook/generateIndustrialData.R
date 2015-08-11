@@ -27,6 +27,15 @@ if(Sys.info()[7]  == "Golini"){
   files = dir(workingDir,full.names = TRUE)
   load(file = paste0(workingDir,"vegetableOilsData.RData"))
   load(file = paste0(workingDir,"nutrientData.RData"))
+} else if(Sys.info()[7] == "josh"){
+  GetTestEnvironment(
+    baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+    token = "5c9850df-d271-4de2-9db4-de7bc353edde" # Josh's token
+  )
+  workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
+  files = dir(workingDir,full.names = TRUE)
+  load(file = paste0(workingDir,"vegetableOilsData.RData"))
+  load(file = paste0(workingDir,"nutrientData.RData"))
 }
 
 getCPCTreeItem = function(dataContext){
@@ -203,8 +212,4 @@ if(Sys.info()[7] == "Golini"){
 } else {
   stop("Need path for this user!")
 }
-
-
-agricFeedStuffsForBioFuelData$measuredItemCPC %in% IndustrialUsesData$measuredItemCPC
-
 
