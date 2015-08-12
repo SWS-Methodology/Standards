@@ -36,7 +36,7 @@ printTable = function(data, standParams, workingDir){
 
     items = c("Name", "Production", "Imports", "Exports", "StockChange",
               "Food", "Food Processing", "Feed", "Waste", "Seed", "Industrial",
-              "Tourist", "Residual")
+              "Tourist")
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
             printDT[, c(colName) := 0]
@@ -88,6 +88,9 @@ printDistributionTable = function(data, standParams){
     printMean[, Value := round(Value)]
     printMean[is.na(Value), Value := 0]
     printMean = tidyr::spread(data = printMean, key = "element", value = "Value")
+    ## On some occassions, a strange error happens here which introduces a row
+    ## of NA's.  Just delete that row:
+    printMean = printMean[!is.na(get(standParams$itemVar)), ]
     
     printSd = copy(data)
     printSd = printSd[, c(standParams$mergeKey, "element", "standardDeviation"),
@@ -95,6 +98,9 @@ printDistributionTable = function(data, standParams){
     printSd[, element := paste0("Value_measuredElement_", element)]
     printSd[, standardDeviation := round(standardDeviation)]
     printSd = tidyr::spread(data = printSd, key = "element", value = "standardDeviation")
+    ## On some occassions, a strange error happens here which introduces a row
+    ## of NA's.  Just delete that row:
+    printSd = printSd[!is.na(get(standParams$itemVar)), ]
     
     printDT = rbind(printMean, printSd)
     printDT[, Variable := c("Mean", "Standard Dev.")]
@@ -103,16 +109,18 @@ printDistributionTable = function(data, standParams){
                     standParams$seedCode, standParams$wasteCode,
                     standParams$foodCode, standParams$stockCode,
                     standParams$importCode, standParams$exportCode,
-                    standParams$foodProcCode)
+                    standParams$foodProcCode, standParams$industrialCode,
+                    standParams$touristCode)
     
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
              c("Production", "Feed", "Seed", "Waste", "Food",
-               "StockChange", "Imports", "Exports", "Food Processing"))
+               "StockChange", "Imports", "Exports", "Food Processing",
+               "Industrial", "Tourist"))
     setnames(printDT, "measuredItemCPC", "Item")
 
     items = c("Variable", "Production", "Imports", "Exports", "StockChange",
               "Food", "Food Processing", "Feed", "Waste", "Seed", "Industrial",
-              "Tourist", "Residual")
+              "Tourist")
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
             printDT[, c(colName) := 0]

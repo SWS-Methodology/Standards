@@ -4,14 +4,10 @@ output: pdf_document
 classoption: landscape
 ---
 
+```{r, echo = FALSE, eval = FALSE}
+# Wrap in an R comment to prevent printing:
 # TO DO
 ## Important Tasks
-- We need to include proteins/fats/calories
-- We should include an example where the primary product is eaten as such.
-- Implement calculation for tourist element.
-- Implement calculation for industrial element.
-- Implement calculation for feed element.
-- Implement calculation for residual element.
 - Review trade portion from Alex and incorporate into this document.
 - Discuss trade for countries with access to customs and without.
 - Balancing algorithm: determine a good way to choose the tolerance automatically.  It's manually tuned in this example, and that clearly won't work for general food balance sheet processes.
@@ -22,7 +18,8 @@ classoption: landscape
 - Loss module: clean up the functions in the one script and put them into individual files with roxygen-style documentation (even if very sparse at the moment).  This is crucial for transferring this work back to an R module on the system.
 - All modules: clean up hard-coded numbers, column names, etc.
 - The trade figures I quote here are based on the US data, but not exactly.  We have HS6 trade data, and I can map that to CPC.  However, some HS6 codes map to many CPC codes.  My understanding is that the historical approach has been to not use split factors and to simply map the quantity straight into one of the CPC codes.  For this simple example, I map the HS data to CPC and randomly split it.
-- The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.  At the least, it would be good to have a tree for processing and a tree for standardization (some elements, for example beer, bran, etc. don't standardize up to the same thing they were processed from).
+- The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.  At the least, it would be good to have a tree for processing and a tree for standardization (some elements, for example beer, bran, etc. do not standardize up to the same thing they were processed from).
+```
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -91,6 +88,11 @@ sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
               "23540", "23670.01", "24110", "2413", "24131", "24139",
               "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
               "01809", "F7162", "F7163")
+milkKeys = c("02211", "22110.01", "22110.02", "22110.03", "22211", "22212",
+             "22221.01", "22221.02", "22222.01", "22222.02", "22230.01",
+             "22230.02", "22230.03", "22230.04", "22241.01", "22241.02",
+             "22251.01", "22251.02", "22251.03", "2251.04", "22260",
+             "23210.06")
 fullData = fread(paste0(workingDir, "standardizationData.csv"))
 fullData = fullData[timePointYears == currentYear &
                         geographicAreaM49 == currentCountry, ]
@@ -212,6 +214,8 @@ printProductionTable(toPrint, params, workingDir = workingDir)
 
 In this case, the production value is only known for wheat flour (it is missing for wheat), and for wheat we are also missing the yield value.  The first step in the imputation process is to impute the yield, using the previously described production imputation methodology.
 
+ADD SOMETHING HERE SHOWING THE IMPUTATION EXAMPLE!!!
+
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
 
@@ -224,7 +228,7 @@ printProductionTable(toPrint, params, workingDir = workingDir)
 })})
 ```
 
-Now, we have enough information to impute the production data:
+Now, we have enough information to compute the production data:
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -253,7 +257,7 @@ wheatData[, Value_measuredElement_5510 := NULL]
 })})})
 ```
 
-Now, we fill in the table with our production values.  Production is only imputed for primary products, and so in this case no additional values are filled in.
+Next, we fill in the table with our production values.  Production is only imputed for primary products (and occassionally official figures are provided for processed products, as is the case here).  So, in this case, no additional values are filled in outside of wheat and flour.
 
 ```{r, echo = FALSE, fig.show = FALSE}
 suppressWarnings({suppressMessages({
@@ -279,7 +283,7 @@ printTable(toPrint, params, workingDir)
 
 ### Trade
 
-For the next example, we'll show how the imputation, mirroring and balancing works.  In this case, we just take the country totals and insert into this table.
+For this example, we take the country totals of all imports and exports and insert into this table.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -339,7 +343,7 @@ printTable(toPrint, params, workingDir)
 
 ### Food
 
-The allocation to food, on the other hand, can potentially be considered at any processing level, although some commodities (such as wheat) are assumed to not be eaten as such.  We impute food consumption numbers for the example country and update the FBS table below.
+The allocation to food, on the other hand, can potentially be considered at any processing level, although some commodities (such as wheat) are assumed to not be eaten as such.  We impute food consumption numbers for the example country and update the SUA table below.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -428,6 +432,8 @@ printTable(toPrint, params, workingDir)
 ```
 
 ### Industrial Utilization
+
+For most commodities, industrial utilization will be zero.  This element can be important when considering commodities related to biofuels and vegetable oils, but for wheat it is irrelevant.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -1101,11 +1107,13 @@ invisible(toPrint[measuredItemCPC == beetSugarCode &
         c("Value", "updateFlag") := list(
             toPrint[measuredItemCPC == 23520 &
                         element == params$productionCode, Value]/.92 * .603, TRUE)])
-invisible(toPrint[measuredItemCPC == caneSugarCode &
-            element == params$foodProcCode,
-        c("Value", "updateFlag") := list(
-            toPrint[measuredItemCPC == 23520 &
-                        element == params$productionCode, Value]/.92 * .397, TRUE)])
+toAppend = toPrint[1, ]
+toAppend[, c(params$itemVar, "element", "Value", "updateFlag") :=
+             list(caneSugarCode, params$foodProcCode, 
+                  toPrint[measuredItemCPC == 23520 &
+                              element == params$productionCode, Value]/.92 * .397,
+                  TRUE)]
+toPrint = rbind(toPrint, toAppend)
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -1132,6 +1140,14 @@ Now, we must balance the primary products in this table (i.e. sugar cane and sug
 toPrintBeet = toPrint[measuredItemCPC == beetSugarCode, ]
 printDistributionTable(toPrintBeet, params)
 toPrintCane = toPrint[measuredItemCPC == caneSugarCode, ]
+toPrintCane = rbindlist(list(toPrintCane,
+        data.table(geographicAreaM49 = 840, timePointYears = 2011,
+                   measuredItemCPC = 23511.01,
+                   element = c(params$feedCode, params$seedCode,
+                               params$wasteCode, params$foodCode,
+                               params$stockCode, params$importCode,
+                               params$exportCode, params$industrialCode,
+                               params$touristCode))), fill = TRUE)
 printDistributionTable(toPrintCane, params)
 ```
 
@@ -1153,6 +1169,8 @@ toPrintCane = toPrintCane[element %in% c(params$productionCode, params$exportCod
                                  params$residualCode, params$foodProcCode), ]
 toPrintBeet[is.na(Value), Value := 0]
 toPrintCane[is.na(Value), Value := 0]
+toPrintBeet[is.na(standardDeviation), standardDeviation := 0]
+toPrintCane[is.na(standardDeviation), standardDeviation := 0]
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
 toPrintBeet[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
           sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
@@ -1181,7 +1199,7 @@ printDistributionTable(toPrintCane, params)
 })})
 ```
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
 ## Allocate down the adjustments in the true/automated way
 # save(sugarData, tree, file = paste0(workingDir, "standardizedSugar1.RData"))
@@ -1201,7 +1219,7 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
 finalSuaBalance(sugarData, standParams = params,
                 feedElements = c(branCode, germCode))
@@ -1212,36 +1230,38 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
 params$elementPrefix = ""
 invisible({
-tree[, c(params$geoVar) := "840"]
-tree[, c(params$yearVar) := "2011"]
-tree[, share := 1]
-# tree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
-# tree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
+standTree = copy(tree)
+standTree[, c(params$geoVar) := "840"]
+standTree[, c(params$yearVar) := "2011"]
+standTree[, share := 1]
+## Don't standardize back germ and bran
+standTree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
+standTree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
 })
-finalValues = finalStandardizationToPrimary(data = sugarData, tree = tree,
+params$elementPrefix = ""
+finalValues = finalStandardizationToPrimary(data = sugarData, tree = standTree,
                                             standParams = params)
-finalValues[, adjustment := NULL]
 finalValues = finalValues[timePointYears == "2011", ]
-printTable(finalValues, standParams = params)
+printTable(finalValues, standParams = params, workingDir)
 })})
 ```
 
 We can also compute calories, fats, and proteins at this point.  First, we apply a calorie/fat/protein content factor to each individual element:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
 
 load(paste0(workingDir, "nutrientData.RData"))
 # Loads object "nutrientData"
     
-toPrint = wheatData[timePointYears == "2011" & element == params$foodCode, ]
+toPrint = sugarData[timePointYears == "2011" & element == params$foodCode, ]
 toPrint = merge(toPrint, nutrientData, by = params$itemVar, all.x = TRUE)
 
-setnames(itemName, "Item", params$itemVar)
+setnames(itemName, params$childVar, params$itemVar)
 toPrint = merge(toPrint[, c(params$itemVar, "Value", "Protein", "Fat", "Energy"),
                         with = FALSE], itemName, all.x = TRUE)
 setnames(itemName, params$itemVar, "Item")
@@ -1256,7 +1276,7 @@ knitr::kable(toPrint)
 
 Standardization is trivial: all the commodities here are purely additive, so the standardized calories/fats/proteins are simply the sum of the total calories/fats/proteins for each element:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE}
 out = toPrint[, list(
     Energy  = sum(Quantity * Energy , na.rm = TRUE)/1000000,
     Protein = sum(Quantity * Protein, na.rm = TRUE)/1000000,
@@ -1265,6 +1285,7 @@ out = round(out, 2)
 setnames(out, colnames(out), paste(colnames(out), "(millions)"))
 knitr::kable(out)
 ```
+
 
 ```{r, echo = FALSE}
 rm(sugarData)
