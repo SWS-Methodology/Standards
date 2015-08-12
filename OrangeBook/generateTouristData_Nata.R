@@ -134,7 +134,7 @@ data4[, onVisTotDays := onVisNum * onVisDays]
 ## visitors
 data4[, totOnVisNum := sum(onVisNum), by=list(year,dest)]
 
-## create a new total visitor days by summing the overnight viistor days, and
+## create a new total visitor days by summing the overnight visistor days, and
 ## the day visitor days
 data4[, totVisDays := onVisTotDays + totDayVisNum]
 
@@ -366,23 +366,27 @@ colnames(selectedTourist) = c("measuredItemCPC","timePointYears","geographicArea
 
 touristEstimates = data.table(selectedTourist)
 
-#  touristEstimates %>%
-#    filter(measuredItemCPC == 23110)
-#  
-#  touristEstimates %>%
-#    filter(measuredItemCPC == 0111)
-#  
-#  sum(touristEstimates$Value_measuredElement_tou)
-  
+# Adding to touristEstimates dataset the the number of tourists going from/to the US
+# 
 
-# touristEstimates %>%
-#   filter (measuredItemCPC == "0111")
-#  caloriesByOrig %>%
-#    filter (orig == 840, item == "0111")
-#  caloriesByDest %>%
-#    filter (dest == 840, item == "0111")
-# nutrientData %>%
-#   filter (measuredItemCPC == "0111")
+
+entryNumbTouir = as.data.frame(data4 %>%
+  filter(dest == 840) %>%
+  mutate(entryNumbTouir = sum(onVisNum) + sum(totDayVisNum)) %>%
+  select(entryNumbTouir))
+
+entryNumbTouir = as.data.table(entryNumbTouir)
+
+touristEstimates[,entryNumbTouir := entryNumbTouir[1:dim(touristEstimates)[1]]]
+
+exitNumbTouir = as.data.frame(data4 %>%
+                                 filter(orig == 840) %>%
+                                 mutate(exitNumbTouir = sum(onVisNum) + sum(totDayVisNum)) %>%
+                                 select(exitNumbTouir))
+
+exitNumbTouir = as.data.table(exitNumbTouir)
+
+touristEstimates[,exitNumbTouir := exitNumbTouir[1:dim(touristEstimates)[1]]]
 
 
 save(touristEstimates, file = paste0(workingDir, "touristEstimates.RData"))
