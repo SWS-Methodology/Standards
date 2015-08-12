@@ -5,20 +5,20 @@ classoption: landscape
 ---
 
 ```{r, echo = FALSE, eval = FALSE}
-# Wrap in an R comment to prevent printing:
-# TO DO
-## Important Tasks
-- Review trade portion from Alex and incorporate into this document.
-- Discuss trade for countries with access to customs and without.
-- Balancing algorithm: determine a good way to choose the tolerance automatically.  It's manually tuned in this example, and that clearly won't work for general food balance sheet processes.
-- Add text/content to the document to provide more explanation of each example.
-- Round printed values.  If there are only 1 or 2 digits, the final value should be the closest multiple of 5.  If 3 digits, a multiple of 10, 4 to 7 digits a multiple of 100, and 8+ digits then 4 significant digits.
-
-## Minor Tasks
-- Loss module: clean up the functions in the one script and put them into individual files with roxygen-style documentation (even if very sparse at the moment).  This is crucial for transferring this work back to an R module on the system.
-- All modules: clean up hard-coded numbers, column names, etc.
-- The trade figures I quote here are based on the US data, but not exactly.  We have HS6 trade data, and I can map that to CPC.  However, some HS6 codes map to many CPC codes.  My understanding is that the historical approach has been to not use split factors and to simply map the quantity straight into one of the CPC codes.  For this simple example, I map the HS data to CPC and randomly split it.
-- The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.  At the least, it would be good to have a tree for processing and a tree for standardization (some elements, for example beer, bran, etc. do not standardize up to the same thing they were processed from).
+# # Wrap in an R comment to prevent printing:
+# # TO DO
+# ## Important Tasks
+# - Review trade portion from Alex and incorporate into this document.
+# - Discuss trade for countries with access to customs and without.
+# - Balancing algorithm: determine a good way to choose the tolerance automatically.  It's manually tuned in this example, and that clearly won't work for general food balance sheet processes.
+# - Add text/content to the document to provide more explanation of each example.
+# - Round printed values.  If there are only 1 or 2 digits, the final value should be the closest multiple of 5.  If 3 digits, a multiple of 10, 4 to 7 digits a multiple of 100, and 8+ digits then 4 significant digits.
+# 
+# ## Minor Tasks
+# - Loss module: clean up the functions in the one script and put them into individual files with roxygen-style documentation (even if very sparse at the moment).  This is crucial for transferring this work back to an R module on the system.
+# - All modules: clean up hard-coded numbers, column names, etc.
+# - The trade figures I quote here are based on the US data, but not exactly.  We have HS6 trade data, and I can map that to CPC.  However, some HS6 codes map to many CPC codes.  My understanding is that the historical approach has been to not use split factors and to simply map the quantity straight into one of the CPC codes.  For this simple example, I map the HS data to CPC and randomly split it.
+# - The commodity trees used are derived based on the FCL commodity tree.  They will likely need to be updated, but for now I just simply map the FCL elements to their corresponding CPC codes.  At the least, it would be good to have a tree for processing and a tree for standardization (some elements, for example beer, bran, etc. do not standardize up to the same thing they were processed from).
 ```
 
 ```{r, echo = FALSE}
@@ -413,7 +413,7 @@ printTable(toPrint, params, workingDir)
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/seedEstimates_Nata.RData"))
+load(paste0(workingDir, "/seedEstimates.RData"))
 seedEstimates[, Value_measuredElement_5525 := seedPredicted]
 seedEstimates[, standardDeviation_measuredElement_5525 :=
                   exp(seedVariance)]
@@ -460,7 +460,7 @@ printTable(toPrint, params, workingDir)
 
 ### Tourist Consumption
 
-The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be consumed abroad than locally.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -484,10 +484,6 @@ toPrint[, updateFlag := element == "t???"]
 printTable(toPrint, params, workingDir)
 })})
 ```
-
-### Residual Other Uses
-
-Work in progress...
 
 ### Standardization and Balancing
 
@@ -552,7 +548,7 @@ printStandardizationTable(distributionTable, params, workingDir = workingDir)
 })})
 ```
 
-Now, we wish to compute the distribution for food to processing for wheat.  The main requirement is in the wheat flour, and it should be noted that the 9 million kilogram requirement for wheat bran will automatically be satisfied if the 26 million kilogram requirement for wheat flour is satisfied (as they are by-products).  Thus, the food to processing element for wheat has a mean of 26,198 thousand kilograms (the sum of the first three) and a standard deviation of 63 thousand kilograms (the square-root of the sum of the squares of the first three standard deviations).  Thus, we now have the following table:
+Now, we wish to compute the distribution for the "food to processing" element for wheat.  The main requirement is in the wheat flour and bran, and it should be noted that the 26 million kilogram requirement for wheat flour will automatically be satisfied if the 35 million kilogram requirement for wheat bran is satisfied (as they are produced together).  Thus, the food to processing element for wheat has a mean of 35 million kilograms (the sum of the last three) and a standard deviation of 2.55 million kilograms (the square-root of the sum of the squares of the last three standard deviations).  Thus, we now have the following table:
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -562,18 +558,18 @@ toPrint = wheatData[geographicAreaM49 == currentCountry &
 toPrint[, updateFlag := (element == params$foodProcCode &
                              measuredItemCPC == "0111")]
 printTable(toPrint, params, workingDir)
-invisible(toPrint[, updateFlag := NULL])
 })})
 ```
 
-Now, we must balance this table.  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for each of the elements for wheat:
+Now, we must balance this table.  To do this, we need to extract the computed standard deviations of each element.  The table below shows the expected value and estimated standard deviation for each of the elements for wheat:
 
 ```{r, echo = FALSE}
+invisible(toPrint[, updateFlag := NULL])
 toPrint = toPrint[measuredItemCPC == "0111", ]
 printDistributionTable(toPrint, params)
 ```
 
-Note that in this case, the standard deviation for food for processing is very small; this is because it's mostly determined by the production of wheat flour, and this value is an official figure.
+Note that in this case, the standard deviation for food for processing is very large compared to all other elements and thus this element takes the majority of the difference.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
@@ -588,7 +584,7 @@ toPrint[, balancedValue := balancing(param1 = sapply(Value, na2zero),
               param2 = sapply(standardDeviation, na2zero),
               sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
               lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
-              optimize = "constrOptim", constrTol = 1e-6)]
+              optimize = "constrOptim", constrTol = 1e-4)]
 sink()
 toPrint[, adjustment := balancedValue - Value]
 wheatData = merge(wheatData,
@@ -998,10 +994,6 @@ toPrint[, updateFlag := element == "t???"]
 printTable(toPrint, params, workingDir)
 })})
 ```
-### Residual Other Uses
-
-Work in progress...
-
 ### Standardization and Balancing
 
 Now, suppose we have the following commodity tree:
@@ -1134,7 +1126,7 @@ toPrint[, updateFlag := (element == params$foodProcCode & Value > 0)]
 printTable(toPrint, params, workingDir)
 ```
 
-Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed **standard deviations (is this the word we're using???)** of each element.  The table below shows the expected value and estimated **standard deviation** for sugar beet (top) and sugar cane (bottom):
+Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed standard deviations of each element.  The table below shows the expected value and estimated standard deviation for sugar beet (top) and sugar cane (bottom):
 
 ```{r, echo = FALSE}
 toPrintBeet = toPrint[measuredItemCPC == beetSugarCode, ]

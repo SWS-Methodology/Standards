@@ -5,19 +5,24 @@ library(reshape2)
 library(data.table)
 library(faoswsUtil)
 
-GetTestEnvironment(
-    baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
-    token = "01ed4530-8f0c-4334-b426-1b2cc30e259b"
-)
-
-## Source in the food data
-if(Sys.info()[7] == "josh"){
-    load("~/Documents/Github/privateFAO/OrangeBook/foodEstimates.RData")
-} else if(Sys.info()[7] == "rockc_000"){
-    load("~/GitHub/privateFAO/OrangeBook/foodEstimates.RData")
+workingDir = "~/GitHub/privateFAO/OrangeBook/"
+if(Sys.info()[7] == "Golini"){ # Natalia
+    GetTestEnvironment(
+        baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+        #token = "6f322cc0-d4f7-4efc-9dfe-0452aafd2994" NATA: Expired section
+        token = "030e170a-3a35-4c77-acda-be89feb1c6e2" # Nata's token
+    )
+} else if(Sys.info()[7] == "josh"){ # Josh work
+    GetTestEnvironment(
+        baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+        token = "5c9850df-d271-4de2-9db4-de7bc353edde" # Josh's token
+    )
+    workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else {
     stop("No user defined yet!")
 }
+
+load(paste0(workingDir, "foodEstimates.RData"))
 
 ## set the keys to get the tourist data from the FAO working system
 destinationAreaCodes <- faosws::GetCodeList("tourism", "tourist_flow",
@@ -49,6 +54,24 @@ data1 <- data1[, which(!grepl("tourism", colnames(data1))), with=FALSE]
 ## change column names to small simple ones representing destination, origin,
 ## year and overnight visitor number
 setnames(data1, old = colnames(data1), new = c("dest", "orig", "year", "onVisNum"))
+
+## onVisNum in USA in the 2011
+# aa = as.data.frame(
+# data1%>%
+#   filter(dest==840)
+# )
+# sum(aa$onVisNum)
+
+## onVisNum USA in other countries the 2011
+# bb = as.data.frame(
+# data1%>%
+#   filter(orig==840)
+# )
+# sum(bb$onVisNum)
+
+# sum(aa$onVisNum) - sum(bb$onVisNum) 
+# -12311217
+
 
 ## set the keys to get the tourist data from the FAO working system
 areaCodes = faosws::GetCodeList("tourism", "tourist_consumption",
@@ -83,6 +106,7 @@ setnames(data3, old = colnames(data3), new = c("dest", "year", "onVisDays",
 ## end calculations, but NA's cause equations to fail
 data3$totDayVisNum[is.na(data3$totDayVisNum)] <- 0
 
+
 ## merge the two data sets, one containing overnight visitor numbers and number
 ## of days they visited, the other data set the number of tourists travelling to
 ## and from each country
@@ -113,6 +137,29 @@ data4[, totOnVisNum := sum(onVisNum), by=list(year,dest)]
 ## create a new total visitor days by summing the overnight viistor days, and
 ## the day visitor days
 data4[, totVisDays := onVisTotDays + totDayVisNum]
+
+
+# head(data4)
+# 
+# aa = as.data.frame(
+# data4%>%
+#  filter(dest==840)
+# )
+# sum(aa$onVisNum)
+# sum(aa$totDayVisNum)
+# sum(aa$onVisTotDays)
+# sum(aa$totDayVisNum)+sum(aa$totVisDays)
+# 
+# bb = as.data.frame(
+#   data4%>%
+#     filter(orig==840)
+# )
+# summary(bb$onVisDays)
+# sum(bb$totDayVisNum)
+# sum(bb$onVisTotDays)
+# sum(bb$totDayVisNum)+sum(bb$totVisDays)
+
+
 
 ## set the keys to get the calorie consuption, by individual FBS commodity for
 ## each country from the FAO working system
@@ -173,8 +220,20 @@ setnames(data6, old = c("geographicAreaM49", "measuredItemCPC",
                         "timePointYears", "calPerPersonPerDay"),
          new = c("orig", "item", "year", "calValue"))
 
+
+# head(data6)
+# as.data.frame(data6 %>%
+#   filter(orig == 840) 
+# )
+
 ## Compute total calories per person per day in orig country
 data6[, totalLocalCalories := sum(calValue), by = c("orig", "year")]
+# 
+# aa = as.data.frame(data6 %>%
+#   filter(orig == 840) 
+# )
+# sum(aa$calValue) #OK!
+
 
 ## merge data4 and data6 to allow calculation of calories by commodity
 data7 <- merge(data4, data6, allow.cartesian=TRUE, by = c("year", "orig"))
@@ -185,17 +244,145 @@ data7[, c("onVisNum", "onVisDays", "totDayVisNum",
 ## calculate the total calories consumed, by item, for the entire year
 data7[, totCaloriesByItemPerYear := totVisDays * calValue]
 
+
 caloriesByOrig = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
                        by = c("year", "orig", "item")]
 caloriesByDest = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
                        by = c("year", "dest", "item")]
 
-if(Sys.info()[7] == "josh"){
-    save(caloriesByDest, caloriesByOrig,
-         file = "~/Documents/Github/privateFAO/OrangeBook/touristEstimates.RData")
-} else if(Sys.info()[7] == "rockc_000"){
-    save(caloriesByDest, caloriesByOrig,
-         file = "~/GitHub/privateFAO/OrangeBook/touristEstimates.RData")
-} else {
-    stop("No user defined yet!")
-}
+# caloriesByOrig %>%
+#   filter(item == 23110 & orig == 840)
+# 
+# caloriesByDest %>%
+#   filter(item == 23110 & dest == 840)
+
+
+## Why we have calorories for 0111? 
+# as.data.frame(
+# caloriesByDest %>%
+#   select(dest,item, V1) %>%
+#   filter(item == "0111") 
+# )
+# 
+# 
+# as.data.frame(
+#   caloriesByOrig %>%
+#     select(orig,item, V1) %>%
+#     filter(item == "0111") 
+# )
+
+## calculate the mean calories consumed, by item, for the entire year
+
+## NATA: why we need to read the nutrientData and not to load the nutrientData.RData?
+## Source in the nutrient data
+# if(Sys.info()[7] == "Golini"){
+#   nutrientData = read.csv("~/GitHub/privateFAO/OrangeBook/nutrientData.csv",sep=",",header=TRUE)[,c(3,5:7)]
+# } else {
+#   stop("No user defined yet!")
+# }
+# 
+# str(nutrientData)
+## NATA: from which script the cvs file nutrientData.csv was generated?
+## It is not in a corrected form: look at definition of Value. It is a factors with same levels in characters 
+# 
+# caloriesByOrigFinal = merge(as.data.frame(caloriesByOrig), as.data.frame(nutrientData),
+#                              by.x = "item", by.y = "measuredItemCPC")
+# 
+# ## NATA: seems that measuredElementNutritive == "208" indicates Kjoules
+# ## and measuredElementNutritive == "904" Kcal
+# caloriesByOrigFinal = filter(caloriesByOrigFinal, measuredElementNutritive == "208")
+
+# NATA: Here I used the nutrientData.RData
+
+## Source in the nutrient data
+load(paste0(workingDir, "nutrientData.RData"))
+
+#str(nutrientData)
+#head(nutrientData)
+
+
+nutrientData[, Energy_Kcal := Energy * 0.23900573614]
+
+nutrientData = nutrientData %>%
+                  select(measuredItemCPC,Energy_Kcal)
+
+setnames(caloriesByOrig, c("timePointYear","orig","measuredItemCPC","Value"))
+
+caloriesByOrigFinal = merge(caloriesByOrig, nutrientData,
+                              by = "measuredItemCPC",
+                            all =TRUE)
+
+
+caloriesByOrigFinal[,quantityValueOrig := (Value / Energy_Kcal) / 10000]
+
+
+setnames(caloriesByDest, c("timePointYear","dest","measuredItemCPC","Value"))
+
+caloriesByDestFinal = merge(caloriesByDest, nutrientData,
+                            by = "measuredItemCPC",
+                            all = TRUE)
+
+caloriesByDestFinal[,quantityValueDest := (Value / Energy_Kcal) / 10000]
+
+caloriesByOrigFinal = caloriesByOrigFinal %>%
+  select(measuredItemCPC,timePointYear,orig,quantityValueOrig)
+
+
+caloriesByDestFinal = caloriesByDestFinal %>%
+  select(measuredItemCPC,timePointYear,dest,quantityValueDest)
+
+data8 = merge(as.data.frame(caloriesByDestFinal),as.data.frame(caloriesByOrigFinal),
+                        by.x = c("measuredItemCPC","timePointYear","dest"),
+                        by.y = c("measuredItemCPC","timePointYear","orig"),
+                        all = TRUE)
+
+
+## NATA: it makes sense to set to NAs equal to 0? 
+
+data8$quantityValueDest[is.na(data8$quantityValueDest)] = 0
+data8$quantityValueOrig[is.na(data8$quantityValueOrig)] = 0
+
+data8$touristPredicted = data8$quantityValueDest - data8$quantityValueOrig
+
+colnames(data8) = c("measuredItemCPC","timePointYears","geographicAreaM49","quantityValueDest","quantityValueOrig",
+                              "touristPredicted")
+
+wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
+              "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
+cattleKeys = c("02111", "21111.01", "21111.02", "21182", "21184.01", "21185",
+               "21512.01", "23991.04", "F0875")
+palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
+                "21700.02", "F1243", "34550", "F1275", "34120")
+sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
+              "23540", "23670.01", "24110", "2413", "24131", "24139",
+              "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
+              "01809", "F7162", "F7163")
+
+selectedTourist = data8 %>%
+                    filter(geographicAreaM49 == 840 &  measuredItemCPC %in% c(wheatKeys, cattleKeys, sugarKeys, palmOilKeys))
+
+colnames(selectedTourist) = c("measuredItemCPC","timePointYears","geographicAreaM49","quantityValueDest","quantityValueOrig",
+  "Value_measuredElement_tou")
+
+touristEstimates = data.table(selectedTourist)
+
+#  touristEstimates %>%
+#    filter(measuredItemCPC == 23110)
+#  
+#  touristEstimates %>%
+#    filter(measuredItemCPC == 0111)
+#  
+#  sum(touristEstimates$Value_measuredElement_tou)
+  
+
+# touristEstimates %>%
+#   filter (measuredItemCPC == "0111")
+#  caloriesByOrig %>%
+#    filter (orig == 840, item == "0111")
+#  caloriesByDest %>%
+#    filter (dest == 840, item == "0111")
+# nutrientData %>%
+#   filter (measuredItemCPC == "0111")
+
+
+save(touristEstimates, file = paste0(workingDir, "touristEstimates.RData"))
