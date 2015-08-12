@@ -1,6 +1,8 @@
 ---
 title: "Agricultural trade data processing"
-output: pdf_document
+output:
+  pdf_document:
+    toc: yes
 date: "July 9, 2015"
 ---
 
@@ -178,11 +180,13 @@ orange %>%
   printTab(caption = "Self-trade of commodities from 2nd, 10th and 15th HS chapters in 2011")
 ```
 
-## Missing quantity
+## Missing quantities
 
 We identify which reporters provide data of insufficient quality. Firstly for every reporter proportion of trade flows with missing quantity is calculated. 
 
-```{r missing_quantity_props_per_country, cache = F, fig.width = 5, fig.height = 5, dpi = 200}
+```{r missing_quantity_props_per_country, cache = F, fig.width = 4, fig.height = 4}
+
+#, fig.width = 5, fig.height = 5, dpi = 200}
 no_quant_threshold <- .02
 
 orange <- orange %>% 
@@ -213,7 +217,7 @@ We define outliers as observations located outside the range:
 
 $$ [ Q_1 - k (Q_3 - Q_1 ) , Q_3 + k (Q_3 - Q_1 ) ] $$
 
-where $Q_1$ and $Q_3$ are the lower and upper quartiles respectively, and $k$ is a non negative constant. In this paper we use $k$ equals 1.5. 
+where $Q_1$ and $Q_3$ are the lower and upper quartiles respectively, and $k$ is a non negative constant. In this paper we use $k$ = 1.5. 
 
 ```{r prop_of_outliers_per_country, fig.width = 5, fig.height = 5, dpi = 300}
 out_coef <- 1.5
@@ -319,7 +323,7 @@ out_tab %>%
                          "Difference, kg"))
 ```
 
-## Imputing using data from trade partner (mirroring)
+## Detection of wrongly coded trade flows
 
 
 Another approach to impute missing or outlying quantities of a reporter is to use mirror data from trade partner. Let's check are there any such trade flows related to wheat among reported by the US.
@@ -355,9 +359,9 @@ The commodity code _1001.90.20.96_ is country-specific and is used only by the U
 
 [^panjiva]: https://panjiva.com/trendspotting/imports/United-States/1001.90.20.96/Cereals-Wheat-and-meslin-Other-Other-Other-Other/1368 Trend report HTS Code 1001.90.20.96
 
-We want to check characteristics of this trade flow from a partner's side. But Japan didn't report any export of wheat-related commodities to the US in 2011. We expand our search to all trade flows from Japan to the US with nearly the same quantity and value. We find suitable trade flow what is not reported by the US.
+We want to check characteristics of this trade flow from a partner's side. But Japan didn't report any export of wheat-related commodities to the US in 2011. We expand our search to all trade flows from Japan to the US with nearly the same quantity and value. We find suitable trade flow what was not reported by the US.
 
-```{r results = "asis"}
+```{r jp_export_similar_values, results = "asis"}
 orange %>% 
   filter(reporter_name == "Japan" &
            partner_name == "United States" &
@@ -385,11 +389,11 @@ orange %>%
 
 ```
 
-_0410.00.000_ Edible products of animal origin (not especially specified) [^jp_hs].
+Code _0410.00.000_ stands for Edible products of animal origin (not especially specified) [^jp_hs]. Probably, imported shipment was not properly coded in the US. We can check in data from Japan existence of similar trade flows to other countries.
 
 [^jp_hs]: http://www.customs.go.jp/yusyutu/2011/data/e201101j_04.htm  
 
-```{r results = "asis"}
+```{r jp_all_export_of_it, results = "asis"}
 tmp_tbl <- orange %>%
   filter(reporter_name == "Japan" &
            hs == "041000000" &
@@ -412,6 +416,36 @@ tmp_tbl %>%
                          "UV median"))
 ```
 
+Japan reported export of similar commodity to three distanations. All of these trade flows are not outliers. It supports the hypothesis, that the mistake was done on the part of the US.
+
+```{r other_partners_of_jp, results = "asis"}
+tmp_tbl <- orange %>%
+  filter(partner_name == "Japan" &
+           #hs6 == "041000" &
+           year == "2011" &
+           flow == "Import" &
+           weight <= 50 & weight > 30 &
+           value <= 27000 & value > 10000) %>% collect() #%>% 
+#     select(year, 
+#          partner_name, 
+#          weight,
+#          value,
+#          uv,
+#          uv_reporter) 
+tmp_tbl
+
+orange %>%
+  filter(reporter_name == "Japan" &
+           #hs6 == "041000" &
+           year == "2011" &
+           flow == "Export" &
+           weight <= 80 & weight > 30 &
+           value <= 40000 & value > 10000) 
+
+```
+
+
+# Imputing using data from trade partner (mirroring)
 
 ```{r wheat_flour_problems_tradeflows, results = "asis"}
 orange %>% 
