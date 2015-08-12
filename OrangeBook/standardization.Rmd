@@ -413,7 +413,7 @@ printTable(toPrint, params, workingDir)
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-load(paste0(workingDir, "/seedEstimates_Nata.RData"))
+load(paste0(workingDir, "/seedEstimates.RData"))
 seedEstimates[, Value_measuredElement_5525 := seedPredicted]
 seedEstimates[, standardDeviation_measuredElement_5525 :=
                   exp(seedVariance)]
