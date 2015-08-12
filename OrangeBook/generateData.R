@@ -1,18 +1,28 @@
 library(faosws)
 library(data.table)
-GetTestEnvironment(
-    baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
-    token = "2789cc75-120e-4963-9694-41c4bcf67814"
-#     baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
-#     token = "7fe7cbec-2346-46de-9a3a-8437eca18e2a" #Michael's token
-)
 
 if(Sys.info()[7] == "josh"){ # Josh Work
     workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
+    GetTestEnvironment(
+      baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+      token = "2789cc75-120e-4963-9694-41c4bcf67814"
+      #     baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
+      #     token = "7fe7cbec-2346-46de-9a3a-8437eca18e2a" #Michael's token
+    )
 } else if(Sys.info()[7] %in% c("browningj", "rockc_000")){ # Josh virtual & home
     workingDir = "~/Github/privateFAO/OrangeBook/"
+    GetTestEnvironment(
+      baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+      token = "2789cc75-120e-4963-9694-41c4bcf67814"
+      #     baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
+      #     token = "7fe7cbec-2346-46de-9a3a-8437eca18e2a" #Michael's token
+    )
 } else if(Sys.info()[7] == "Golini"){ # Nata work
   workingDir = "~/Github/privateFAO/OrangeBook/"
+  GetTestEnvironment(
+    baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+    token = "030e170a-3a35-4c77-acda-be89feb1c6e2" # Nata's token
+  )
 } else {
   stop("No working dir for current user!")
 }
@@ -27,6 +37,11 @@ sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
               "23540", "23670.01", "24110", "2413", "24131", "24139",
               "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
               "01809", "F7162", "F7163")
+milkKeys = c("02211", "22120", "22130.01", "22130.02", "22130.03", "22211", 
+             "22212", "22221.01", "22221.02", "22222.01", "22222.02", "22230.01", "22230.02", "22230.03", "22230.04",
+             "22241.01", "22241.02", "22251.01", "22251.02", "22251.03", "22251.04", "22260", "23210.06")
+
+## NATA: milkKeys = c("222110.01","222110.02", "222110.03") are not in the SWS
 
 ###############################################################################
 # Non-trade Data                                                              #
@@ -46,7 +61,7 @@ key = DatasetKey(
                                                      # Cattle: head, carcass weight, born
                                                      "5031", "5417", "5514")),
         Dimension(name = "measuredItemCPC", keys = c(wheatKeys, cattleKeys,
-                                                     palmOilKeys, sugarKeys)),
+                                                     palmOilKeys, sugarKeys, milkKeys)),
         ## 15 years
         Dimension(name = "timePointYears", keys = as.character(1996:2011))
     ))
@@ -66,7 +81,7 @@ data[, Value_measuredElement_5141 := as.numeric(Value_measuredElement_5141)]
 partnerCountry = "0" # World
 map = GetTableData(schemaName = "ess", tableName = "hs_2_cpc")
 hsKeys = map[cpc %in% gsub("\\..*", "", c(wheatKeys, cattleKeys,
-                                          palmOilKeys, sugarKeys)),
+                                          palmOilKeys, sugarKeys, milkKeys)),
              unique(hs)]
 key = DatasetKey(
     domain = "trade",
