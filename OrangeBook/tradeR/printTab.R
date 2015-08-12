@@ -12,7 +12,8 @@ printTab <- function(tbl,
   
   if(is.null(style)) {
     style <- "rmarkdown" # For latex
-    if(output_format == "docx") style <- "grid"
+    if(!is.null(output_format)) # In case we run the function without knitr
+      if(output_format == "docx") style <- "grid"
   }
     
   if(!is.null(col.names)) colnames(tbl) <- col.names #Pandoc.table doesn't have it

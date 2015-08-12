@@ -5,22 +5,24 @@ library(reshape2)
 library(data.table)
 library(faoswsUtil)
 
-GetTestEnvironment(
-    baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
-    #token = "6f322cc0-d4f7-4efc-9dfe-0452aafd2994" NATA: Expired section
-    token = "030e170a-3a35-4c77-acda-be89feb1c6e2" # Nata's token
-)
-
-## Source in the food data
-if(Sys.info()[7] == "josh"){
-    load("~/Documents/Github/privateFAO/OrangeBook/foodEstimates.RData")
-} else if(Sys.info()[7] == "rockc_000"){
-    load("~/GitHub/privateFAO/OrangeBook/foodEstimates.RData")
-} else if(Sys.info()[7] == "Golini"){
-  load("~/GitHub/privateFAO/OrangeBook/foodEstimates.RData")
+workingDir = "~/GitHub/privateFAO/OrangeBook/"
+if(Sys.info()[7] == "Golini"){ # Natalia
+    GetTestEnvironment(
+        baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+        #token = "6f322cc0-d4f7-4efc-9dfe-0452aafd2994" NATA: Expired section
+        token = "030e170a-3a35-4c77-acda-be89feb1c6e2" # Nata's token
+    )
+} else if(Sys.info()[7] == "josh"){ # Josh work
+    GetTestEnvironment(
+        baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
+        token = "5c9850df-d271-4de2-9db4-de7bc353edde" # Josh's token
+    )
+    workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
 } else {
     stop("No user defined yet!")
 }
+
+load(paste0(workingDir, "foodEstimates.RData"))
 
 ## set the keys to get the tourist data from the FAO working system
 destinationAreaCodes <- faosws::GetCodeList("tourism", "tourist_flow",
@@ -293,11 +295,7 @@ caloriesByDest = data7[, sum(totCaloriesByItemPerYear, na.rm = TRUE),
 # NATA: Here I used the nutrientData.RData
 
 ## Source in the nutrient data
- if(Sys.info()[7] == "Golini"){
-   load("~/GitHub/privateFAO/OrangeBook/nutrientData.RData")
- } else {
-   stop("No user defined yet!")
- }
+load(paste0(workingDir, "nutrientData.RData"))
 
 #str(nutrientData)
 #head(nutrientData)
@@ -387,15 +385,4 @@ touristEstimates = data.table(selectedTourist)
 #   filter (measuredItemCPC == "0111")
 
 
-if(Sys.info()[7] == "josh"){
-    save(caloriesByDest, caloriesByOrig,
-         file = "~/Documents/Github/privateFAO/OrangeBook/touristEstimates.RData")
-} else if(Sys.info()[7] == "rockc_000"){
-    save(caloriesByDest, caloriesByOrig,
-         file = "~/GitHub/privateFAO/OrangeBook/touristEstimates.RData")
-} else if(Sys.info()[7] == "Golini"){
-  save(touristEstimates,
-       file = "~/GitHub/privateFAO/OrangeBook/touristEstimates_Nata.RData")
-} else {
-    stop("No user defined yet!")
-}
+save(touristEstimates, file = paste0(workingDir, "touristEstimates.RData"))

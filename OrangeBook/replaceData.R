@@ -19,14 +19,25 @@
 
 replaceData = function(originalData, newData, mergeKey){
     origKey = key(originalData)
+    origCols = colnames(originalData)
     setkeyv(originalData, mergeKey)
+    
+    for(col in mergeKey){
+        originalData[, c(col) := as.character(get(col))]
+        newData[, c(col) := as.character(get(col))]
+    }
+    
     ## Don't need to worry about messing up newData's key since it's a copy
     setkeyv(newData, mergeKey)
     valColumn = colnames(newData)[grep("Value_", colnames(newData))]
     sdColumn = colnames(newData)[grep("standardDeviation_", colnames(newData))]
-    replaceElement = gsub("[A-Za-z_]*", "", valColumn)
-    originalData[newData, c("Value", "standardDeviation") :=
+    replaceElement = gsub("Value_measuredElement_", "", valColumn)
+    originalData = merge(originalData, newData, all.x = TRUE,
+                         by = mergeKey)
+    originalData[, c("Value", "standardDeviation") :=
         list(ifelse(element == replaceElement, get(valColumn), Value),
              ifelse(element == replaceElement, get(sdColumn), standardDeviation)),]
+    originalData = originalData[, origCols, with = FALSE]
     setkeyv(originalData, origKey)
+    return(originalData)
 }
