@@ -22,6 +22,8 @@ pander::panderOptions("missing", "-") # How to print missing values in pander ou
 Last update: `r Sys.time()`
 
 ```{r options}
+no_quant_threshold <- .02
+out_coef <- 1.5
 
 # if(Sys.getenv("HOSTNAME") != "matrunichstation") stop("Sorry, local database is used for compilation")
 
@@ -83,6 +85,22 @@ orange <- orange %>%
                        labels = c("Import", "Export",
                                   "Re-Import", "Re-Export")))
 
+
+orange <- orange %>% 
+  mutate(no_quant = missingIndicator(weight, NA) &
+           missingIndicator(qty, NA))  
+
+
+orange <- orange %>% 
+  mutate(
+    qty_all = ifelse(!is.na(weight), weight, qty),
+    uv = value / qty_all) %>% 
+  select(-qty_all) %>% 
+  group_by(reporter_name, hs, flow) %>% 
+  mutate(
+    uv_reporter = median(uv, na.rm = T),
+    out_range = uv %in% boxplot.stats(uv, coef = out_coef, do.conf = F)) %>% 
+  ungroup()
 
 ```
 
@@ -184,14 +202,10 @@ orange %>%
 
 We identify which reporters provide data of insufficient quality. Firstly for every reporter proportion of trade flows with missing quantity is calculated. 
 
-```{r missing_quantity_props_per_country, cache = F, fig.width = 4, fig.height = 4}
+```{r missing_quantity_props_per_country, cache = F, fig.width = 4, fig.height = 4, dpi = 50} 
 
 #, fig.width = 5, fig.height = 5, dpi = 200}
-no_quant_threshold <- .02
 
-orange <- orange %>% 
-  mutate(no_quant = missingIndicator(weight, NA) &
-           missingIndicator(qty, NA))  
 
 missing_qty <- orange %>% 
   filter(hs2 != "04") %>% 
@@ -220,18 +234,6 @@ $$ [ Q_1 - k (Q_3 - Q_1 ) , Q_3 + k (Q_3 - Q_1 ) ] $$
 where $Q_1$ and $Q_3$ are the lower and upper quartiles respectively, and $k$ is a non negative constant. In this paper we use $k$ = 1.5. 
 
 ```{r prop_of_outliers_per_country, fig.width = 5, fig.height = 5, dpi = 300}
-out_coef <- 1.5
-
-orange <- orange %>% 
-  mutate(
-    qty_all = ifelse(!is.na(weight), weight, qty),
-    uv = value / qty_all) %>% 
-  select(-qty_all) %>% 
-  group_by(reporter_name, hs, flow) %>% 
-  mutate(
-    uv_reporter = median(uv, na.rm = T),
-    out_range = uv %in% boxplot.stats(uv, coef = out_coef, do.conf = F)) %>% 
-  ungroup()
 
 orange %>%
   filter(hs2 != "04") %>% 
@@ -247,7 +249,7 @@ orange %>%
 
 ## Missing quantites and outliers combined
 
-```{r missings_outliers_together}
+```{r missings_outliers_together, fig.width = 9, fig.height = 9}
 orange %>% 
   filter(hs2 != "04") %>% 
   group_by(reporter_name) %>% 
@@ -418,32 +420,6 @@ tmp_tbl %>%
 
 Japan reported export of similar commodity to three distanations. All of these trade flows are not outliers. It supports the hypothesis, that the mistake was done on the part of the US.
 
-```{r other_partners_of_jp, results = "asis"}
-tmp_tbl <- orange %>%
-  filter(partner_name == "Japan" &
-           #hs6 == "041000" &
-           year == "2011" &
-           flow == "Import" &
-           weight <= 50 & weight > 30 &
-           value <= 27000 & value > 10000) %>% collect() #%>% 
-#     select(year, 
-#          partner_name, 
-#          weight,
-#          value,
-#          uv,
-#          uv_reporter) 
-tmp_tbl
-
-orange %>%
-  filter(reporter_name == "Japan" &
-           #hs6 == "041000" &
-           year == "2011" &
-           flow == "Export" &
-           weight <= 80 & weight > 30 &
-           value <= 40000 & value > 10000) 
-
-```
-
 
 # Imputing using data from trade partner (mirroring)
 
@@ -468,4 +444,21 @@ orange %>%
                          "Value, $US",
                          "Unit Value",
                          "UV median"))
+
+orange %>% 
+  filter(reporter_name == "Japan" &
+           #partner_name == "United States" &
+           hs6 %in% c("100810", "100820") &
+           flow == "Export") %>% 
+  select(year, 
+         partner_name, 
+         flow,
+         hs,
+         weight,
+         value,
+         uv,
+         uv_reporter, 
+         out_range) %>% 
+  printTab()
+
 ```
