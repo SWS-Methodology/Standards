@@ -286,6 +286,7 @@ finalFeedDemandData = rbind(feedDemand, feedPerCap)
 
 finalFeedDemandData = finalFeedDemandData[, list(geographicAreaM49, nutrientType, estimator, feedBaseUnit, timePointYears, Value, flagObservationStatus, flagMethod)]
 
+
 #SaveData(domain="feed", dataset="total_feed", data=final)
 
 ## SUMMARY
@@ -476,7 +477,7 @@ demand[is.na(demand)] <- 0
 
 ### Subtract Availability from Demand
 demand[, REDemand := eDemand - energySupply]
-demand[, RPDemand := eDemand - proteinSupply]
+demand[, RPDemand := pDemand - proteinSupply]
 
 demand$REDemand[demand$REDemand < 0 ] <- 0
 demand$RPDemand[demand$RPDemand < 0 ] <- 0
@@ -513,6 +514,7 @@ totOfficialNutrients = merge(totOfficialEnergy,totOfficialProtein,
 demand = merge(demand, totOfficialNutrients,
                by = c("geographicAreaM49","timePointYears"),
                all =TRUE)
+
 demand[, RREDemand := REDemand - officialEnergy]
 demand[, RRPDemand := RPDemand - officialProtein]
 
@@ -684,6 +686,31 @@ selectedDemandSupply$flagMethod_measuredElement_5520 =
 
 
 generatedFeedData = rbind(selectedOfficialNutrientsData,selectedProteinSupply,selectedDemandSupply)
+
+
+# To compare the data on SWS and the estimates from the model
+# feedData$geographicAreaM49 = faoswsUtil::fs2m49(feedData$geographicAreaFS)
+# 
+# aa = feedData$measuredItemFS[1:16]
+# aa = paste("00",aa,sep="")
+# bb = feedData$measuredItemFS[17:60]
+# bb = paste("0",bb,sep="")
+# feedData$measuredItemFS = c(aa,bb,as.character(feedData$measuredItemFS[61]))
+# feedData$measuredItemCPC = faoswsUtil::fcl2cpc(feedData$measuredItemFS)
+# 
+# pippo = feedData %>%
+#   select(measuredItemCPC,feedValue,feedFlag)
+# 
+# pippa = generatedFeedData %>%
+#   select(measuredItemCPC,feedValue)
+# 
+# setnames(pippa, c("measuredItemCPC","feedValueNew"))  
+# 
+# ffff = merge(pippo , pippa,
+#              by = "measuredItemCPC",
+#              all = TRUE)
+# ffff [,discr := feedValue - feedValueNew]  
+
 
 feedEstimates = generatedFeedData
 
