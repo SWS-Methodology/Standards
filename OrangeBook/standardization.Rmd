@@ -1,6 +1,6 @@
 ---
 title: "Food Balance Sheets"
-output: pdf_document
+output: word_document
 classoption: landscape
 ---
 
@@ -46,6 +46,8 @@ beetSugarCode = "23512"
 caneSugarCode = "23511.01"
 refinedSugarCode = "23520"
 molassesCode = "23540"
+bagasseCode = "39140.02"
+beetPulpCode = "39140.01"
 
 currentCountry = "840"
 currentYear = "2011"
@@ -72,6 +74,7 @@ source(paste0(workingDir, "printTableFunctions.R"))
 source(paste0(workingDir, "replaceData.R"))
 source(paste0(workingDir, "../../Balancing_ML/R/balancing.R"))
 source(paste0(workingDir, "../../Balancing_ML/R/forceBalance.R"))
+source(paste0(workingDir, "../../Balancing_ML/R/balancingNormal.R"))
 
 params = defaultStandardizationParameters()
     
@@ -586,7 +589,7 @@ toPrint[, balancedValue := balancing(param1 = sapply(Value, na2zero),
               param2 = sapply(standardDeviation, na2zero),
               sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
               lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
-              optimize = "constrOptim", constrTol = 1e-2)]
+              optimize = "constrOptim", constrTol = 1e-6)]
 sink()
 toPrint[, adjustment := balancedValue - Value]
 wheatData = merge(wheatData,
@@ -1039,6 +1042,10 @@ output = processForward(sugarData, tree, standParams = params)
 sugarData = output$data
 tree = output$tree
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[element == params$productionCode &
+            get(params$itemVar) %in% c(caneSugarCode, bagasseCode,
+                                              beetPulpCode),
+        updateFlag := TRUE]
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -1047,7 +1054,7 @@ The next step in this process is to balance the processed commodities by creatin
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-
+toPrint[, updateFlag := FALSE]
 # Manually input the production/food processing values to show the process.
 toPrint[, tempProd := sum(Value *
     ifelse(element %in% c(params$exportCode, params$stockCode, params$foodCode,
@@ -1056,6 +1063,7 @@ toPrint[, tempProd := sum(Value *
                           params$residualCode), 1,
            ifelse(element == params$importCode, -1, 0)), na.rm = TRUE),
     by = c(params$mergeKey)]
+toPrint[tempProd < 0, tempProd := 0]
 invisible(toPrint[measuredItemCPC == 23210.04 &
             element == params$productionCode,
         c("Value", "updateFlag") := list(tempProd, TRUE)])
@@ -1072,9 +1080,9 @@ Next, we move up the tree to the balancing of refined sugar and the food process
 
 ```{r, echo = FALSE}
 temp = data.frame(Name = c("Beet sugar", "Cane sugar, centrifugal"),
-                  Availability = c(4561000+27245-194848,
-                                   2916276+1070-95-23458),
-                  Percent = c(4393397/(4393397+2893793), 2893793/(4393397+2893793)))
+                  Availability = c(4561000+9-194806,
+                                   2720837),
+                  Percent = c(4366203/(4366203+2720837), 2893793/(4366203+2720837)))
 temp$Percent = paste0(round(temp$Percent, 3)*100, "%")
 knitr::kable(temp, align = c("r", "r", "r"))
 ```
@@ -1145,7 +1153,7 @@ toPrintCane = rbindlist(list(toPrintCane,
 printDistributionTable(toPrintCane, params)
 ```
 
-After balancing the above tables, we're left with the following values.  Note that only waste and food processing are adjusted, and food processing takes the majority of the change because it has a substantially higher variability.
+After balancing the above tables, we're left with the following values.  Note that only food processing is the element that receives most of the adjustment because it has a substantially higher variability.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
@@ -1189,9 +1197,13 @@ toPrintCane[, Value := balancedValue]
 toPrintBeet[, c("adjustment", "balancedValue") := NULL]
 toPrintCane[, c("adjustment", "balancedValue") := NULL]
 printDistributionTable(toPrintBeet, params)
+})})
+suppressMessages({suppressWarnings({
 printDistributionTable(toPrintCane, params)
 })})
 ```
+
+We must now process the changes in the current elements down the tree into the other elements.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
@@ -1213,6 +1225,8 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
+Lastly, some elements have not yet been updated in this process.  To ensure a full balance of the SUA, we should go through and balance those rows as well.
+
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
 finalSuaBalance(sugarData, standParams = params,
@@ -1232,13 +1246,15 @@ standTree = copy(tree)
 standTree[, c(params$geoVar) := "840"]
 standTree[, c(params$yearVar) := "2011"]
 standTree[, share := 1]
-## Don't standardize back germ and bran
-standTree[parentID == "0111" & childID == "39120.01", extractionRate := Inf]
-standTree[parentID == "0111" & childID == "23140.01", extractionRate := Inf]
+## Don't standardize back bagasse, beet pulp, or molasses
+standTree = standTree[!parentID %in% c("01801", "01802"), ]
+standTree[childID %in% c(bagasseCode, beetPulpCode, molassesCode),
+          extractionRate := Inf]
 })
 params$elementPrefix = ""
 finalValues = finalStandardizationToPrimary(data = sugarData, tree = standTree,
-                                            standParams = params)
+                                            standParams = params,
+                                            sugarHack = FALSE)
 finalValues = finalValues[timePointYears == "2011", ]
 printTable(finalValues, standParams = params, workingDir)
 })})

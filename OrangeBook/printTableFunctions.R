@@ -8,6 +8,10 @@ printTable = function(data, standParams, workingDir){
                       with = FALSE]
     printDT[, element := paste0("Value_measuredElement_", element)]
     
+    ## Don't print some elements
+    skippedElements = c(24110, 2413, 23210.05)
+    printDT = printDT[!get(standParams$itemVar) %in% skippedElements, ]
+    
     fbsElements = c(standParams$productionCode, standParams$feedCode,
                     standParams$seedCode, standParams$wasteCode,
                     standParams$foodCode, standParams$stockCode,
