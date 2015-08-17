@@ -14,7 +14,7 @@ Item,Name
 21185,Extracts of meat
 21512.01,Butcher fat
 2165,Palm oil
-21691.14,Oil of Palm
+21691.14,Oil of palm kernels
 21700.02,Margarine
 34120,Fatty acids
 34550,Animal or vegetable fats
@@ -48,3 +48,7 @@ F0022,Pastry
 23490.02,Wafers
 23210.05,Glucose and Dextrose
 23511.02,Sugar (Noncentrifugal)
+01491.02,Palm kernels
+21910.06,Cakes of palm kernels
+21932.02,Liquid Margarine?
+01491.01,Oil palm fruit
