@@ -1,6 +1,6 @@
 ---
 title: "Food Balance Sheets"
-output: word_document
+output: pdf_document
 classoption: landscape
 ---
 
@@ -18,6 +18,7 @@ beetCode = "01801"
 caneCode = "01802"
 beetSugarCode = "23512"
 caneSugarCode = "23511.01"
+rawSugarCode = "2351"
 refinedSugarCode = "23520"
 molassesCode = "23540"
 bagasseCode = "39140.02"
@@ -159,8 +160,9 @@ castFormula = paste(paste(params$mergeKey, collapse = " + "), "~ variableType")
 sugarData[, variable := gsub("[A-Za-z_]*_", "", variable)]
 setnames(sugarData, "variable", "element")
 sugarData = tidyr::spread(data = sugarData, key = "variableType", value = "value")
+sugarData[, Value := as.numeric(Value)]
 ## Remove alot of the data, and "impute" it later
-sugarData[, Value := rep(0, nrow(sugarData))]
+sugarData[element %in% fbsElements, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 printTable(toPrint, params, workingDir)
 })})
@@ -177,6 +179,10 @@ sugarData = merge(sugarData,
                            c("Value_measuredElement_5510", params$mergeKey),
                            with = FALSE], by = params$mergeKey)
 sugarData[element == "5510", Value := Value_measuredElement_5510]
+## Remove some of the official data to show an example that seems a bit
+## different from wheat (i.e. we don't want official figures everywhere).
+sugarData[element == "5510" & measuredItemCPC %in% c(molassesCode, beetSugarCode),
+          Value := NA]
 sugarData[, standardDeviation := 0]
 sugarData[element == "5510" & Value == 0, Value := NA]
 sugarData[, Value_measuredElement_5510 := NULL]
@@ -240,7 +246,7 @@ sugarData = replaceData(sugarData,
                                params$mergeKey),
                            with = FALSE],
             mergeKey = params$mergeKey)
-sugarData[element == "71" & Value == 0, Value := NA]
+sugarData[is.na(Value) & element == "71", Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "71"]
 printTable(toPrint, params, workingDir)
@@ -257,9 +263,30 @@ load(paste0(workingDir, "/foodEstimates.RData"))
 setnames(foodEstimates, c("mean", "var"),
          paste0(c("Value", "standardDeviation"), "_measuredElement_5141"))
 foodEstimates = foodEstimates[geographicAreaM49 == "840", ]
-## Balance is impossible if food variance is 0:
-foodEstimates[measuredItemCPC == refinedSugarCode,
-              standardDeviation_measuredElement_5141 := 880000]
+standTree = copy(tree)
+standTree[, c(params$geoVar) := "840"]
+standTree[, c(params$yearVar) := "2011"]
+standTree[is.na(share), share := 1]
+## Hack the tree a bit.  Roll up refined sugar into raw sugar (2351)
+standTree = standTree[!childID %in% c(refinedSugarCode), ]
+standTree = rbind(standTree, data.table(childID = "23520", target = "B",
+                                        extractionRate = 0.92,
+                                        parentID = rawSugarCode,
+                                        calorieExtractionRate = 1,
+                                        groupID = "2351-23520",
+                                        share = 1, geographicAreaM49 = "840",
+                                        timePointYears = "2011"))
+## Also have to add this commodity to sugarData
+sugarData = rbind(sugarData, data.table(geographicAreaM49 = "840",
+                                        timePointYears = "2011",
+                                        measuredItemCPC = rawSugarCode,
+                                        element = sugarData[, unique(element)],
+                                        metFlag = NA, obsFlag = NA,
+                                        Value = NA, standardDeviation = 0))
+foodEstimates = standardizeTree(data = foodEstimates, tree = standTree,
+                                elements = "5141", standParams = params,
+                                sugarHack = FALSE)
+foodEstimates[, standardDeviation_measuredElement_5141 := .1 * Value_measuredElement_5141]
 sugarData = replaceData(sugarData,
             foodEstimates[, c("Value_measuredElement_5141",
                                "standardDeviation_measuredElement_5141",
@@ -270,7 +297,7 @@ sugarData = replaceData(sugarData,
 # sugarData[element == "5141" & Value == 0, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-toPrint[, updateFlag := element == "5141" & Value > 0]
+toPrint[, updateFlag := element == "5141"]
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -370,22 +397,28 @@ The tourist consumption estimation approach uses tourist data from the WTO as we
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/touristEstimates.RData"))
-touristEstimates[, standardDeviation_measuredElement_tou :=
-                     abs(Value_measuredElement_tou) * .1]
-setnames(touristEstimates, "Value_measuredElement_tou",
-         "Value_measuredElement_t???")
-setnames(touristEstimates, "standardDeviation_measuredElement_tou",
-         "standardDeviation_measuredElement_t???")
+touristEstimates = standardizeTree(data = touristEstimates, tree = standTree,
+                                   elements = "tou", standParams = params,
+                                   sugarHack = FALSE)
+touristEstimates[measuredItemCPC %in% c(caneCode, beetCode),
+                 Value_measuredElement_tou := NA]
+touristEstimates[, standardDeviation_measuredElement_tou := 
+                     1 * Value_measuredElement_tou]
+setnames(touristEstimates, old = "Value_measuredElement_tou",
+         new = "Value_measuredElement_t???")
+setnames(touristEstimates, old = "standardDeviation_measuredElement_tou",
+         new = "standardDeviation_measuredElement_t???")
 sugarData = replaceData(sugarData,
             touristEstimates[, c("Value_measuredElement_t???",
-                                 "standardDeviation_measuredElement_t???",
-                                    params$mergeKey),
-                                with = FALSE],
+                               "standardDeviation_measuredElement_t???",
+                               params$mergeKey),
+                           with = FALSE],
             mergeKey = params$mergeKey)
-sugarData[element == "t???" & Value == 0, Value := NA]
+# If no food is estimated yet, it doesn't mean that it should be forced to be 0.
+# sugarData[element == "5141" & Value == 0, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-toPrint[, updateFlag := element == "t???"]
+toPrint[, updateFlag := element == "5141"]
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -414,7 +447,7 @@ plotSingleTree(edges = edges,
 })})
 ```
 
-We first start with the pre-standardized table:
+Note that in this commodity tree, we create cane sugar and beet sugar from sugar cane and sugar beet, respectively, and then both of these raw sugars are processed into refined sugar.  In order to simplify reporting, cane sugar and beet sugar are grouped together into one commodity "Raw cane or beet sugar."
 
 ```{r, echo = FALSE}
 # save(sugarData, tree, file = paste0(workingDir, "preStandardizedSugar.RData"))
@@ -429,84 +462,40 @@ The processing for sugar works slightly differently than most commodities.  Suga
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
+tree[parentID == beetCode & childID == beetSugarCode, childID := rawSugarCode]
+tree[parentID == caneCode & childID == caneSugarCode, childID := rawSugarCode]
 output = processForward(sugarData, tree, standParams = params)
 sugarData = output$data
+sugarData[measuredItemCPC %in% c(beetSugarCode, caneSugarCode),
+          measuredItemCPC := rawSugarCode]
+## Use the mode as the flag aggregation algorithm
+Mode <- function(x) {
+    ux <- unique(x)
+    ux[which.max(tabulate(match(x, ux)))]
+}
+sugarData = sugarData[, list(metFlag = Mode(metFlag),
+                             obsFlag = Mode(obsFlag),
+                             Value = sum(Value, na.rm = TRUE),
+                             standardDeviation = sqrt(sum(standardDeviation^2, na.rm = TRUE))),
+                      by = c(params$mergeKey, "element")]
 tree = output$tree
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[element == params$productionCode &
-            get(params$itemVar) %in% c(caneSugarCode, bagasseCode,
-                                              beetPulpCode),
+            get(params$itemVar) %in% c(caneSugarCode, bagasseCode, rawSugarCode,
+                                       beetPulpCode, molassesCode),
         updateFlag := TRUE]
 printTable(toPrint, params, workingDir)
 })})
 ```
 
-The next step in this process is to balance the processed commodities by creating production values.  These production values will require an amount of food processing from the parent commodities.  We must start this process at the bottom of the tree, in this case considering "Sugar and Syrups nes" and "Sugar Confectionary" and going up to "Refined Sugar".  However, the supply for "Sugar and Syrups nes" exceeds the utilization, and we have no data for "Sugar Confectionary", so we don't need to introduce any required production in this step.
+The next step in this process is to balance the processed commodities by creating production values.  However, we do not have any trade deficits, and thus we do not need to worry about this step.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 suppressWarnings({suppressMessages({
-toPrint[, updateFlag := FALSE]
-# Manually input the production/food processing values to show the process.
-toPrint[, tempProd := sum(Value *
-    ifelse(element %in% c(params$exportCode, params$stockCode, params$foodCode,
-                          params$foodProcCode, params$feedCode, params$wasteCode,
-                          params$seedCode, params$industrialCode, params$touristCode,
-                          params$residualCode), 1,
-           ifelse(element == params$importCode, -1, 0)), na.rm = TRUE),
-    by = c(params$mergeKey)]
-toPrint[tempProd < 0, tempProd := 0]
-invisible(toPrint[measuredItemCPC == 23210.04 &
-            element == params$productionCode,
-        c("Value", "updateFlag") := list(tempProd, TRUE)])
-invisible(toPrint[measuredItemCPC == 23520 &
-            element == params$foodProcCode,
-        c("Value", "updateFlag") := list(
-            toPrint[measuredItemCPC == 23210.04 &
-                        element == params$productionCode, Value], TRUE)])
-printTable(toPrint, params, workingDir)
-})})
-```
-
-Next, we move up the tree to the balancing of refined sugar and the food processing required in the beet and cane sugar elements.  We require refined sugar production in order to balance refined sugar, and thus we must create this production from the parent(s) of refined sugar.  Looking at the commodity tree, we see that refined sugar can be created from both beet and cane sugar.  We will allocate production of refined sugar from these parent commodities according to their availabilities.  Note that the food processing quantities from beet sugar and cane sugar must be multiplied by their corresponding extraction rates to compute the production value of refined sugar.  Moreover, if the extraction rates from these two parents are different, then we must compute availabilities weighted by these extraction rates.  In this case, we could ignore this because the extraction rates are identical.
-
-```{r, echo = FALSE}
-splitRatio = data.frame(Name = c("Beet sugar", "Cane sugar, centrifugal"),
-                  Availability = c(4561000+9-194806,
-                                   2720837),
-                  Percent = c(4366203/(4366203+2720837), 2893793/(4366203+2720837)))
-splitRatio$Percent = paste0(round(splitRatio$Percent, 3)*100, "%")
-knitr::kable(splitRatio, align = c("r", "r", "r"))
-```
-
-Thus, we allocate according to the parent availabilities:
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-
-toPrint[, updateFlag := FALSE]
-# Manually input the production/food processing values to show the process.
-toPrint[, tempProd := sum(Value *
-    ifelse(element %in% c(params$exportCode, params$stockCode, params$foodCode,
-                          params$foodProcCode, params$feedCode, params$wasteCode,
-                          params$seedCode, params$industrialCode, params$touristCode,
-                          params$residualCode), 1,
-           ifelse(element == params$importCode, -1, 0)), na.rm = TRUE),
-    by = c(params$mergeKey)]
-invisible(toPrint[measuredItemCPC == 23520 &
-            element == params$productionCode,
-        c("Value", "updateFlag") := list(tempProd, TRUE)])
-invisible(toPrint[measuredItemCPC == beetSugarCode &
-            element == params$foodProcCode,
-        c("Value", "updateFlag") := list(
-            toPrint[measuredItemCPC == 23520 &
-                        element == params$productionCode, Value]/.92 * .603, TRUE)])
-toAppend = toPrint[1, ]
-toAppend[, c(params$itemVar, "element", "Value", "updateFlag") :=
-             list(caneSugarCode, params$foodProcCode, 
-                  toPrint[measuredItemCPC == 23520 &
-                              element == params$productionCode, Value]/.92 * .397,
-                  TRUE)]
-toPrint = rbind(toPrint, toAppend)
+computeProcessedProduction(data = sugarData, tree = tree, standParams = params)
+sugarData[element == "5510" & Value < 0, Value := 0]
+toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
+toPrint[, updateFlag := (element == "5510" & Value < 18000000)]
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -516,6 +505,7 @@ printTable(toPrint, params, workingDir)
 ## errors, in a more rigorous way:
 invisible({suppressWarnings({suppressMessages({
 sugarData = rollUpFood(data = sugarData, tree = tree, standParams = params)
+sugarData = sugarData[!measuredItemCPC %in% c(caneSugarCode, beetSugarCode), ]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := (element == params$foodProcCode & Value > 0)]
@@ -530,67 +520,38 @@ printTable(toPrint, params, workingDir)
 Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed standard deviations of each element.  The table below shows the expected value and estimated standard deviation for sugar beet (top) and sugar cane (bottom):
 
 ```{r, echo = FALSE}
-toPrintBeet = toPrint[measuredItemCPC == beetSugarCode, ]
-printDistributionTable(toPrintBeet, params)
-toPrintCane = toPrint[measuredItemCPC == caneSugarCode, ]
-toPrintCane = rbindlist(list(toPrintCane,
-        data.table(geographicAreaM49 = 840, timePointYears = 2011,
-                   measuredItemCPC = 23511.01,
-                   element = c(params$feedCode, params$seedCode,
-                               params$wasteCode, params$foodCode,
-                               params$stockCode, params$importCode,
-                               params$exportCode, params$industrialCode,
-                               params$touristCode))), fill = TRUE)
-printDistributionTable(toPrintCane, params)
+toPrint = toPrint[measuredItemCPC == rawSugarCode, ]
+printDistributionTable(toPrint, params)
 ```
 
 After balancing the above tables, we're left with the following values.  Note that food processing is the element that receives most of the adjustment because it has a substantially higher variability.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
-toPrintBeet = toPrintBeet[element %in% c(params$productionCode, params$exportCode,
+toPrint = toPrint[element %in% c(params$productionCode, params$exportCode,
                                  params$importCode, params$stockCode,
                                  params$foodCode, params$feedCode,
                                  params$wasteCode, params$seedCode,
                                  params$industrialCode, params$touristCode,
                                  params$residualCode, params$foodProcCode), ]
-toPrintCane = toPrintCane[element %in% c(params$productionCode, params$exportCode,
-                                 params$importCode, params$stockCode,
-                                 params$foodCode, params$feedCode,
-                                 params$wasteCode, params$seedCode,
-                                 params$industrialCode, params$touristCode,
-                                 params$residualCode, params$foodProcCode), ]
-toPrintBeet[is.na(Value), Value := 0]
-toPrintCane[is.na(Value), Value := 0]
-toPrintBeet[is.na(standardDeviation), standardDeviation := 0]
-toPrintCane[is.na(standardDeviation), standardDeviation := 0]
+toPrint[is.na(Value), Value := 0]
+toPrint[is.na(standardDeviation), standardDeviation := 0]
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
-toPrintBeet[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
-          sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
-          lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
-          optimize = "constrOptim")]
-toPrintCane[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
+toPrint[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
           sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
           lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
           optimize = "constrOptim")]
 sink()
-toPrintBeet[, adjustment := balancedValue - Value]
-toPrintCane[, adjustment := balancedValue - Value]
+toPrint[, adjustment := balancedValue - Value]
 sugarData = merge(sugarData,
-                  rbind(toPrintBeet, toPrintCane)[, c(params$mergeKey, "element",
-                                                      "balancedValue", "adjustment"),
-                                                  with = FALSE],
+                  toPrint[, c(params$mergeKey, "element", "balancedValue",
+                              "adjustment"), with = FALSE],
                   by = c(params$mergeKey, "element"), all.x = TRUE)
 sugarData[!is.na(balancedValue), Value := balancedValue]
 sugarData[, balancedValue := NULL]
-toPrintBeet[, Value := balancedValue]
-toPrintCane[, Value := balancedValue]
-toPrintBeet[, c("adjustment", "balancedValue") := NULL]
-toPrintCane[, c("adjustment", "balancedValue") := NULL]
-printDistributionTable(toPrintBeet, params)
-})})
-suppressMessages({suppressWarnings({
-printDistributionTable(toPrintCane, params)
+toPrint[, Value := balancedValue]
+toPrint[, c("adjustment", "balancedValue") := NULL]
+printDistributionTable(toPrint, params)
 })})
 ```
 
@@ -616,9 +577,8 @@ We must now process the changes in the current elements down the tree into the o
 suppressMessages({suppressWarnings({
 ## Allocate down the adjustments in the true/automated way
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
-sugarData = rollDownFoodDelta(data = sugarData, tree = tree,
-                              standParams = params,
-                              feedElements = c("23140.01", "39120.01"))
+sugarData = synchronizeByProducts(data = sugarData, tree = tree,
+                                  standParams = params)
 sink()
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 toPrint[, adjustment := NULL]
@@ -633,8 +593,27 @@ Lastly, some elements have not yet been updated in this process.  To ensure a fu
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
+sugarData = rbind(sugarData, data.table(measuredItemCPC = beetPulpCode,
+                                        element = params$feedCode,
+                                        geographicAreaM49 = "840",
+                                        timePointYears = "2011",
+                                        metFlag = NA,
+                                        obsFlag = NA,
+                                        Value = NA,
+                                        standardDeviation = NA,
+                                        adjustment = NA))
+sugarData = rbind(sugarData, data.table(measuredItemCPC = bagasseCode,
+                                        element = params$industrialCode,
+                                        geographicAreaM49 = "840",
+                                        timePointYears = "2011",
+                                        metFlag = NA,
+                                        obsFlag = NA,
+                                        Value = NA,
+                                        standardDeviation = NA,
+                                        adjustment = NA))
 finalSuaBalance(sugarData, standParams = params,
-                feedElements = c())
+                feedElements = c(molassesCode, beetPulpCode),
+                indElements = bagasseCode)
 toPrint = sugarData[timePointYears == "2011", ]
 toPrint[, updateFlag := element == params$foodCode &
             measuredItemCPC %in% c(sugarSyrupCode)]
@@ -642,16 +621,12 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
-Now, we standardize all these commodities into their primary equivalents: in this case, cane sugar and beet sugar.  Commodities with multiple parents must be processed back into all the parents according to shares determined in the processing step (for example, refined sugar back to cane and beet in the proportion given earlier).
+Now, we standardize all these commodities into their primary equivalents: raw sugar.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
 params$elementPrefix = ""
 invisible({
-standTree = copy(tree)
-standTree[, c(params$geoVar) := "840"]
-standTree[, c(params$yearVar) := "2011"]
-standTree[, share := 1]
 ## Don't standardize back bagasse, beet pulp, or molasses
 standTree = standTree[!parentID %in% c("01801", "01802"), ]
 standTree[childID %in% c(bagasseCode, beetPulpCode, molassesCode),
@@ -668,7 +643,7 @@ finalValues = finalStandardizationToPrimary(data = sugarData, tree = standTree,
                                             standParams = params,
                                             sugarHack = FALSE)
 finalValues = finalValues[timePointYears == "2011" &
-    get(params$itemVar) %in% c(caneSugarCode, beetSugarCode), ]
+    get(params$itemVar) == rawSugarCode, ]
 printTable(finalValues, standParams = params, workingDir)
 })})
 ```
@@ -683,9 +658,10 @@ load(paste0(workingDir, "nutrientData.RData"))
     
 toPrint = sugarData[timePointYears == "2011" & element == params$foodCode, ]
 toPrint = merge(toPrint, nutrientData, by = params$itemVar, all.x = TRUE)
+toPrint[measuredItemCPC == rawSugarCode & element == "5141", Value := 0]
 
 ## Don't print some elements
-skippedElements = c(24110, 2413, 23210.05, 24490.92)
+skippedElements = c(24110, 2413, 23210.05, 24490.92, molassesCode)
 toPrint = toPrint[!get(params$itemVar) %in% skippedElements, ]
 
 setnames(itemName, params$childVar, params$itemVar)
@@ -696,8 +672,12 @@ toPrint[, measuredItemCPC := NULL]
 
 setcolorder(toPrint, c("Name", "Value", "Energy", "Protein", "Fat"))
 setnames(toPrint, "Value", "Quantity")
-knitr::kable(toPrint)
-
+toPrintCopy = copy(toPrint)
+toPrint[, Quantity := sapply(Quantity, roundNum)]
+toPrint[, Energy := round(Energy, 0)]
+toPrint[, Protein := round(Protein, 2)]
+toPrint[, Fat := round(Fat, 2)]
+knitr::kable(toPrint, align = c("l", "r", "r", "r", "r"))
 })})
 ```
 
@@ -705,18 +685,15 @@ Standardization of calories is simpler since we don't need to divide by extracti
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-out = toPrint[, list(
+out = toPrintCopy[, list(
     Energy  = sum(Quantity * Energy , na.rm = TRUE)/1000000,
     Protein = sum(Quantity * Protein, na.rm = TRUE)/1000000,
     Fat     = sum(Quantity * Fat    , na.rm = TRUE)/1000000), by = ""]
-out = round(out, 2)
-out = rbind(out, out)
-out[, Energy := Energy * c(0.616, 0.408)]
-out[, Protein := Protein * c(0.616, 0.408)]
-out[, Fat := Fat * c(0.616, 0.408)]
-out[, Standardized_Equivalent := c("Beet Sugar", "Cane Sugar")]
-setcolorder(out, c("Standardized_Equivalent", "Energy", "Protein", "Fat"))
-setnames(out, colnames(out)[-1], paste(colnames(out)[-1], "(millions)"))
-knitr::kable(out)
+out[, Energy := round(Energy/100, 0)*100]
+out[, Protein := round(Protein, 0)]
+out[, Fat := round(Fat, 0)]
+setnames(out, colnames(out), paste(colnames(out), "(millions)"))
+out = cbind(data.table(Commodity = "Raw Sugar Equivalent"), out)
+knitr::kable(out, align = c("l", "r", "r", "r"))
 })})
 ```

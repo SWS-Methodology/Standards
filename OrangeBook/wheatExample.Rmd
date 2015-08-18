@@ -1,6 +1,6 @@
 ---
 title: "Food Balance Sheets"
-output: word_document
+output: pdf_document
 classoption: landscape
 ---
 
@@ -191,7 +191,7 @@ sink()
 
 ## Wheat
 
-For this example, we will first consider the full process for creating a food balance sheet for wheat.  We start off with an empty SUA table showing some commodities of the wheat "commodity tree" (wheat as the primary commodity, flour, etc. as the processed commodities):
+For this example, we will first consider the full process for creating a food balance sheet for wheat.  Note that if we do not otherwise mention the units, all quantities are assumed to be in millions of tonnes.  We start off with an empty SUA table showing some commodities of the wheat "commodity tree" (wheat as the primary commodity, flour, etc. as the processed commodities):
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -318,7 +318,7 @@ wheatData[, Value_measuredElement_5510 := NULL]
 })})})
 ```
 
-Next, we fill in the table with our imputed and official production quantities.  Production is only imputed for primary products (and occassionally official figures are provided for processed products, as is the case here).  So, in this case, no additional values are filled in outside of wheat and flour.
+Next, we fill in the table with our imputed and official production quantities.  Production is only imputed for primary products (and occassionally official figures are provided for processed products, as is the case here).  So, in this case, no additional quantities are filled in outside of wheat and flour.
 
 ```{r, echo = FALSE, fig.show = FALSE}
 suppressWarnings({suppressMessages({
@@ -386,7 +386,7 @@ For all the next steps, this example will consider all the data for the various 
 
 ### Stock Changes
 
-We now estimate the stock changes.  Generally, stocks will be held for a select number of primary level products (such as wheat or rice).  The numbers below represent the estimated stock changes (by the stock imputation methodology described previously) for the example country we are considering.  In this case, our estimate represents a drawdown in the stocks held.
+We now estimate the stock changes.  Generally, stocks will be held for a select number of primary level products (such as wheat or rice).  The numbers below represent the estimated stock changes for the example country we are considering.  The stock imputation methodology, as described more thoroughly in chapter 2, estimates stock change in the current year as a linear regression on the cumulative stock changes in the previous years.  In this case, our estimate represents a withdrawal (hence the negative sign) in the stocks held.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -408,7 +408,7 @@ printTable(toPrint, params, workingDir)
 
 ### Food
 
-The allocation to food, on the other hand, can potentially be considered at any processing level, although many primary commodities (such as wheat) are not usually eaten directly prior to further processing.  We now impute food consumption numbers (as per the methodology)for the example country and update the SUA table below.
+The module estimating food allocation uses food consumption estimates from the previous year and extrapolates these estimates forward using changes in GDP and product elasticities.  The allocation to food can potentially be considered for any item at the SUA level; however, the food module estimates consumption at the primary level only by standardizing/aggregating all the consumption quantities to the primary level.  This food quantity will eventually be processed into child commodities to cover trade imbalances or provide consumption at lower levels.  We now impute food consumption numbers (as per the methodology) for the example country and update the SUA table below.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -441,7 +441,7 @@ printTable(toPrint, params, workingDir)
 
 ### Feed
 
-The Feed component is then imputed (based on the methodology described in Chapter 2). The assumption here is that some of the primary level quantities are used as feed, as well as all of the bran (which is a by-product of the flour production process).  Negligible amounts of bran do go into such products as breakfast cereals, but for the sake of simplicity, such quantities will be ignored in this example.
+The Feed variable is then imputed (see the methodology described in detail in Chapter 2, based on the animal numbers and feed "intensification" factors, resulting in calculated feed requirements). The assumption here is that some of the primary level quantities are used as feed, as well as all of the bran (which is a by-product of the flour production process).  Negligible amounts of bran do go into such products as breakfast cereals, but for the sake of simplicity, such quantities will be ignored in this example.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -466,7 +466,7 @@ printTable(toPrint, params, workingDir)
 
 ### Losses
 
-These refer to harvest and post-harvest losses prior to the retail stage. Retail and household losses are therefore not included here. The methodology for calculating agricultural and food losses is continuously being revised and improved.
+These refer to post-harvest losses prior to the retail stage. Retail and household losses/wastes are therefore not included here. The methodology for calculating agricultural and food losses is continuously being revised and improved.  Currently, the methodology, as described in chapter 2, uses information about the perishable group of a commodity and the country/region to estimate a hierarchical linear regression model.  Also, it should be noted here that losses are assumed to occur only at the primary level.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -489,7 +489,7 @@ printTable(toPrint, params, workingDir)
 
 ### Seed
 
-The seed quantities are then imputed (again based on the methodology described in chapter 2). Seed, of course, is only allotted to the primary commodity.
+The seed quantities are then imputed (again based on the methodology described in chapter 2). The seed module fits a hierarchical linear model to seed data in previous years and uses global data.  Seed, of course, is only allotted to the primary commodity.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -513,7 +513,7 @@ printTable(toPrint, params, workingDir)
 
 ### Industrial Utilization
 
-For most commodities, there is no industrial utilization and therefore it's value will be zero.  This element can be important when considering commodities related to biofuels (such as maize) and vegetable oils (such as palm oil), but for wheat it is irrelevant.
+For most commodities, there is no industrial utilization and therefore its quantity will be zero.  The estimates from this commodity are often taken from external sources; see the methodology discussion in chapter 2.  This element can be important when considering commodities related to biofuels (such as maize) and vegetable oils (such as palm oil).  For the wheat "commodity tree," the main commodity that has industrial use is "wheat starch."
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -540,7 +540,7 @@ printTable(toPrint, params, workingDir)
 
 ### Tourist Consumption
 
-The tourist consumption estimation approach uses tourist data from the World Trade Organization (UNWTO) to compute tourist flows as well as previous year consumption patterns to estimate tourist consumption amounts while tourists are outside their nation.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be consumed abroad than locally.
+The tourist consumption estimation approach uses tourist data from the World Trade Organization (UNWTO) to compute tourist flows as well as previous year consumption patterns of the country of origin to estimate tourist consumption amounts while abroad.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be consumed abroad than locally.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -574,7 +574,7 @@ printTable(toPrint, params, workingDir)
 
 ### Standardization and Balancing
 
-Now, suppose we have the following commodity tree:
+Now, suppose we have the following wheat commodity tree:
 
 ```{r, echo = FALSE, fig.height=12, fig.width = 18}
 suppressWarnings({suppressMessages({
@@ -606,7 +606,7 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
-We could balance the wheat line of the SUA at this point, but we may run into a problem.  Suppose, for example, that the food quantity is adjusted downwards during the balancing.  In the case of wheat, there is no consumption as such.  Thus, this quantity of food will then be converted into production for the processed products according to the commodity tree (i.e. production of flour, bulgur, and breakfast cereals).  If the food value is too small, we may not be able to generate the official flour production, or we may not produce enough bulgur to cover the trade deficit.  Therefore, we first must compute the required ``production'' of each of the processed products to ensure that we'll satisfy any deficits due to exports or consumption (note that required production can be zero if supply exceeds utilization and we have no official production data).
+We could balance the wheat line of the SUA at this point, but we may run into a problem.  Suppose, for example, that the food quantity is adjusted downwards during the balancing.  In the case of wheat, there is no consumption as such.  Thus, this quantity of food will then be converted into production for the processed products according to the commodity tree (i.e. production of flour, bulgur, and breakfast cereals).  If the food quantity is too small, we may not be able to generate the official flour production, or we may not produce enough bulgur to cover the trade deficit.  Therefore, we first must compute the required ``production'' of each of the processed products to ensure that we'll satisfy any deficits due to exports or consumption (note that required production can be zero if supply exceeds utilization and we have no official production data).
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -635,13 +635,20 @@ printStandardizationTable(distributionTable, params, workingDir = workingDir)
 })})
 ```
 
-The main requirement is in the wheat flour and bran, and it should be noted that the 24.7 million tonnes requirement for wheat bran will automatically be satisfied if the 25.9 million tonnes requirement for wheat bran is satisfied (as they are produced together).  Thus, the lower bound for the food variable for wheat must have a lower bound of 26.3 million tonnes (the total requirement from flour and bulgur).  Now, we must balance this table to satisfy the FBS equation of supply equals utilization.  To do this, we need to extract the computed standard deviations of each variable.  The table below shows the expected value and estimated standard deviation for each of the variables for wheat:
+The main requirement is in the wheat flour and bran, and it should be noted that the 24.7 million tonnes requirement for wheat bran will automatically be satisfied if the 25.9 million tonnes requirement for wheat bran is satisfied (as they are produced together).  Thus, the lower bound for the food variable for wheat must be 26.3 million tonnes (the total requirement from flour and bulgur).  Moreover, flour production is an official figure, and this means that we should not allow the food production quantity of wheat to change much (as any changes would imply an increase in flour production, which is not correct, or an increase in production of bulgur/breakfast cereals).  Thus, we fix the food variable of wheat to 26.3 million tonnes by setting the standard deviation of flour to 0.
+
+Now, we must balance to satisfy the FBS equation of supply equals utilization.  To do this, we need to extract the computed standard deviations of each variable.  The table below shows the expected value and estimated standard deviation for each of the variables for wheat.  The equation is not initially balanced, and it is balanced by adjusting figures according to their standard deviations.  For example, a variable with a large standard deviation can be adjusted substantially (as we are not very confident in this figure) while a variable with zero standard deviation will not be adjusted at all (see more on this algorithm in chapter 2).
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
 invisible(toPrint[, updateFlag := NULL])
 toPrint = toPrint[measuredItemCPC == "0111", ]
 toPrint[is.na(standardDeviation), standardDeviation := 0]
+## Fix food of wheat since flour is official
+wheatData[measuredItemCPC == "0111" & element == "5141", Value := 26330000]
+wheatData[measuredItemCPC == "0111" & element == "5141", standardDeviation := 0]
+toPrint[measuredItemCPC == "0111" & element == "5141", Value := 26330000]
+toPrint[measuredItemCPC == "0111" & element == "5141", standardDeviation := 0]
 printDistributionTable(toPrint, params)
 })})
 ```
@@ -692,16 +699,24 @@ tree[groupID == "0111-23140.03", share := .05]
 # save(wheatData, file = paste0(workingDir, "StandardizedWheat1.RData"))
 # load(paste0(workingDir, "StandardizedWheat1.RData"))
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
-wheatData = rollDownFoodDelta(data = wheatData, tree = tree,
-                              standParams = params,
-                              feedElements = c("23140.01", "39120.01"))
+wheatData = synchronizeByProducts(data = wheatData, tree = tree,
+                                  standParams = params)
+wheatData = rbind(wheatData, data.table(measuredItemCPC = germCode,
+                                        element = c("5600", "5900", "71", "5525",
+                                                    "5120", "t???", "i???", "5520"),
+                                        geographicAreaM49 = "840",
+                                        timePointYears = "2011",
+                                        metFlag = NA,
+                                        obsFlag = NA,
+                                        Value = 0,
+                                        standardDeviation = NA,
+                                        adjustment = NA))
+wheatData[measuredItemCPC == germCode & element == "5520", Value := NA]
 sink()
 toPrint = wheatData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
 ## rollDownFoodDelta is currently more complicated than it should be.  Undo some
 ## changes that it does that shouldn't be done (it should only create production
 ## for by-products).
-toPrint[get(params$itemVar) == germCode & element != params$productionCode,
-        Value := NA]
 toPrint[get(params$itemVar) == branCode & element == params$feedCode,
         Value := 3355500]
 toPrint[, adjustment := NULL]
@@ -712,20 +727,26 @@ printTable(toPrint, params, workingDir)
 })})
 ```
  
-Now our food balance sheet is nearly completed, except that we haven't balanced the SUA commodities yet.  Since the production is already fixed (either because it is an official figure or because it is 0) the balancing is very straightforward: the difference (which must be positive because we enforced this above) will be entirely allocated to food or feed.
+Now our food balance sheet is nearly completed, except that we have not balanced the SUA commodities yet.  Since the production is already fixed (either because it is an official figure or because it is 0) the balancing is very straightforward: the difference (which must be positive because we enforced this above) will be entirely allocated to the most sensible element (often food, but occassionally feed or industrial use).
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
 finalSuaBalance(wheatData, standParams = params,
-                feedElements = c(branCode, germCode))
+                feedElements = c(branCode, germCode),
+                indElements = starchCode)
 toPrint = wheatData[timePointYears == "2011", ]
-toPrint[, updateFlag := element %in% c(params$foodCode, params$feedCode) &
+toPrint[, updateFlag := element %in% c(params$foodCode, params$feedCode,
+                                       params$industrialCode) &
             measuredItemCPC != wheatCode & Value > 0]
 printTable(toPrint, params, workingDir)
 })})
 ```
 
-Now, the final step is to aggregate this full table back into the primary commodity equivalent (in this case wheat).  The final value for wheat equivalent production is simply the current value for wheat production: this is because "production" of flour or bulgur (or any other processed product) is not strictly-speaking the actual production in that the flour or bulgur is acquired from a preceding commodity (whereas production of wheat is truly a production as it is not derived from anything else).  For a similar reason, the food variable is not standardized: the "food" quantity reported for wheat corresponds to the quantity of wheat eaten as such (which for this commodity is zero) as well as the food eaten in processed products.  To standardize imports and exports, we can aggregate the imports and exports of the derived/processed commodities up into their primary equivalent by dividing by the extraction rate.  We add these primary equivalents to the current value of imports and exports of wheat, and we have our final, primary equivalent imports and exports of wheat.  For the remaining variables, standardization is simple: for example, the final stock change for wheat will simply be the current stock change as there is no stock change for processed products.
+Now, the final step is to aggregate this full table back into the primary commodity equivalent (in this case wheat).  The final quantity for wheat equivalent production is simply the current quantity for wheat production.  This is because "production" of bulgur (or any other processed product) is really a conversion of wheat into bulgur and not actually a production of bulgur.  Thus, the reported quantity for production will always just be the production at the primary product level.  For a similar reason, the food variable is not standardized: the food quantity reported for wheat corresponds to the quantity of wheat eaten as such (which for this commodity is zero) as well as the food processed into other products.
+
+To standardize imports and exports, we can aggregate the imports and exports of the derived/processed commodities up into their primary equivalent by dividing by the extraction rate.  We add these primary equivalents to the current quantity of imports and exports of wheat, and we have our final, primary equivalent import and export quantities of wheat.
+
+Feed commodity quantities (such as bran quantities) are not standardized back into their primary (wheat) equivalent as they are feed products.  Thus, they are not reported at all in the food balance sheet but are instead reported in the commodity balances under a category such as "brans."  For the remaining variables, standardization is simple in that we just use the primary value: for example, the final stock change for wheat will simply be the current stock change as there is no stock change for processed products.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
@@ -747,7 +768,7 @@ printTable(finalValues, standParams = params, workingDir)
 })})
 ```
 
-We can now calculate the calories, fats, and proteins content. First, we apply the calorie/fat/protein content nutritive factor to each individual element. These nutritive factors are obtained from national sources or from international standard tables.
+We can now calculate the calories, fats, and proteins content. First, we apply the calorie/fat/protein content nutritive factors to each individual commodity with a non-zero food value.  These nutritive factors are obtained from national sources or from international standard tables.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -757,29 +778,40 @@ load(paste0(workingDir, "nutrientData.RData"))
     
 toPrint = wheatData[timePointYears == "2011" & element == params$foodCode, ]
 toPrint = merge(toPrint, nutrientData, by = params$itemVar, all.x = TRUE)
+toPrint[measuredItemCPC == wheatCode & element == "5141", Value := 0]
 
 setnames(itemName, "Item", params$itemVar)
 toPrint = merge(toPrint[, c(params$itemVar, "Value", "Protein", "Fat", "Energy"),
                         with = FALSE], itemName, all.x = TRUE)
 setnames(itemName, params$itemVar, "Item")
+toPrint = toPrint[!is.na(Value), ]
 toPrint[, measuredItemCPC := NULL]
 
 setcolorder(toPrint, c("Name", "Value", "Energy", "Protein", "Fat"))
 setnames(toPrint, "Value", "Quantity")
-knitr::kable(toPrint)
+toPrintCopy = copy(toPrint)
+toPrint[, Quantity := sapply(Quantity, roundNum)]
+toPrint[, Energy := round(Energy, 0)]
+toPrint[, Protein := round(Protein, 2)]
+toPrint[, Fat := round(Fat, 2)]
+knitr::kable(toPrint, align = c("l", "r", "r", "r", "r"))
 
 })})
 ```
 
-Standardization of nutrients is now a simple last step: all the variables here (i.e. calories, fats, and proteins) are purely additive, so the standardized calories/fats/proteins are simply the sum of the total calories/fats/proteins for each element:
+Standardization of nutrients is now a simple last step: all the variables here (i.e. calories, fats, and proteins) are purely additive, so the standardized calories/fats/proteins are simply the sum of the total calories/fats/proteins for each commodity:
 
 ```{r, echo = FALSE}
-out = toPrint[, list(
+suppressWarnings({suppressMessages({
+out = toPrintCopy[, list(
     Energy  = sum(Quantity * Energy , na.rm = TRUE)/1000000,
     Protein = sum(Quantity * Protein, na.rm = TRUE)/1000000,
     Fat     = sum(Quantity * Fat    , na.rm = TRUE)/1000000), by = ""]
-out = round(out, 2)
+out[, Energy := round(Energy/100, 0)*100]
+out[, Protein := round(Protein, 0)]
+out[, Fat := round(Fat, 0)]
 setnames(out, colnames(out), paste(colnames(out), "(millions)"))
 out = cbind(data.table(Commodity = "Wheat and Products"), out)
-knitr::kable(out)
+knitr::kable(out, align = c("l", "r", "r", "r"))
+})})
 ```
