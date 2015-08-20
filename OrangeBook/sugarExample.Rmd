@@ -24,6 +24,8 @@ molassesCode = "23540"
 bagasseCode = "39140.02"
 beetPulpCode = "39140.01"
 sugarSyrupCode = "23210.04"
+sugarNoncentrifugalCode = "23511.02"
+dextroseCode = "23210.05"
 
 currentCountry = "840"
 currentYear = "2011"
@@ -121,6 +123,14 @@ tree = rbindlist(list(tree,
                  fill = TRUE)
 edges = tree[(parentID %in% sugarKeys | childID %in% sugarKeys) &
                  !is.na(parentID) & !is.na(childID), ]
+## Simplify the tree by replacing sugar cane and sugar beet with raw sugar
+tree[parentID == caneCode & childID == caneSugarCode, childID := rawSugarCode]
+tree[parentID == beetCode & childID == beetSugarCode, childID := rawSugarCode]
+tree[parentID == caneSugarCode & childID == refinedSugarCode, parentID := rawSugarCode]
+tree = tree[!(parentID == beetSugarCode & childID == refinedSugarCode), ]
+## Drop some unneeded sugar codes
+tree = tree[childID != sugarNoncentrifugalCode, ]
+tree = tree[parentID != dextroseCode, ]
 
 itemName = fread(paste0(workingDir, "elementDescription.csv"),
                  colClasses = c("character", "character"))
@@ -138,13 +148,17 @@ sapply(pulledElements, function(el){
     fullData[is.na(get(oFl)), c(oFl) := ""]
     fullData[is.na(get(oFl)), c(mFl) := ""]
 })
+
+## Overwrite beet sugar with raw sugar
+fullData[measuredItemCPC == beetSugarCode, measuredItemCPC := rawSugarCode]
+
 sink()
 })})
 ```
 
 ## Sugar
 
-Now, let's consider the full process for creating a food balance sheet for sugar.  We start off with an empty table:
+Now, let us consider the full process for creating a food balance sheet for sugar.  We start off with an empty table:
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -170,7 +184,7 @@ printTable(toPrint, params, workingDir)
 
 ### Production
 
-For production data, we first fill in the table with any available official figures.  In this case, the production value is known for all the primary products and thus no imputation is done.  We also have production data for some of the processed commodities:
+For production data, we first fill in the table with any available official figures.  In this case, the production quantity is known for all the primary products and thus no imputation is done.  If we were to have missing quantities, we would impute data as described in chapter two and as shown in the wheat example.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -181,7 +195,7 @@ sugarData = merge(sugarData,
 sugarData[element == "5510", Value := Value_measuredElement_5510]
 ## Remove some of the official data to show an example that seems a bit
 ## different from wheat (i.e. we don't want official figures everywhere).
-sugarData[element == "5510" & measuredItemCPC %in% c(molassesCode, beetSugarCode),
+sugarData[element == "5510" & measuredItemCPC %in% c(molassesCode, rawSugarCode),
           Value := NA]
 sugarData[, standardDeviation := 0]
 sugarData[element == "5510" & Value == 0, Value := NA]
@@ -195,7 +209,7 @@ printTable(toPrint, params, workingDir)
 
 ### Trade
 
-For the next example, we'll show how the imputation, mirroring and balancing works.  In this case, we just take the country totals and insert into this table.
+Please reference chapter 2 and the wheat example for a thorough description of the trade processing.  For this example, we simply insert the available trade figures.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -233,7 +247,7 @@ printTable(toPrint, params, workingDir)
 
 ### Stock Changes
 
-We now estimate the stock changes.  Note that for most products, we assume that countries do not hold stocks.  Generally, stocks will only be held for primary level products, and not even all of these products.  The numbers below represent the estimated stock changes (by the stock imputation methodology described previously) for the example country we're considering.
+Generally, stocks will be held for a select number of primary level products (such as wheat or rice).  However, in the case of sugar, it is not uncommon for countries to hold stocks for processed commodities such as raw or refined sugar.  The stock change in the table will ideally be a quantity measured within the country, but in almost all cases this is not possible.  Thus, the stock change quantity must be imputed, and we do this imputation via the linear regression model on historical stock change data described more thoroughly in chapter 2.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -255,7 +269,7 @@ printTable(toPrint, params, workingDir)
 
 ### Food
 
-The allocation to food, on the other hand, can potentially be considered at any processing level, although some commodities (such as wheat) are assumed to not be eaten as such.  We impute food consumption numbers for the example country and update the FBS table below.
+The module estimating food allocation uses food consumption estimates from the previous year and extrapolates these estimates forward using changes in GDP and product-related income elasticities.  Recall that the "Food" variable is only reported at the primary level as the "Food Processing" variable is estimated by standardizing the "Food" quantities for all the processed commodities.  Also, sugar is a special case in that the food balance is not done at the level of the sugar crops (i.e. sugar cane and sugar beet) but rather at the level of raw sugar.  Thus, when we later refer to the "primary level" for sugar, we will really mean the raw sugar commodity.  Now, the "Food" and "Food Processing" variables are filled in for raw sugar.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -276,54 +290,34 @@ standTree = rbind(standTree, data.table(childID = "23520", target = "B",
                                         groupID = "2351-23520",
                                         share = 1, geographicAreaM49 = "840",
                                         timePointYears = "2011"))
-## Also have to add this commodity to sugarData
-sugarData = rbind(sugarData, data.table(geographicAreaM49 = "840",
-                                        timePointYears = "2011",
-                                        measuredItemCPC = rawSugarCode,
-                                        element = sugarData[, unique(element)],
-                                        metFlag = NA, obsFlag = NA,
-                                        Value = NA, standardDeviation = 0))
-foodEstimates = standardizeTree(data = foodEstimates, tree = standTree,
+foodEstimates = standardizeTree(data = foodEstimates,
+                                tree = standTree[childID != rawSugarCode, ],
                                 elements = "5141", standParams = params,
                                 sugarHack = FALSE)
 foodEstimates[, standardDeviation_measuredElement_5141 := .1 * Value_measuredElement_5141]
+setnames(foodEstimates, colnames(foodEstimates), gsub("_5141", "_f???", colnames(foodEstimates)))
 sugarData = replaceData(sugarData,
-            foodEstimates[, c("Value_measuredElement_5141",
-                               "standardDeviation_measuredElement_5141",
+            foodEstimates[, c("Value_measuredElement_f???",
+                               "standardDeviation_measuredElement_f???",
                                params$mergeKey),
                            with = FALSE],
             mergeKey = params$mergeKey)
+## Assign a food value for raw sugar to make the example more interesting (and
+## different from wheat).
+sugarData[element == "5141" & measuredItemCPC == rawSugarCode, Value := 1513789]
 # If no food is estimated yet, it doesn't mean that it should be forced to be 0.
 # sugarData[element == "5141" & Value == 0, Value := NA]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-toPrint[, updateFlag := element == "5141"]
-printTable(toPrint, params, workingDir)
-})})
-```
-
-### Feed
-
-```{r, echo = FALSE}
-suppressWarnings({suppressMessages({
-load(paste0(workingDir, "feedEstimates.RData"))
-feedEstimates[, standardDeviation_measuredElement_5520 :=
-                  Value_measuredElement_5520 * .1]
-sugarData = replaceData(sugarData,
-            feedEstimates[, c("Value_measuredElement_5520",
-                               "standardDeviation_measuredElement_5520",
-                               params$mergeKey),
-                           with = FALSE],
-            mergeKey = params$mergeKey)
-sugarData[element == "5520" & Value == 0, Value := NA]
-toPrint = sugarData[geographicAreaM49 == currentCountry &
-                        timePointYears == currentYear, ]
-toPrint[, updateFlag := element == "5520"]
+toPrint[, updateFlag := (element %in% c("5141", "f???") &
+                             measuredItemCPC == rawSugarCode)]
 printTable(toPrint, params, workingDir)
 })})
 ```
 
 ### Losses
+
+Losses are estimated using the methodology described in chapter 2, unless losses quantities are measured by the country.  We estimate losses only for sugar beet and sugar cane.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -336,7 +330,7 @@ sugarData = replaceData(sugarData,
                                params$mergeKey),
                            with = FALSE],
             mergeKey = params$mergeKey)
-sugarData[element == "5120" & Value == 0, Value := NA]
+sugarData[is.na(Value) & element == "5120", Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5120"]
@@ -345,6 +339,8 @@ printTable(toPrint, params, workingDir)
 ```
 
 ### Seed
+
+Seed use for sugar beet is assumed to be approximately zero **WHY???**.  However, an allocation for seed from sugar cane should be done.  In this case, it is usually not actual seed usage but rather that some of the sugar cane plants are cut and replanted, thus resulting in a slightly smaller harvest than would have occurred if all plants had been harvested.  While this is not technically seed usage, it simplifies the food balance sheet to allocate this "utilization" under seed usage.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -357,7 +353,7 @@ sugarData = replaceData(sugarData,
                                params$mergeKey),
                            with = FALSE],
             mergeKey = params$mergeKey)
-sugarData[element == "5525" & Value == 0, Value := NA]
+sugarData[element == "5525" & is.na(Value), Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "5525"]
@@ -366,6 +362,8 @@ printTable(toPrint, params, workingDir)
 ```
 
 ### Industrial Utilization
+
+As with the wheat example, few of the sugar commodities are used for industrial use.  However, bagasse, a byproduct in the processing of sugar cane into raw sugar, can be utilized in industry.  This allocation will be made later when we convert the sugar cane quantities into its processed products.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -383,6 +381,7 @@ sugarData = replaceData(sugarData,
                                 with = FALSE],
             mergeKey = params$mergeKey)
 sugarData[element == "i???" & Value == 0, Value := NA]
+sugarData[element == "i???" & measuredItemCPC == rawSugarCode, Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
 toPrint[, updateFlag := element == "i???"]
@@ -392,16 +391,16 @@ printTable(toPrint, params, workingDir)
 
 ### Tourist Consumption
 
-The tourist consumption estimation approach uses tourist data from the WTO as well as last year's consumption patterns to estimate the impact of tourism on local consumption.  Note that tourist consumption can be negative; as an extreme example consider a case where many nationals travel abroad but no tourists enter.  In this case, the country will have a negative ``tourist consumption'' because more calories will be assumed abroad than locally.
+As with the wheat example, we see a negative tourist consumption amount.  This indicates that more calories are available in the country (a decrease in utilization is mathematically equivalent to an increase in supply) because inhabitants consumed calories abroad.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
 load(paste0(workingDir, "/touristEstimates.RData"))
-touristEstimates = standardizeTree(data = touristEstimates, tree = standTree,
+touristEstimates = standardizeTree(data = touristEstimates,
+                                   tree = standTree[childID != rawSugarCode, ],
                                    elements = "tou", standParams = params,
                                    sugarHack = FALSE)
-touristEstimates[measuredItemCPC %in% c(caneCode, beetCode),
-                 Value_measuredElement_tou := NA]
+touristEstimates = touristEstimates[!measuredItemCPC %in% c(beetCode, caneCode), ]
 touristEstimates[, standardDeviation_measuredElement_tou := 
                      1 * Value_measuredElement_tou]
 setnames(touristEstimates, old = "Value_measuredElement_tou",
@@ -414,11 +413,104 @@ sugarData = replaceData(sugarData,
                                params$mergeKey),
                            with = FALSE],
             mergeKey = params$mergeKey)
-# If no food is estimated yet, it doesn't mean that it should be forced to be 0.
-# sugarData[element == "5141" & Value == 0, Value := NA]
+sugarData[element == "t???" & is.na(Value), Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry &
                         timePointYears == currentYear, ]
-toPrint[, updateFlag := element == "5141"]
+toPrint[, updateFlag := element == "t???"]
+printTable(toPrint, params, workingDir)
+})})
+```
+
+### Feed
+
+We note that, in order to determine feed estimates for raw sugar, we must first deduct from our total feed requirements all the commodities which are allocated entirely (or assumed to be allocated entirely) to feed.  Thus, we must deduct the bran produced in the processing of wheat as well as the molasses produced in the processing of sugar beet and sugar cane.  This is an important note: when compiling the food balance sheets, the quantities allocated to feed for all feed commodities must be computed before generating feed estimates for the wheat/raw sugar/etc. commodities.  Thus, food balance sheets cannot be compiled one commodity tree at a time.
+
+In order to compute the total amount of molasses, we must compute the amount of sugar beet and sugar cane allocated to processing.  This is rather straightforward: we simply deduct from the supply the small amount allocated to seed and losses to compute the amount of sugar beet and sugar cane allocated to food processing.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+sugarData[measuredItemCPC == beetCode & element == "f???",
+          Value := 26210000 + 194500 - 300 - 205500]
+sugarData[measuredItemCPC == caneCode & element == "f???",
+          Value := 26510000 + 9700 - 860 - 1572200 - 213300]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "f???" & measuredItemCPC %in% c(beetCode, caneCode)]
+printTable(toPrint, params, workingDir)
+})})
+```
+
+We now process forward all of the sugar beet and sugar cane quantities into raw sugar and the associated by-products.  The production quantities of the sugar crops were officially reported, and after a minor allocation to seed and waste, these quantities are essentially allocated to production of the processed commodities.  This production is therefore also considered official.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+## Food processing quantities were assigned above for printing.  We don't really
+## want to manually compute that, though, as it will be computed in the
+## processForward function.
+sugarData[measuredItemCPC == beetCode & element == "f???", Value := NA]
+sugarData[measuredItemCPC == caneCode & element == "f???", Value := NA]
+output = processForward(sugarData, tree, standParams = params)
+sugarData = output$data
+sugarData = rbind(sugarData, data.table(measuredItemCPC = beetPulpCode,
+                                        element = c("5600", "5900", "71", "5525", "5141",
+                                                    "5120", "t???", "i???", "f???", "5520"),
+                                        geographicAreaM49 = "840",
+                                        timePointYears = "2011",
+                                        metFlag = NA,
+                                        obsFlag = NA,
+                                        Value = 0,
+                                        standardDeviation = NA))
+sugarData = rbind(sugarData, data.table(measuredItemCPC = bagasseCode,
+                                        element = c("5600", "5900", "71", "5525", "5141",
+                                                    "5120", "t???", "i???", "f???", "5520"),
+                                        geographicAreaM49 = "840",
+                                        timePointYears = "2011",
+                                        metFlag = NA,
+                                        obsFlag = NA,
+                                        Value = 0,
+                                        standardDeviation = NA))
+sugarData[measuredItemCPC %in% c(beetPulpCode, bagasseCode) &
+              element %in% c(params$foodCode, params$industrialCode,
+                             params$feedCode, params$foodProcCode),
+          Value := NA]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5510" &
+            measuredItemCPC %in% c(rawSugarCode, molassesCode,
+                                   beetPulpCode, bagasseCode)]
+toPrint[measuredItemCPC %in% c(beetPulpCode, bagasseCode), updateFlag := TRUE]
+printTable(toPrint, params, workingDir)
+})})
+```
+
+Thus, we can now determine the quantity of molasses and beet pulp (byproducts of the sugar processing) feed that we have produced.  This would then inform the amount of feed that we could allocate to the commodity that we are balancing (i.e. raw sugar).  However, raw sugar is rarely used as a feed product, and thus in this case we will only allocate feed usage for the two processed commodities beet pulp and molasses.
+
+```{r, echo = FALSE}
+suppressWarnings({suppressMessages({
+load(paste0(workingDir, "feedEstimates.RData"))
+feedEstimates[, standardDeviation_measuredElement_5520 :=
+                  Value_measuredElement_5520 * .1]
+feedEstimates[measuredItemCPC == molassesCode,
+              Value_measuredElement_5520 :=
+                  na2zero(sugarData[measuredItemCPC == molassesCode & element == "5510", Value]) +
+                  na2zero(sugarData[measuredItemCPC == molassesCode & element == "5600", Value]) -
+                  na2zero(sugarData[measuredItemCPC == molassesCode & element == "5900", Value])]
+feedEstimates[measuredItemCPC == beetPulpCode,
+              Value_measuredElement_5520 :=
+                  na2zero(sugarData[measuredItemCPC == beetPulpCode & element == "5510", Value]) +
+                  na2zero(sugarData[measuredItemCPC == beetPulpCode & element == "5600", Value]) -
+                  na2zero(sugarData[measuredItemCPC == beetPulpCode & element == "5900", Value])]
+sugarData = replaceData(sugarData,
+            feedEstimates[, c("Value_measuredElement_5520",
+                               "standardDeviation_measuredElement_5520",
+                               params$mergeKey),
+                           with = FALSE],
+            mergeKey = params$mergeKey)
+sugarData[element == "5520" & Value == 0, Value := NA]
+sugarData[element == "5520" & measuredItemCPC == rawSugarCode, Value := 0]
+toPrint = sugarData[geographicAreaM49 == currentCountry &
+                        timePointYears == currentYear, ]
+toPrint[, updateFlag := element == "5520"]
 printTable(toPrint, params, workingDir)
 })})
 ```
@@ -447,7 +539,7 @@ plotSingleTree(edges = edges,
 })})
 ```
 
-Note that in this commodity tree, we create cane sugar and beet sugar from sugar cane and sugar beet, respectively, and then both of these raw sugars are processed into refined sugar.  In order to simplify reporting, cane sugar and beet sugar are grouped together into one commodity "Raw cane or beet sugar."
+We have already eliminated the sugar cane and sugar beet commodities, and thus we are mainly interested in the task of rolling up processed sugar commodities into raw sugar.  Again, here is our initial table:
 
 ```{r, echo = FALSE}
 # save(sugarData, tree, file = paste0(workingDir, "preStandardizedSugar.RData"))
@@ -458,73 +550,72 @@ printTable(toPrint, params, workingDir)
 })})
 ```
 
-The processing for sugar works slightly differently than most commodities.  Sugar cane and sugar beet are, in almost every case, converted into cane sugar or beet sugar (i.e. they are not eaten as such nor are they processed into other products).  Thus, in this case, rather than standardizing values back to sugar cane and sugar beet, we instead assume all sugar cane and sugar beet is first converted into the corresponding sugar and we perform the balances at this level.
+The next step in this process is to balance the processed commodities by creating production quantities.  The standardization of these required production quantities would then be compared to our estimate for the quantity of food processing for the raw sugar commodity to ensure we have enough to cover supply/utilization deficits.  However, we do not have any trade deficits, nor do we have official production of the main use of raw sugar (recall, however, in the wheat case we had official production of wheat flour).  In order to maintain consistency between our "Food Processing" variable and the production of our processed commodities, we allocate the "Food Processing" of raw sugar into Production of refined sugar.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
-tree[parentID == beetCode & childID == beetSugarCode, childID := rawSugarCode]
-tree[parentID == caneCode & childID == caneSugarCode, childID := rawSugarCode]
-output = processForward(sugarData, tree, standParams = params)
-sugarData = output$data
-sugarData[measuredItemCPC %in% c(beetSugarCode, caneSugarCode),
-          measuredItemCPC := rawSugarCode]
-## Use the mode as the flag aggregation algorithm
-Mode <- function(x) {
-    ux <- unique(x)
-    ux[which.max(tabulate(match(x, ux)))]
-}
-sugarData = sugarData[, list(metFlag = Mode(metFlag),
-                             obsFlag = Mode(obsFlag),
-                             Value = sum(Value, na.rm = TRUE),
-                             standardDeviation = sqrt(sum(standardDeviation^2, na.rm = TRUE))),
-                      by = c(params$mergeKey, "element")]
-tree = output$tree
+sugarData[measuredItemCPC == refinedSugarCode & element == "5510",
+          Value := sugarData[measuredItemCPC == rawSugarCode & element == "f???", Value] *
+              tree[parentID == rawSugarCode & childID == refinedSugarCode, extractionRate]]
+sugarData[is.na(Value) & element == "f???", Value := 0]
 toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-toPrint[element == params$productionCode &
-            get(params$itemVar) %in% c(caneSugarCode, bagasseCode, rawSugarCode,
-                                       beetPulpCode, molassesCode),
-        updateFlag := TRUE]
+toPrint[, updateFlag := element == "5510" & measuredItemCPC == refinedSugarCode]
 printTable(toPrint, params, workingDir)
 })})
 ```
 
-The next step in this process is to balance the processed commodities by creating production values.  However, we do not have any trade deficits, and thus we do not need to worry about this step.
+Some of the SUA lines are not balanced, and this is because we have not allocated utilizations in the case of excess supply.  For these commodities, we should allocate the excess trade amount according to the variable which makes the most sense for that particular commodity (or, multiple variables if we know the split at which a commodity is utilized).
 
-```{r, echo = FALSE, eval = FALSE}
-suppressWarnings({suppressMessages({
-computeProcessedProduction(data = sugarData, tree = tree, standParams = params)
-sugarData[element == "5510" & Value < 0, Value := 0]
-toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-toPrint[, updateFlag := (element == "5510" & Value < 18000000)]
+```{r, echo = FALSE}
+suppressMessages({suppressWarnings({
+finalSuaBalance(sugarData, standParams = params,
+                feedCommodities = c(molassesCode, beetPulpCode),
+                indCommodities = bagasseCode,
+                primaryCommodities = rawSugarCode)
+sugarData[is.na(Value) & element %in% c(params$foodCode, params$industrialCode,
+                                        params$feedCode),
+          Value := 0]
+toPrint = sugarData
+toPrint[, updateFlag := element %in% c(params$foodCode, params$feedCode,
+                                       params$industrialCode) &
+            !measuredItemCPC %in% c(rawSugarCode, molassesCode,
+                                    beetPulpCode) & Value > 0]
 printTable(toPrint, params, workingDir)
 })})
 ```
 
-```{r, echo = FALSE}
-## Now, do all the stuff you did above, plus compute the aggregated standard
-## errors, in a more rigorous way:
-invisible({suppressWarnings({suppressMessages({
-sugarData = rollUpFood(data = sugarData, tree = tree, standParams = params)
-sugarData = sugarData[!measuredItemCPC %in% c(caneSugarCode, beetSugarCode), ]
-toPrint = sugarData[geographicAreaM49 == currentCountry &
-                        timePointYears == currentYear, ]
-toPrint[, updateFlag := (element == params$foodProcCode & Value > 0)]
-})})})
-```
-
-```{r, echo = FALSE, eval = FALSE}
-## Set eval to TRUE to verify the two processes give the same result.
-printTable(toPrint, params, workingDir)
-```
-
-Now, we must balance the primary products in this table (i.e. sugar cane and sugar beet).  To do this, we need to extract the computed standard deviations of each element.  The table below shows the expected value and estimated standard deviation for sugar beet (top) and sugar cane (bottom):
+The next step is to aggregate this full table back into the primary commodity equivalent (in this case raw sugar).  We follow the same aggregation/standardization process as outlined in the wheat example.  We should note here that molasses, beet pulp, and bagasse are standardized to a different primary equivalent in the commodity balances and thus are not considered here.
 
 ```{r, echo = FALSE}
-toPrint = toPrint[measuredItemCPC == rawSugarCode, ]
+suppressMessages({suppressWarnings({
+params$elementPrefix = ""
+finalValues = finalStandardizationToPrimary(data = sugarData,
+                                            tree = standTree[childID != rawSugarCode, ],
+                                            standParams = params)
+finalValues = finalValues[measuredItemCPC == rawSugarCode, ]
+sugarData = merge(sugarData, finalValues, by = c(params$mergeKey, "element"),
+                  all.x = TRUE, suffixes = c("", ".new"))
+sugarData[!is.na(Value.new), Value := Value.new]
+printTable(finalValues, standParams = params, workingDir, printProcessing = FALSE)
+})})
+```
+
+Now, we must balance to satisfy the FBS equation of supply equals utilization. To do this, we need to extract the computed standard deviations of each variable. These standard deviations are determined by the data source (i.e. for official data, a standard deviation of 0 is applied.  For semi-official data, a higher standard deviation is used; and for estimated quantities an even larger standard deviation is used).  In this case, production and trade quantities are official while all other quantities are estimated.
+
+```{r, echo = FALSE}
+suppressMessages({suppressWarnings({
+sugarData[measuredItemCPC == rawSugarCode,
+          standardDeviation := ifelse(element == "5510", 0,
+                               ifelse(element == "71", 86400*.28,
+                               ifelse(element == "5141", 12670000*.095,
+                               ifelse(element == "t???", -3200*1, standardDeviation))))]
+toPrint = sugarData[measuredItemCPC == rawSugarCode, ]
+toPrint[is.na(standardDeviation), standardDeviation := 0]
 printDistributionTable(toPrint, params)
+})})
 ```
 
-After balancing the above tables, we're left with the following values.  Note that food processing is the element that receives most of the adjustment because it has a substantially higher variability.
+After balancing the above tables, we have with the following quantities.  Note that the "Food" variable is the variable that receives most of the adjustment because it has a substantially higher variability.
 
 ```{r, echo = FALSE}
 suppressMessages({suppressWarnings({
@@ -533,13 +624,13 @@ toPrint = toPrint[element %in% c(params$productionCode, params$exportCode,
                                  params$foodCode, params$feedCode,
                                  params$wasteCode, params$seedCode,
                                  params$industrialCode, params$touristCode,
-                                 params$residualCode, params$foodProcCode), ]
+                                 params$residualCode), ]
 toPrint[is.na(Value), Value := 0]
 toPrint[is.na(standardDeviation), standardDeviation := 0]
 sink("temp.txt") # Sink balancing output so it doesn't get printed.
 toPrint[, balancedValue := balancing(param1 = Value, param2 = standardDeviation,
           sign = ifelse(element %in% c(params$productionCode, params$importCode), 1, -1),
-          lbounds = ifelse(element %in% params$stockCode, -Inf, 0),
+          lbounds = ifelse(element %in% c("71", "t???"), -Inf, 0),
           optimize = "constrOptim")]
 sink()
 toPrint[, adjustment := balancedValue - Value]
@@ -555,100 +646,9 @@ printDistributionTable(toPrint, params)
 })})
 ```
 
-We can now adjust our SUA table with the updated/balanced values:
+After balancing, some quantities are updated (and some remain unchanged, if they have a standard deviation of zero).  In the example of wheat, the aggregated table was placed directly into the food balance sheet.  In this case, sugar is not a commodity at the FBS level; instead, it is reported under "Sugar & Sweeteners".  Thus, balances must also be performed for the other commodities (i.e. honey and artificial sweeteners) and added to this balance to create the final FBS row.
 
-```{r, echo = FALSE}
-suppressMessages({suppressWarnings({
-# save(sugarData, tree, file = paste0(workingDir, "standardizedSugar1.RData"))
-# load(paste0(workingDir, "standardizedSugar1.RData"))
-toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-toPrint[, updateFlag := FALSE]
-toPrint[measuredItemCPC == caneSugarCode & element %in% c("5510", "f???"),
-        updateFlag := TRUE]
-toPrint[measuredItemCPC == beetSugarCode & element == "f???",
-        updateFlag := TRUE]
-printTable(toPrint, params, workingDir)
-})})
-```
-
-We must now process the changes in the current elements down the tree into the other elements.
-
-```{r, echo = FALSE}
-suppressMessages({suppressWarnings({
-## Allocate down the adjustments in the true/automated way
-sink("temp.txt") # Sink balancing output so it doesn't get printed.
-sugarData = synchronizeByProducts(data = sugarData, tree = tree,
-                                  standParams = params)
-sink()
-toPrint = sugarData[geographicAreaM49 == currentCountry & timePointYears == currentYear, ]
-toPrint[, adjustment := NULL]
-toPrint[, updateFlag := (measuredItemCPC == refinedSugarCode) &
-            (element %in% c(params$productionCode, params$stockCode,
-                            params$foodCode))]
-printTable(toPrint, params, workingDir)
-})})
-```
-
-Lastly, some elements have not yet been updated in this process.  To ensure a full balance of the SUA, we should go through and balance those rows as well.
-
-```{r, echo = FALSE}
-suppressMessages({suppressWarnings({
-sugarData = rbind(sugarData, data.table(measuredItemCPC = beetPulpCode,
-                                        element = params$feedCode,
-                                        geographicAreaM49 = "840",
-                                        timePointYears = "2011",
-                                        metFlag = NA,
-                                        obsFlag = NA,
-                                        Value = NA,
-                                        standardDeviation = NA,
-                                        adjustment = NA))
-sugarData = rbind(sugarData, data.table(measuredItemCPC = bagasseCode,
-                                        element = params$industrialCode,
-                                        geographicAreaM49 = "840",
-                                        timePointYears = "2011",
-                                        metFlag = NA,
-                                        obsFlag = NA,
-                                        Value = NA,
-                                        standardDeviation = NA,
-                                        adjustment = NA))
-finalSuaBalance(sugarData, standParams = params,
-                feedElements = c(molassesCode, beetPulpCode),
-                indElements = bagasseCode)
-toPrint = sugarData[timePointYears == "2011", ]
-toPrint[, updateFlag := element == params$foodCode &
-            measuredItemCPC %in% c(sugarSyrupCode)]
-printTable(toPrint, params, workingDir)
-})})
-```
-
-Now, we standardize all these commodities into their primary equivalents: raw sugar.
-
-```{r, echo = FALSE}
-suppressMessages({suppressWarnings({
-params$elementPrefix = ""
-invisible({
-## Don't standardize back bagasse, beet pulp, or molasses
-standTree = standTree[!parentID %in% c("01801", "01802"), ]
-standTree[childID %in% c(bagasseCode, beetPulpCode, molassesCode),
-          extractionRate := Inf]
-})
-standTree[parentID == beetSugarCode & childID == refinedSugarCode,
-          share := c(as.numeric(gsub("%", "",
-                        splitRatio$Percent[splitRatio$Name == "Beet sugar"]))/100)]
-standTree[parentID == caneSugarCode & childID == refinedSugarCode,
-          share := c(as.numeric(gsub("%", "",
-                        splitRatio$Percent[splitRatio$Name == "Cane sugar, centrifugal"]))/100)]
-params$elementPrefix = ""
-finalValues = finalStandardizationToPrimary(data = sugarData, tree = standTree,
-                                            standParams = params,
-                                            sugarHack = FALSE)
-finalValues = finalValues[timePointYears == "2011" &
-    get(params$itemVar) == rawSugarCode, ]
-printTable(finalValues, standParams = params, workingDir)
-})})
-```
-
-We can also compute calories, fats, and proteins at this point.  First, we apply a calorie/fat/protein content factor to each individual element:
+We can now calculate the calorie, fat, and protein content. We do this by applying the calorie/fat/protein content nutritive factors to all SUA items with a non-zero food quantity.  However, note that our food quantity for the standardized commodity was adjusted down.  In order to ensure consistency, we must adjust all our SUA food quantities by the same percentage.  As with the wheat example, note that a GJ is a measure of energy equal to a billion joules, or roughly 239,000 Calories; also, a Mg is one million grams.
 
 ```{r, echo = FALSE}
 suppressWarnings({suppressMessages({
@@ -656,44 +656,79 @@ suppressWarnings({suppressMessages({
 load(paste0(workingDir, "nutrientData.RData"))
 # Loads object "nutrientData"
     
-toPrint = sugarData[timePointYears == "2011" & element == params$foodCode, ]
+toPrint = sugarData[timePointYears == "2011" & element == params$foodCode &
+                        Value > 0, ]
+toPrint[measuredItemCPC == rawSugarCode, Value := 1513800]
 toPrint = merge(toPrint, nutrientData, by = params$itemVar, all.x = TRUE)
-toPrint[measuredItemCPC == rawSugarCode & element == "5141", Value := 0]
 
-## Don't print some elements
-skippedElements = c(24110, 2413, 23210.05, 24490.92, molassesCode)
-toPrint = toPrint[!get(params$itemVar) %in% skippedElements, ]
-
-setnames(itemName, params$childVar, params$itemVar)
+itemName = fread(paste0(workingDir, "elementDescription.csv"),
+                 colClasses = c("character", "character"))
+setnames(itemName, "Item", params$itemVar)
 toPrint = merge(toPrint[, c(params$itemVar, "Value", "Protein", "Fat", "Energy"),
                         with = FALSE], itemName, all.x = TRUE)
 setnames(itemName, params$itemVar, "Item")
+toPrint = toPrint[!is.na(Value), ]
+## Adjust the food quantity down according to adjustment in balancing
+toPrint[, Value := Value * 7562500/12670000]
 toPrint[, measuredItemCPC := NULL]
 
 setcolorder(toPrint, c("Name", "Value", "Energy", "Protein", "Fat"))
 setnames(toPrint, "Value", "Quantity")
+# toPrint[Name == "Wheat", Name := "Wheat and Products"]
+toPrint[, Energy := round(Energy * 10, 0)] # *10 because originally expressed per 100g, not per kg.
+toPrint[, Protein := round(Protein * 10, 2)]
+toPrint[, Fat := round(Fat * 10, 2)]
 toPrintCopy = copy(toPrint)
+toPrint[, EnergyTot := sapply(Energy * Quantity / 1000 / 365, roundNum)]
+toPrint[, ProteinTot := sapply(Protein * Quantity / 1000 / 365, roundNum)]
+toPrint[, FatTot := sapply(Fat * Quantity / 1000 / 365, roundNum)]
 toPrint[, Quantity := sapply(Quantity, roundNum)]
-toPrint[, Energy := round(Energy, 0)]
-toPrint[, Protein := round(Protein, 2)]
-toPrint[, Fat := round(Fat, 2)]
-knitr::kable(toPrint, align = c("l", "r", "r", "r", "r"))
+toPrint[, Energy := sapply(Energy, roundNum)]
+setnames(toPrint, c("Energy", "Protein", "Fat"),
+         c("kJ Energy/kg", "g Protein/kg", "g Fat/kg"))
+setnames(toPrint, c("EnergyTot", "ProteinTot", "FatTot"),
+         c("Energy (GJ/day)", "Protein (Mg/day)", "Fat (Mg/day)"))
+knitr::kable(toPrint, align = c("l", "r", "r", "r", "r", "r", "r", "r"))
+
 })})
 ```
 
-Standardization of calories is simpler since we don't need to divide by extraction rates: the standardized calories/fats/proteins are the sum of the total calories/fats/proteins for each element.  However, this is more complicated than simply adding up calories/fats/proteins because we have to standardize children commodities into multiple parents.  For example, as with the quantity standardization, we should standardize refined sugar back into cane sugar and beet sugar according to the proportion from processing:
+Standardization of nutrients is now a simple last step: all the variables here (i.e. calories, fats, and proteins) are purely additive, so the standardized calories/fats/proteins are simply the sum of the total calories/fats/proteins for each commodity:
 
 ```{r, echo = FALSE}
+
 suppressWarnings({suppressMessages({
 out = toPrintCopy[, list(
-    Energy  = sum(Quantity * Energy , na.rm = TRUE)/1000000,
-    Protein = sum(Quantity * Protein, na.rm = TRUE)/1000000,
-    Fat     = sum(Quantity * Fat    , na.rm = TRUE)/1000000), by = ""]
-out[, Energy := round(Energy/100, 0)*100]
+    Energy  = sum(Quantity * Energy , na.rm = TRUE)/1000 / 365,
+    Protein = sum(Quantity * Protein, na.rm = TRUE)/1000 / 365,
+    Fat     = sum(Quantity * Fat    , na.rm = TRUE)/1000 / 365), by = ""]
+out[, Energy := sapply(Energy, roundNum)]
+out[, Protein := sapply(Protein, roundNum)]
+out[, Fat := sapply(Fat, roundNum)]
+setnames(out, colnames(out), paste(colnames(out), c("(GJ/day)", "(Mg/day)", "(Mg/day)")))
+out = cbind(data.table(Commodity = "Sugar"), out)
+knitr::kable(out, align = c("l", "r", "r", "r"))
+})})
+```
+
+To convert these figures into something more meaningful, we may divide by the population of the country.  If we assume this country has 600 million inhabitants, we have:
+
+```{r, echo = FALSE}
+
+suppressWarnings({suppressMessages({
+n = 600000000
+out = toPrintCopy[, list(
+# *239000 to convert GJ to Calories or kcal.
+    Energy  = sum(Quantity * Energy , na.rm = TRUE)/1000 / 365 / n * 239000,
+# *1000000 to convert Mg to g
+    Protein = sum(Quantity * Protein, na.rm = TRUE)/1000 / 365 / n * 1000000,
+    Fat     = sum(Quantity * Fat    , na.rm = TRUE)/1000 / 365 / n * 1000000), by = ""]
+out[, Energy := round(Energy, 0)]
 out[, Protein := round(Protein, 0)]
 out[, Fat := round(Fat, 0)]
-setnames(out, colnames(out), paste(colnames(out), "(millions)"))
-out = cbind(data.table(Commodity = "Raw Sugar Equivalent"), out)
+setnames(out, colnames(out), c("Calories/person/day", "g Protein/person/day",
+                               "g Fat/person/day"))
+out = cbind(data.table(Commodity = "Sugar"), out)
 knitr::kable(out, align = c("l", "r", "r", "r"))
 })})
 ```

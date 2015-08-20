@@ -11,8 +11,8 @@ wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
 cattleKeys = c("21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
-palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
-                "21700.02", "F1243", "34550", "F1275", "34120")
+palmOilKeys = c("01491.01", "01491.02", "2165", "21691.14", "21910.06", "21700.01",
+                "21700.02", "F1243", "34550", "F1275", "34120", "F2199")
 sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
               "23540", "23670.01", "24110", "2413", "24131", "24139",
               "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
@@ -453,12 +453,12 @@ imputeLoss = function(data, lossVar, lossObservationFlagVar, lossMethodFlagVar,
                      list(lossPredicted, "I", "e"))]
     imputedData[, lossPredicted := NULL]
     
-    lossLmeVariancePartial = bootMer(lossModel,
+    lossLmeVariance = bootMer(lossModel,
                               FUN = function(lossModel)
                                   predict(lossModel, newdata = imputedData, allow.new.levels = TRUE),
                               nsim = 2)
     
-    imputedData[, lossVariance := apply(lossLmeVariancePartial$t, 2, sd)]
+    imputedData[, lossVariance := apply(lossLmeVariance$t, 2, sd)]
     
     imputedData
 }
@@ -630,8 +630,8 @@ finalPredictData = imputeLoss(data = finalPredictData,
    lossObservationFlagVar =
        "flagObservationStatus_measuredElement_5120",
    lossMethodFlagVar = "flagMethod_measuredElement_5120",
-   lossModel = lossLmeModelPartial,
-   lossVarModel = lossLmeVariancePartial)
+   lossModel = lossLmeModel,
+   lossVarModel = lossLmeVariance)
 lossEstimates = finalPredictData
 lossEstimates[, timePointYears := as.character(timePointYears)]
 
