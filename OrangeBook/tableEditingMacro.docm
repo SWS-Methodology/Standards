@@ -1,9 +1,12 @@
+﻿Rem Attribute VBA_ModuleType=VBAModule
+Option VBASupport 1
 Sub ApplyTableStyle()
     Dim tbl As Table
     For Each tbl In ActiveDocument.Tables
         tbl.Select
-        Selection.Font.Size = 6.8
+        If tbl.Columns.Count = 12 Then
+            tbl.Columns(1).Width = tbl.Columns(1).Width + 25
+        End If
+        Selection.Font.Size = 8
     Next
 End Sub
-
-
