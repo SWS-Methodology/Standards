@@ -25,7 +25,7 @@ roundNum = function(x){
 }
 
 ## Function for printing the main table
-printTable = function(data, standParams, workingDir){
+printTable = function(data, standParams, workingDir, printProcessing = TRUE){
     printDT = copy(data)
     if(!"updateFlag" %in% colnames(printDT)){
         printDT[, updateFlag := FALSE]
@@ -64,9 +64,14 @@ printTable = function(data, standParams, workingDir){
                             colClasses = c("character", "character"))
     printDT = merge(printDT, description, by = "Item")
 
-    items = c("Name", "Production", "Imports", "Exports", "StockChange",
-              "Food", "Feed", "Seed", "Tourist",
-              "Industrial", "Loss")
+    if(printProcessing){
+        items = c("Name", "Production", "Imports", "Exports", "StockChange",
+                  "Food", "Food Processing", "Feed", "Seed", "Tourist",
+                  "Industrial", "Loss")
+    } else {
+        items = c("Name", "Production", "Imports", "Exports", "StockChange",
+                  "Food", "Feed", "Seed", "Tourist", "Industrial", "Loss")
+    }
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
             printDT[, c(colName) := 0]
@@ -145,14 +150,14 @@ printDistributionTable = function(data, standParams){
                     standParams$industrialCode, standParams$touristCode)
     
     setnames(printDT, paste0("Value_measuredElement_", fbsElements),
-             c("Production", "Feed", "Seed", "Waste", "Food",
+             c("Production", "Feed", "Seed", "Loss", "Food",
                "StockChange", "Imports", "Exports",
                "Industrial", "Tourist"))
     setnames(printDT, "measuredItemCPC", "Item")
 
     items = c("Variable", "Production", "Imports", "Exports", "StockChange",
-              "Food", "Feed", "Waste", "Seed", "Industrial",
-              "Tourist")
+              "Food", "Feed", "Seed", "Tourist", "Industrial",
+              "Loss")
     sapply(items, function(colName){
         if(!colName %in% colnames(printDT)){
             printDT[, c(colName) := 0]

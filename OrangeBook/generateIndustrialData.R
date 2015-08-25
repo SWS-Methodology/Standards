@@ -1,3 +1,5 @@
+# install.packages("~/Documents/SVN/faosws_0.3.8.tar.gz", type = "src", repo = NULL)
+
 ## load the library
 library(faosws)
 library(faoswsUtil)
@@ -7,7 +9,6 @@ library(magrittr)
 library(igraph)
 library(dplyr)
 
-
 ## Setting up variables
 areaVar = "geographicAreaM49"
 yearVar = "timePointYears"
@@ -15,7 +16,6 @@ itemVar = "measuredItemCPC"
 elementVar = "induseElement"
 ## Make this a parameter in the module
 selectedYear = "2011"
-
 
 ## set up for the test environment and parameters
 if(Sys.info()[7]  == "Golini"){

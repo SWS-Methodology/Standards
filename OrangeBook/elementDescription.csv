@@ -15,16 +15,17 @@ Item,Name
 21512.01,Butcher fat
 2165,Palm oil
 21691.14,Oil of palm kernels
-21700.02,Margarine
+21700.01,Liquid Margarine
+21700.02,Margarine and Shortening
 34120,Fatty acids
-34550,Animal or vegetable fats
-F1243,Fat preparations n.e.
+34550,"Oil boiled, dehydrated"
+F1243,Fat preparations nes
 F1275,Hydrogenated oils
 23140.01,Wheat germ
 23512,Beet sugar
 F7156,Sugar Cane Tree
-23210.04,Sugar and Syrups nes
-2351,Raw cane or beet sugar
+23210.04,Sugar and Syrups
+2351,Raw sugar
 23511,Cane sugar
 23511.01,"Cane sugar, centrifugal"
 23520,Refined sugar
@@ -50,5 +51,5 @@ F0022,Pastry
 23511.02,Sugar (Noncentrifugal)
 01491.02,Palm kernels
 21910.06,Cakes of palm kernels
-21932.02,Liquid Margarine?
 01491.01,Oil palm fruit
+F2199,Fatty acids and oils

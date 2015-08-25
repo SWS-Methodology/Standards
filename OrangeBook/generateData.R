@@ -5,7 +5,7 @@ if(Sys.info()[7] == "josh"){ # Josh Work
     workingDir = "~/Documents/Github/privateFAO/OrangeBook/"
     GetTestEnvironment(
       baseUrl = "https://hqlprswsas1.hq.un.fao.org:8181/sws",
-      token = "2789cc75-120e-4963-9694-41c4bcf67814"
+      token = "bb7873a0-2c21-46ae-ac42-4ed430ebda7c"
       #     baseUrl = "https://hqlqasws1.hq.un.fao.org:8181/sws",
       #     token = "7fe7cbec-2346-46de-9a3a-8437eca18e2a" #Michael's token
     )
@@ -31,8 +31,9 @@ wheatKeys = c("0111", "23110", "23140.01", "23140.02", "23140.03", "23220.01",
               "23220.02", "23490.02", "23710", "39120.01", "F0020", "F0022")
 cattleKeys = c("02111", "21111.01", "21111.02", "21182", "21184.01", "21185",
                "21512.01", "23991.04", "F0875")
-palmOilKeys = c("01491.02", "2165", "21691.14", "21910.06", "21700.01",
-                "21700.02", "F1243", "34550", "F1275", "34120")
+palmOilKeys = c("01491.01", "01491.02", "2165", "21691.14", "21910.06", "21700.01",
+                "21700.02", "F1243", "34550", "F1275", "34120", "F2199", "21545",
+                "21535")
 sugarKeys = c("01802", "23512", "F7156", "23210.04", "2351", "23511", "23520",
               "23540", "23670.01", "24110", "2413", "24131", "24139",
               "24490.92", "39140.02", "F7157", "01801", "39140.01", "F7161",
@@ -100,6 +101,8 @@ setnames(tradeData, c("measuredItemHS", "reportingCountryM49"),
 
 ## Map codes to HS, scale values with split factors
 tradeData = merge(tradeData, map, by = "hs")
+## Aggregate "crude" and "refined" palm oil to just palm oil.
+tradeData[hs %in% c("151110", "151190"), cpc := "2165"]
 tradeData[, Value := Value * split]
 tradeData[, c("hs", "split", "conversion_factor") := NULL]
 tradeData = dcast.data.table(data = tradeData,
