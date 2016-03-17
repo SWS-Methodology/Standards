@@ -474,10 +474,11 @@ edges[, c("childID", "Name") := list(Name, NULL)]
 edges[, childID := gsub(" ", "\n", childID)]
 edges[, parentID := gsub(" ", "\n", parentID)]
 edges = edges[!is.na(childID) & !is.na(parentID), ]
+edges[childID == "Cakes\nof\npalm\nkernels", childID := "cakes\nof\npalm\nkernels"]
 plotSingleTree(edges = edges,
                parentColname = "parentID", childColname = "childID",
                extractionColname = "extractionRate", box.size = .06,
-               box.type = "circle", cex.txt = 2, box.prop = .5, box.cex = 1.9)
+               box.type = "circle", cex.txt = 1, box.prop = .5, box.cex = 1)
 })})
 ```
 

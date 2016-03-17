@@ -34,7 +34,6 @@ In this chapter, we will show a step-by-step example of the FBS compilation, sta
 # # Wrap in an R comment to prevent printing:
 # # TO DO
 # ## Important Tasks
-# - Review trade portion from Alex and incorporate into this document.
 # - Discuss trade for countries with access to customs and without.
 # - Balancing algorithm: determine a good way to choose the tolerance automatically.  It's manually tuned in this example, and that clearly won't work for general food balance sheet processes.
 # - Add text/content to the document to provide more explanation of each example.
