@@ -16,6 +16,12 @@ or
 ![lasso](https://cloud.githubusercontent.com/assets/1054320/14507619/bdc021e0-01c3-11e6-9ee5-483d8a0b70b1.png)
 
 
+Where y is the true value, and X are the inputs. The beta coefficients
+are the human input that translate data and inputs to fitted
+values. The goal is to minimise the error, subject to minimising the
+input from both humana manipulation and only develop the minimal
+functionalities that improves the system.
+
 
 
 ## File Organisation
@@ -56,6 +62,9 @@ sws_project/
 
 ## Install Git
 Additional tools will be required if on Windows.
+
+If you are unfamiliar with Git, we would suggest to take a quick
+[course](https://try.github.io/levels/1/challenges/1)
 
 ## Install Essential R Packages
 
