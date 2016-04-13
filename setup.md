@@ -27,6 +27,29 @@ reside inside this folder.
 The folder will also contain configuration and setup files to run the
 environment.
 
+You should have the similar structure
+```
+sws_project/
+├── faoswsBalancing
+├── faoswsDataQuality
+├── faoswsFeed
+├── faoswsFlag
+├── faoswsFood
+├── faoswsImputation
+├── faoswsIndustrial
+├── faoswsLoss
+├── faoswsProduction
+├── faoswsSeed
+├── faoswsStandardization
+├── faoswsStock
+├── faoswsTourist
+├── faoswsTradeTmp
+├── faoswsUtil
+├── .Rbuildignore
+├── .Renviron
+├── .Rhistory
+└── Standards
+```
 
 ## Install R Studio
 
