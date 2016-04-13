@@ -20,16 +20,22 @@ The *<repository_link>* can be copied from the red box shown below.
 
 ![screenshot from 2016-04-13 16 24 25](https://cloud.githubusercontent.com/assets/1054320/14496837/e2618c3e-0194-11e6-9f28-a14ec495b64a.png)
 
-
 ## Git Workflow
 
 Follow the guides below for managing the work flow.
 
-[Understanding the Github Flow](https://guides.github.com/introduction/flow/)
+[Simple Github Flow](https://guides.github.com/introduction/flow/)
 
-or If you prefer the web interface
+More details of the work flow on this [blog.](http://scottchacon.com/2011/08/31/github-flow.html)
 
-[GitHub Flow in the Browser](https://help.github.com/articles/github-flow-in-the-browser/)
+
+## New Development
+
+
+All new development should follow the steps below:
+
+1. Create Github issue outlining the problem or improvement required.
+2. A new branch should be created
 
 ## Deployment
 
@@ -46,7 +52,8 @@ then run the check on the built tar ball
 R CMD check <tarball_file>
 ```
 
-Make sure all the tests are passed without warning.
+Make sure all the tests are passed without warning. Once the package
+passess the check, a pull request can be issued.
 
 **NOTE (Michael): The checking should also be implemented with
 Continuous Integration**
@@ -59,11 +66,15 @@ server.
 Zip up the modules which contains only allowed files specified in the
 module standards.
 
-Then upload the module to the server through the web interface.
+Then upload the module to the server through the web interface and
+test whether module works.
+
+After the module has gone through a test run, a new pull request can
+be send.
 
 
 
-## Development Workflow
+## Quality Assurance
 
 All changes to funciton/module/packages should be tested on the QA
 server before migrating to the production server.
