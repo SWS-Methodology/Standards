@@ -28,13 +28,13 @@ functionalities that improves the system.
 First create a *Github* folder for all future Github related projects.
 
 Create a *sws_project* folder in the Github folder for all SWS related
-projects, all individual projects such as **faoswsProduction** should
+projects, all individual projects such as *faoswsProduction* should
 reside inside this folder.
 
-The folder will also contain configuration and setup files to run the
-environment.
+The root folder will also contain configuration and setup files to run
+the environment.
 
-You should have the similar structure
+You should have similar structure below
 ```
 sws_project/
 ├── faoswsBalancing
@@ -80,18 +80,21 @@ function to develop R packages.
 install.packages("devtools")
 ```
 
-Then we can install the faosws package, ensure you have local
-connection. This package is developed by the Engineering team, and is
-the work horse package to extract and save data.
+Next we can install the faosws package, ensure you have local
+connection as the repository is not available publicly. This package
+is developed by the Engineering team, and is the work horse package to
+extract and save data.
 
 ```r
 install.packages("faosws", repos="http://hqlprsws1.hq.un.fao.org/fao-sws-cran/")
 ```
 
 We can then install two in-house package which all projects depends
-on. The `faoswsFlag` package contains standard functions to perform
-flag manipulation, while the `faoswsUtil` package provides a standard
-to basic manipulations and freindly helper functions.
+on. The [faoswsFlag](https://github.com/SWS-Methodology/faoswsFlag)
+package contains standard functions to perform flag manipulation,
+while the [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil)
+package provides a standard to basic manipulations and freindly helper
+functions.
 
 
 ```r
@@ -149,7 +152,8 @@ practices and standards governed by the SWS team and recommended to go
 through the following documentations.
 
 ### Project Information
-Each projects will have the following files
+
+Each projects will have the following documentation
 
 Purpose of the project - README.md
 
