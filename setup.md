@@ -5,7 +5,7 @@ environment in order to initiate development.
 
 ## Project Objective
 
-To build
+The overarching aim of the methodological team is to build
 
 > A Simple, Robust and Accurate Scientific System with Minimal Human
   Intervention.
@@ -66,23 +66,34 @@ Additional tools will be required if on Windows.
 If you are unfamiliar with Git, we would suggest to take a quick
 [course](https://try.github.io/levels/1/challenges/1)
 
+More about Git [here](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
+
 ## Install Essential R Packages
 
 The following packages are the backbone of all SWS projects, and they
 should be installed before proceeding.
 
-First of all, we need to install devtools.
+First of all, we need to install devtools, a package which contains
+function to develop R packages.
 
 ```r
 install.packages("devtools")
 ```
 
-Then we can install the faosws package, ensure you have local connection.
+Then we can install the faosws package, ensure you have local
+connection. This package is developed by the Engineering team, and is
+the work horse package to extract and save data.
+
 ```r
 install.packages("faosws", repos="http://hqlprsws1.hq.un.fao.org/fao-sws-cran/")
 ```
 
-We can then install two in-house package which all projects depends on.
+We can then install two in-house package which all projects depends
+on. The `faoswsFlag` package contains standard functions to perform
+flag manipulation, while the `faoswsUtil` package provides a standard
+to basic manipulations and freindly helper functions.
+
+
 ```r
 install_github(repo = "SWS-Methodology/faoswsFlag")
 install_github(repo = "SWS-Methodology/faoswsUtil")
@@ -106,8 +117,28 @@ the following team to obtain access to respective resources.
 
 Below is a brief description of the structure of the repositories.
 
-**NOTE (Michael): Add description of each folder.**
 
+* The `R` directory contains various files with function definitions
+  (but only function definitions - no code that actually runs).
+
+* The `data` directory contains data used in the analysis. This is
+  treated as read only; in paricular the R files are never allowed to
+  write to the files in here. Depending on the project, these might be
+  csv files, a database, and the directory itself may have
+  subdirectories.
+
+* The `man` folder contains all the automatically generated
+  documentation. This folder should not be manually edited.
+
+* The `test` folder contains unit tests which are executed during the
+  checking of a package in order to determine whether the package
+  fulfills all the requirements.
+
+* `Vignettes` folder contains documentation which explains the logic
+  and functionality of the package, it also includes workflow charts
+  and any material that helps explaing the use of the package.
+
+* The `module` is where all R modules/plug-ins should be placed.
 
 For more detail explaination please refere to the [R package guide.](http://r-pkgs.had.co.nz/package.html)
 
