@@ -13,7 +13,8 @@ To build
 
 or
 
-![render](https://cloud.githubusercontent.com/assets/1054320/14500460/844bb9c2-01a2-11e6-9e90-095b7d5e96f6.png)
+![lasso](https://cloud.githubusercontent.com/assets/1054320/14507619/bdc021e0-01c3-11e6-9ee5-483d8a0b70b1.png)
+
 
 
 
