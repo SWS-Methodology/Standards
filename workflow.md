@@ -17,7 +17,7 @@ Clone the Github Repository.
 git clone <repository_link>
 ```
 
-The <repository_link> can be copied from the red box shown below.
+The `<repository_link>` can be copied from the red box shown below.
 
 ![screenshot from 2016-04-13 16 24 25](https://cloud.githubusercontent.com/assets/1054320/14496837/e2618c3e-0194-11e6-9f28-a14ec495b64a.png)
 
@@ -27,7 +27,10 @@ The <repository_link> can be copied from the red box shown below.
 
 All new development should follow the steps below:
 
-### 1. Create Github issue outlining the problem or improvement required.
+### 1. Create Github Issue Outlining the Problem or Improvement Required.
+
+![issues](https://cloud.githubusercontent.com/assets/1054320/14524205/95d3269a-0237-11e6-954b-4f0a762a65eb.png)
+
 ### 2. Development
 
 #### Git Workflow
@@ -89,7 +92,7 @@ server before migrating to the Production server.
 Code review will be conducted and investigate whether all changes
 satisfy requirements and standards.
 
-### 6. Merge the Branch
+### 6. Merge the Development Branch back to Master Branch
 
 When the code has been reviewed and no error has been spotted
 immediately, then we can merge the development branch back to the
