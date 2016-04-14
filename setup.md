@@ -111,6 +111,7 @@ the following team to obtain access to respective resources.
 * Access to the SWS shared workspace.
 * Access to the system, both the QA and the Production server.
 * Grant access to datasets.
+* Access to the SWS shared drives.
 
 ### Team A
 * Obtain access to the SWS-Methodology Github repositories.
@@ -160,6 +161,12 @@ any new projects, the following folders are mandatory.
 * The `module` is where all R modules/plug-ins should be placed.
 
 For more detail explaination please refere to the [R package guide.](http://r-pkgs.had.co.nz/package.html)
+
+
+## The SWS Web Interface
+[Working with the SWS Web Interface](https://)
+
+**Talk about the shared drives**
 
 ## Documentations
 
