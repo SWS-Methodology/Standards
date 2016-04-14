@@ -116,6 +116,18 @@ the following team to obtain access to respective resources.
 * Obtain access to the SWS-Methodology Github repositories.
 
 
+## Setting Up the Test Environment
+
+Follow the steps outline in the R manual.
+
+```
+help(GetTestEnvironment)
+```
+
+If the installation and setups are correct, then the example should be
+able to be executed without an error.
+
+
 ## Repository Structure
 
 Below is a brief description of the structure of the repositories.
@@ -148,8 +160,8 @@ For more detail explaination please refere to the [R package guide.](http://r-pk
 ## Documentations
 
 Before dewelling into development, it is important to understand the
-practices and standards governed by the SWS team and recommended to go
-through the following documentations.
+practices and standards governed by the SWS team and it is recommended
+to go through the following documentations.
 
 ### Project Information
 
@@ -162,8 +174,10 @@ Overall explaination of the project - vignettes
 Code documentation - R manual
 
 
-### Before you start writing codes:
+### Before You Start Writing Codes:
 
 [R Coding Standards](https://google.github.io/styleguide/Rguide.xml)
 
 [How to Write R Modules for SWS](https://)
+
+[Dealing With Various Country and Commodity Classification](https://)
