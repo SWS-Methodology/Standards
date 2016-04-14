@@ -130,7 +130,11 @@ able to be executed without an error.
 
 ## Repository Structure
 
-Below is a brief description of the structure of the repositories.
+Each project has its own repository which builds into a package and
+has all associated modules and documentation.
+
+Below is a brief description of the structure of the repositories. For
+any new projects, the following folders are mandatory.
 
 
 * The `R` directory contains various files with function definitions
@@ -178,6 +182,10 @@ Code documentation - R manual
 
 [R Coding Standards](https://google.github.io/styleguide/Rguide.xml)
 
+[SWS Workflow](https://)
+
 [How to Write R Modules for SWS](https://)
 
 [Dealing With Various Country and Commodity Classification](https://)
+
+[Dealing with Flags](https://)

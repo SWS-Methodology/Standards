@@ -31,9 +31,9 @@ modules/
 * An R folder containing helper functions.
   * These may only contain R files which will be sourced before the main R file.
 
-** Important: The README.md is a non standard file to hold additional
-   information, however during deployment it should not be contained
-   in the zip file.**
+**Important: The README.md is a non standard file to hold additional
+  information, however during deployment it should not be contained in
+  the zip file.**
 
 ### Structure of the Main R file
 
