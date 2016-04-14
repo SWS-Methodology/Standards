@@ -15,16 +15,7 @@ intended to be srcipts which wraps the logic of the tasks.
 
 ## Structure of a Standard Module:
 
-A module must contain in its root directory only 2 files
-
-* A main R file
-* An xml file
-* Optional: An R folder containing helper functions.
-  * These may only contain R files which will be sourced before the main R file.
-
-A module must not contain any other files (attempting to do so will
-cause an error)
-
+A standard module should have the following structure
 ```
 modules/
 └── test_modules
@@ -33,6 +24,16 @@ modules/
     ├── test_module.R
     └── test_module.xml
 ```
+
+* A main R file
+* An xml file
+* A README.md
+* An R folder containing helper functions.
+  * These may only contain R files which will be sourced before the main R file.
+
+** Important: The README.md is a non standard file to hold additional
+   information, however during deployment it should not be contained
+   in the zip file.**
 
 ### Structure of the Main R file
 
