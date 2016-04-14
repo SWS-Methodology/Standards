@@ -49,6 +49,8 @@ modules/
 
 ### Structure of the XML file
 
+The structure of the XML should follow the [XML
+Schema](https://workspace.fao.org/tc/sws/userspace/Shared%20Documents/R%20Development/rScript.xsd).
 
 ### What to Include in the README? 
 
