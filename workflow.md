@@ -69,8 +69,23 @@ server.
 
 #### Modules
 
-Zip up the modules which contains only allowed files specified in the
-module standards.
+Obtain the current SHA-1 with
+```
+git rev-parse HEAD
+```
+
+Then zip up the module with the following command.
+```
+git archive -o <module_name>_<sha_num>.zip <sha_num>:<module_folder>
+```
+
+The `<module_name>` is the name of the module and `<module_folder>` is
+the folder where the module sit. The `<sha_num>` is the first 6 digit
+number obtained from the `git rev-parse HEAD` command (e.g. 642ea6c).
+
+This enables the versioning of modules and old modules can be rebuilt
+with `git archive` or recovered.
+
 
 Then upload the module to the server through the web interface.
 

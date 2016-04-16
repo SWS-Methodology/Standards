@@ -22,7 +22,8 @@ modules/
     ├── R
     ├── README.md
     ├── test_module.R
-    └── test_module.xml
+    ├── test_module.xml
+    └── .gitattributes
 ```
 
 * A main R file
@@ -30,10 +31,6 @@ modules/
 * A README.md
 * An R folder containing helper functions.
   * These may only contain R files which will be sourced before the main R file.
-
-**Important: The README.md is a non standard file to hold additional
-  information, however during deployment it should not be contained in
-  the zip file.**
 
 ### Structure of the Main R file
 
@@ -62,6 +59,14 @@ The README.md must include the following information.
 * What inputs it modifies
 * The tests performed and the requirements to fulfill
 
+### The .gitattributes file
+
+The file should contain the following line:
+```
+README.md export-ignore
+```
+
+This will tell `git archive` to ignore the file when building the zip file.
 
 
 ## Do's and Don'ts
