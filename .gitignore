@@ -1,0 +1,8 @@
+Model
+*.Rproj.user
+*.Rhistory
+*.RData
+*.zip
+*.csv
+*.png
+.Rproj.user
