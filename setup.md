@@ -189,12 +189,16 @@ Code documentation - R manual
 
 [R Coding Standards](https://google.github.io/styleguide/Rguide.xml)
 
-[SWS Workflow](https://)
+[SWS Workflow](https://github.com/SWS-Methodology/Standards/blob/master/workflow.md)
 
-[How to Write R Modules for SWS](https://)
+[How to Write R Modules for SWS](https://github.com/SWS-Methodology/Standards/blob/master/writing_r_modules.md)
 
 [Dealing With Various Country and Commodity Classification](https://)
 
 [Dealing with Flags](https://)
 
 [Documentation Maintained by Engine](https://workspace.fao.org/tc/sws/userspace)
+
+[QA Dataset Reference](http://hqlqasws1.hq.un.fao.org:8080/dataset_configuration.html)
+
+[Production Dataset Reference](http://)
