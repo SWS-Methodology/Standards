@@ -64,8 +64,16 @@ passess the check, a pull request can be issued.
 **NOTE (Michael): The checking should also be implemented with
 Continuous Integration**
 
-Send the package to Sebastian to be installed and tested on the QA
-server.
+
+After the package has passed without any error, tag the `<version_number>`
+with Git
+
+```
+git tag -a <version_number>
+git push –tags
+```
+
+Then request Sebastin to install the package.
 
 #### Modules
 
