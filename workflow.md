@@ -69,8 +69,8 @@ After the package has passed without any error, tag the `<version_number>`
 with Git
 
 ```
-git tag -a <version_number>
-git push –tags
+git tag -a <version_number> -m <your_message>
+git push –-tags
 ```
 
 Then request Sebastin to install the package.
