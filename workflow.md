@@ -3,10 +3,10 @@
 
 Please follow this [guide](http://r-pkgs.had.co.nz/package.html) by Hadley
 
-Use R Studio or the `devtool` to create the new project.
+Use R Studio or the `devtools` to create the new project.
 
 ```
-devtool::create(<new_project_name>)
+devtools::create(<new_project_name>)
 ```
 
 ### To Continue on Existing Project
