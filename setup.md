@@ -3,65 +3,58 @@
 This is the guide for new developer to setup and configure their
 environment in order to initiate development.
 
-## Project Objective
-
-The overarching aim of the methodological team is to build
-
-> A Simple, Robust and Accurate Scientific System with Minimal Human
-  Intervention.
-
-
-or
-
-![lasso](https://cloud.githubusercontent.com/assets/1054320/14507619/bdc021e0-01c3-11e6-9ee5-483d8a0b70b1.png)
-
-
-Where y is the true value, and X are the inputs. The beta coefficients
-are the human input that translate data and inputs to fitted
-values. The goal is to minimise the error, subject to minimising the
-input from both humana manipulation and only develop the minimal
-functionalities that improves the system.
-
-
-
 ## File Organisation
-First create a *Github* folder for all future Github related projects.
+First create a **Github** folder for all future Github related work.
 
-Create a *sws_project* folder in the Github folder for all SWS related
-projects, all individual projects such as *faoswsProduction* should
-reside inside this folder.
-
-The root folder will also contain configuration and setup files to run
+Create a **sws_project** folder in the Github folder for all SWS related
+projects. The root folder will also contain configuration and setup files to run
 the environment.
 
-You should have similar structure below
+The **sws_project** will contain folders which corresponds to a single project
+and should have an associated Github repository. For each of the project, if the
+project exist already, then clone the repository from Github, otherwise start a
+new project. For more information, refer to the
+[workflow](https://github.com/SWS-Methodology/Standards/blob/master/workflow.md).
+
+You should organise the files in the following manner.
+
 ```
-sws_project/
-├── faoswsBalancing
-├── faoswsDataQuality
-├── faoswsFeed
-├── faoswsFlag
-├── faoswsFood
-├── faoswsImputation
-├── faoswsIndustrial
-├── faoswsLoss
-├── faoswsProduction
-├── faoswsSeed
-├── faoswsStandardization
-├── faoswsStock
-├── faoswsTourist
-├── faoswsTradeTmp
-├── faoswsUtil
-├── .Rbuildignore
-├── .Renviron
-├── .Rhistory
-└── Standards
+Github/
+└── sws_project/
+        ├── faoswsBalancing/
+        ├── faoswsDataQuality/
+        ├── faoswsFeed/
+        ├── faoswsFlag/
+        ├── faoswsFood/
+        ├── faoswsImputation/
+        ├── faoswsIndustrial/
+        ├── faoswsLoss/
+        ├── faoswsProduction/
+        ├── faoswsSeed/
+        ├── faoswsStandardization/
+        ├── faoswsStock/
+        ├── faoswsTourist/
+        ├── faoswsTradeTmp/
+        ├── faoswsUtil/
+        ├── .Rbuildignore
+        ├── .Renviron
+        └── Standards/
 ```
 
-## Install R Studio
+## Install R Studio (Optional)
+
+If you are on Windows and using a FAO computer, you can install R Studio from
+the Software Center.
+
+Open this [link](http://hqwprsccmapp1/CMApplicationCatalog/) in IE, and search
+for R studio.
+
+This is optional, you are welcome to the IDE of your preference.
 
 ## Install Git
-Additional tools will be required if on Windows.
+
+If you are on windows, you can install Git by downloading the executables
+[here](https://git-scm.com/download/win).
 
 If you are unfamiliar with Git, we would suggest to take a quick
 [course](https://try.github.io/levels/1/challenges/1)
@@ -94,12 +87,21 @@ on. The [faoswsFlag](https://github.com/SWS-Methodology/faoswsFlag)
 package contains standard functions to perform flag manipulation,
 while the [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil)
 package provides a standard to basic manipulations and freindly helper
-functions.
+functions. 
 
 
 ```r
 install_github(repo = "SWS-Methodology/faoswsFlag")
 install_github(repo = "SWS-Methodology/faoswsUtil")
+
+```
+
+Finally, install the
+[faoswsModules](https://github.com/SWS-Methodology/faoswsModules) which contains
+helper function to assist developers to write modules.
+
+```r
+install_github(repo = "SWS-Methodology/faoswsModules")
 ```
 
 ## Obtain Authentication
@@ -164,9 +166,21 @@ For more detail explaination please refere to the [R package guide.](http://r-pk
 
 
 ## The SWS Web Interface
-[Working with the SWS Web Interface](https://)
 
-**Talk about the shared drives**
+
+There are two servers which exist for different function. The QA server stands
+for Quality and Assuarance, and is used to test functionality and experiements
+before going live on the Production server.
+
+[QA Server](http://hqlqasws1.hq.un.fao.org:8080/sws)
+
+[Production Server](intranet.fao.org/sws/)
+
+The web interface will be mainly used to upload moduels and provide a graphic
+user interface to the data. To see how to upload module and interact with the
+Web Interface please see [here](https://).
+
+## SWS Shared Drives
 
 ## Documentations
 
@@ -195,7 +209,7 @@ Code documentation - R manual
 
 [Dealing With Various Country and Commodity Classification](https://)
 
-[Dealing with Flags](https://)
+[Dealing with Flags](https://github.com/SWS-Methodology/Standards/blob/master/dealing_with_flags.md)
 
 [Documentation Maintained by Engine](https://workspace.fao.org/tc/sws/userspace)
 
