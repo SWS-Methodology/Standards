@@ -46,10 +46,18 @@ More details of the work flow on this [blog.](http://scottchacon.com/2011/08/31/
 
 #### Package
 
-To deploy the package, first build the package.
+To deploy the package, first update the manuals with `roxygen`.
+`<package_folder>` refers to the folder of the project (e.g. faoswsProduction).
+
+```r
+library(roxygen2)
+roxygenise(<package_folder>)
+```
+
+Then build the package.
 
 ```
-R CMD build <repository>
+R CMD build <package_folder>
 ```
 
 then run the check on the built tar ball
