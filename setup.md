@@ -47,9 +47,9 @@ If you are on Windows and using a FAO computer, you can install R Studio from
 the Software Center.
 
 Open this [link](http://hqwprsccmapp1/CMApplicationCatalog/) in IE, and search
-for R studio.
+for `R studio`.
 
-This is optional, you are welcome to the IDE of your preference.
+This is **optional**, you are welcome to the IDE of your preference.
 
 ## Install Git
 
@@ -91,6 +91,7 @@ functions.
 
 
 ```r
+library(devtools)o
 install_github(repo = "SWS-Methodology/faoswsFlag")
 install_github(repo = "SWS-Methodology/faoswsUtil")
 
@@ -174,7 +175,7 @@ before going live on the Production server.
 
 [QA Server](http://hqlqasws1.hq.un.fao.org:8080/sws)
 
-[Production Server](intranet.fao.org/sws/)
+[Production Server](http://intranet.fao.org/sws/)
 
 The web interface will be mainly used to upload moduels and provide a graphic
 user interface to the data. To see how to upload module and interact with the
