@@ -1,7 +1,5 @@
 # Guide to Writing R Modules/Pulg-ins
 
-Question (Michael):How should we version the module?
-
 ## When Designing a Module:
 
 Follow the Curly's Law
@@ -15,7 +13,9 @@ intended to be srcipts which wraps the logic of the tasks.
 
 ## Structure of a Standard Module:
 
-A standard module should have the following structure
+[Here](https://github.com/SWS-Methodology/Standards/tree/master/modules/hello_world) is an example of the structure
+
+A standard module should have the following files
 ```
 modules/
 └── test_modules
@@ -23,6 +23,7 @@ modules/
     ├── README.md
     ├── test_module.R
     ├── test_module.xml
+    ├── sws.yml
     └── .gitattributes
 ```
 
@@ -32,17 +33,10 @@ modules/
 * An R folder containing helper functions.
   * These may only contain R files which will be sourced before the main R file.
 
-### Structure of the Main R file
+Follow the instructions of the
+[faoswsModules](https://github.com/SWS-Methodology/faoswsModules) package to
+start writing a module.
 
-1. Loading required libraries and configurations
-2. Define and extract the required data
-3. Validate extracted data
-4. Make a copy of the extracted data
-5. Perform computation
-6. Perform module testing
-7. Check the modification of the data
-8. Save data back
-9. Message and results. This section should be standardised.
 
 ### Structure of the XML file
 
@@ -54,16 +48,15 @@ Schema](https://workspace.fao.org/tc/sws/userspace/Shared%20Documents/R%20Develo
 The README.md must include the following information.
 
 * The Purpose of the module
-* What inputs it takes
-* What inputs it ignores
-* What inputs it modifies
-* The tests performed and the requirements to fulfill
 
 ### The .gitattributes file
 
-The file should contain the following line:
+The file should have `export-ignore` for the files that should not be built into
+the zip file.
+
 ```
 README.md export-ignore
+sws.yml.example export-ignore
 ```
 
 This will tell `git archive` to ignore the file when building the zip file.
