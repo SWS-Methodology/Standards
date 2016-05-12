@@ -4,17 +4,20 @@ This is the guide for new developer to setup and configure their
 environment in order to initiate development.
 
 ## File Organisation
+
+This directory structure is optional, but is a helpfule guide to keep everything organised.
+
 First create a **Github** folder for all future Github related work.
 
-Create a **sws_project** folder in the Github folder for all SWS related
+Create an **sws_project** folder in the Github folder for all SWS related
 projects. The root folder will also contain configuration and setup files to run
 the environment.
 
-The **sws_project** will contain folders which corresponds to a single project
-and should have an associated Github repository. For each of the project, if the
-project exist already, then clone the repository from Github, otherwise start a
+The **sws_project** folder will contain folders which correspond to a single project
+and should have an associated Github repository. For each of the projects, if the
+project exists already, then clone the repository from Github, otherwise start a
 new project. For more information, refer to the
-[workflow](https://github.com/SWS-Methodology/Standards/blob/master/workflow.md).
+[workflow](workflow.md).
 
 You should organise the files in the following manner.
 
@@ -40,28 +43,38 @@ Github/
         ├── .Renviron
         └── Standards/
 ```
+## Software installation
 
-## Install R Studio (Optional)
+If you are on Windows and using a FAO computer, you can install R, R Studio, Rtools and MikTeX from the Software Center.
 
-If you are on Windows and using a FAO computer, you can install R Studio from
-the Software Center.
+Open this [link](http://hqwprsccmapp1/CMApplicationCatalog/) in IE (or an IE tab extension in another browser), and search
+for the appropriate software.
 
-Open this [link](http://hqwprsccmapp1/CMApplicationCatalog/) in IE, and search
-for `R studio`.
+### Install R
 
-This is **optional**, you are welcome to the IDE of your preference.
+Install R for your platform. If you're on Windows, this will be available in the Software Center. Otherwise, install the latest version from [the CRAN website](https://cran.r-project.org/). 
 
-## Install Git
+### Install R Studio (Optional)
 
-If you are on windows, you can install Git by downloading the executables
-[here](https://git-scm.com/download/win).
+Either install from the Software Center (Windows) or from [the RStudio website](https://www.rstudio.com/products/rstudio/download/).
 
-If you are unfamiliar with Git, we would suggest to take a quick
-[course](https://try.github.io/levels/1/challenges/1)
+This is **optional**, you are welcome to the IDE of your preference. Having said that, most projects have a .Rproj file which makes working with R Studio easier.
 
-More about Git [here](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)
+### Install Rtools (Windows only)
 
-## Install Essential R Packages
+If you're running Windows, you may not have all the tools you need to compile packages. It's recommended to get `Rtools` from the Software Center. It includes `gcc` and `make` and all you need to compile packages in R.
+
+### Install a LaTeX distribution
+
+In Windows, the most popular is MiKTeX, but for Mac and Linux there are other ones such as [TeXLive](https://www.tug.org/texlive/acquire.html). This is mostly used for building pdf vignettes. 
+
+### Install Git
+
+If you are on Windows, you can install Git by downloading the portable [from their website](https://git-scm.com/download/win).
+
+If you are unfamiliar with Git, we would suggest to take a quick [course](https://try.github.io/levels/1/challenges/1). There's also the excellent Pro Git book which is [available for free online](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control).
+
+### Install Essential R Packages
 
 The following packages are the backbone of all SWS projects, and they
 should be installed before proceeding.
@@ -82,24 +95,19 @@ extract and save data.
 install.packages("faosws", repos="http://hqlprsws1.hq.un.fao.org/fao-sws-cran/")
 ```
 
-We can then install two in-house package which all projects depends
-on. The [faoswsFlag](https://github.com/SWS-Methodology/faoswsFlag)
-package contains standard functions to perform flag manipulation,
-while the [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil)
-package provides a standard to basic manipulations and freindly helper
-functions. 
+Note as well that all of our published packages and packages available on the Statistical Working System are contained in that repository.
+
+We can then install the development versions of the two in-house package on which all projects depend. The [faoswsFlag](https://github.com/SWS-Methodology/faoswsFlag) package contains standard functions to perform flag manipulation, while the [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil) package provides a standard to basic manipulations and friendly helper functions. 
 
 
 ```r
-library(devtools)o
+library(devtools)
 install_github(repo = "SWS-Methodology/faoswsFlag")
 install_github(repo = "SWS-Methodology/faoswsUtil")
 
 ```
 
-Finally, install the
-[faoswsModules](https://github.com/SWS-Methodology/faoswsModules) which contains
-helper function to assist developers to write modules.
+Finally, install the [faoswsModules](https://github.com/SWS-Methodology/faoswsModules) package which contains helper functions to assist developers to write modules.
 
 ```r
 install_github(repo = "SWS-Methodology/faoswsModules")
@@ -113,7 +121,7 @@ the following team to obtain access to respective resources.
 ### Engineering
 * Access to the SWS shared workspace.
 * Access to the system, both the QA and the Production server.
-* Grant access to datasets.
+* Permissions to access datasets.
 * Access to the SWS shared drives.
 
 ### Team A
@@ -157,37 +165,37 @@ any new projects, the following folders are mandatory.
   checking of a package in order to determine whether the package
   fulfills all the requirements.
 
-* `Vignettes` folder contains documentation which explains the logic
+* The `vignettes` folder contains documentation which explains the logic
   and functionality of the package, it also includes workflow charts
   and any material that helps explaing the use of the package.
 
 * The `module` is where all R modules/plug-ins should be placed.
 
-For more detail explaination please refere to the [R package guide.](http://r-pkgs.had.co.nz/package.html)
+For a more detailed explanation please refer to the [R package guide](http://r-pkgs.had.co.nz/package.html).
 
 
 ## The SWS Web Interface
 
 
-There are two servers which exist for different function. The QA server stands
-for Quality and Assuarance, and is used to test functionality and experiements
+There are two servers which exist for different functions. The QA server stands
+for Quality and Assurance, and is used to test functionality and experiements
 before going live on the Production server.
 
 [QA Server](http://hqlqasws1.hq.un.fao.org:8080/sws)
 
 [Production Server](http://intranet.fao.org/sws/)
 
-The web interface will be mainly used to upload moduels and provide a graphic
-user interface to the data. To see how to upload module and interact with the
+The web interface will be mainly used to upload modules and provide a graphic
+user interface to the data. To see how to upload modules and interact with the
 Web Interface please see [here](https://).
 
 ## SWS Shared Drives
 
 ## Documentations
 
-Before dewelling into development, it is important to understand the
+Before delving into development, it is important to understand the
 practices and standards governed by the SWS team and it is recommended
-to go through the following documentations.
+to go through the following documentation.
 
 ### Project Information
 
