@@ -116,7 +116,13 @@ install_github(repo = "SWS-Methodology/faoswsModules")
 ## Obtain Authentication
 
 Authentication is required to access certain resources, please contact
-the following team to obtain access to respective resources.
+the following teams to obtain access to respective resources.
+
+### CIO
+For these items, you'll have to use the Service Desk to file a ticket
+
+* Access to T Drive
+* Access to JIRA
 
 ### Engineering
 * Access to the SWS shared workspace.
