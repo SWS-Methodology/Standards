@@ -102,6 +102,8 @@ This will tell `git archive` to ignore the file when building the zip file.
   [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil) package.
  
 
+## Managing Plugins On The Statistical Working Sysmte (SWS)
+
 ### Upload R-plugins
 
 Create a zip file containing only the `main.R` and `main.xml` file for the
