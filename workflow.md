@@ -85,26 +85,8 @@ Then request Sebastin to install the package.
 
 #### Modules
 
-Obtain the current SHA-1 with
-```
-git rev-parse HEAD
-```
-
-Then zip up the module with the following command.
-```
-git archive -o <module_name>_<sha_num>.zip <sha_num>:<module_folder>
-```
-
-The `<module_name>` is the name of the module and `<module_folder>` is
-the folder where the module sit. The `<sha_num>` is the first 6 digit
-number obtained from the `git rev-parse HEAD` command (e.g. 642ea6c).
-
-This enables the versioning of modules and old modules can be rebuilt
-with `git archive` or recovered.
-
-
-Then upload the module to the server through the web interface.
-
+Simply upload the R module on to the Statistical Working System through the web
+interface.
 
 ### 4. Integration Test
 
@@ -115,8 +97,8 @@ tests.
 **NOTE (Michael): Need to set the criteria for integration test.**
 
 
-All changes to funciton/module/packages should be tested on the QA
-server before migrating to the Production server.
+All changes to function/module/packages should be tested on the QA server before
+migrating to the Production server.
 
 ### 5. Send the Pull Request then Close the Issue
 
