@@ -19,10 +19,10 @@ A standard module should have the following files
 ```
 modules/
 └── test_modules
-    ├── R
+    ├── R/
     ├── README.md
-    ├── test_module.R
-    ├── test_module.xml
+    ├── main.R
+    ├── main.xml
     ├── sws.yml
     └── .gitattributes
 ```
@@ -102,3 +102,53 @@ This will tell `git archive` to ignore the file when building the zip file.
   [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil) package.
  
 
+### Upload R-plugins
+
+Create a zip file containing only the `main.R` and `main.xml` file for the
+module.
+
+If the module contains optional helpers file, they should be placed in the `R/`
+folder and included in the zip.
+
+Then upload the module to the statistical working system through the web
+interface.
+
+Click the **R plugins** button to manage R plugins.
+![interface_view](https://cloud.githubusercontent.com/assets/1054320/15273000/8746a4a0-1a8b-11e6-8e09-3e525de7dd37.png)
+
+Under the **plugins management** tab, upload the module (zip file) through the
+upload functionality in the red box.
+
+If the module has been approved, check the **core** box. This indicates the
+module is a core module and can write directly back to the database.
+![plugins_management](https://cloud.githubusercontent.com/assets/1054320/15273008/bc77a1ec-1a8b-11e6-806d-dfc5ca924dc7.png)
+
+
+### Run R-plugins
+
+To execute a module, we first need to select the dataset that the module will be
+operating.
+
+First create a new session for the module, or open from previous session.
+![new_session](https://cloud.githubusercontent.com/assets/1054320/15273094/352580b6-1a8f-11e6-810c-6e4680dcf1a2.png)
+
+
+Then select the corresponding domain and dataset the module will be executed.
+This domain and dataset should have been included in the xml declaration,
+otherwise the system will not be able to find the module.
+
+![select_data](https://cloud.githubusercontent.com/assets/1054320/15273096/6695d510-1a8f-11e6-9862-f9ab908bcdc7.png)
+
+Now select the keys, and run the query to view the data.
+
+![select_keys](https://cloud.githubusercontent.com/assets/1054320/15273101/96afb39c-1a8f-11e6-9da1-06b5660f109a.png)
+
+Click the button for **R plugins** to enter the menu for executing the R
+modules.
+
+![data_view](https://cloud.githubusercontent.com/assets/1054320/15273107/ad2758aa-1a8f-11e6-9c4f-8c2edfd0cdff.png)
+
+Fill in the parameters and execute the module. The module can be executed in
+**Synchronous** or **Scheduled** mode.
+
+![execute_r_plugins](https://cloud.githubusercontent.com/assets/1054320/15273112/cd1633c0-1a8f-11e6-85f0-60bf87b92be1.png)
