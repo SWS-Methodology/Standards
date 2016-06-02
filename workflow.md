@@ -46,6 +46,12 @@ More details of the work flow on this [blog.](http://scottchacon.com/2011/08/31/
 
 #### Package
 
+Before deploying your package, make sure that you've decided on a version. We use [semantic versioning](http://semver.org/) with the format `major.minor.bugfix`. If your package isn't ready to be used in a production environment, your release should be `0.minor.bugfix`. If this is your first release, you should start with `0.1.0`. If you add new functionality, increase the `minor` version by one. If you're just fixing issues, increase the `bugfix` number by one. If you've released `1.0.0`, anything you do that breaks existing functionality should increase the `major` number. If not, just increase the `minor number`.
+
+You should specify your package version in the `Version` field in the `DESCRIPTION` file. You should also change the `Date` field to have today's date.
+
+##### Manual deployment
+
 To deploy the package, first update the manuals with `roxygen`.
 `<package_folder>` refers to the folder of the project (e.g. faoswsProduction).
 
