@@ -1,0 +1,5 @@
+* [Introduction](README.md)
+* [Getting started](setup.md)
+* [Working with the SWS](workflow.md)
+  * [Writing modules](writing_r_modules.md)
+  * [Working with flags](dealing_with_flags.md)
