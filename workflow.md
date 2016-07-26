@@ -73,21 +73,24 @@ R CMD check <tarball_file>
 ```
 
 Make sure all the tests are passed without warning. Once the package
-passess the check, a pull request can be issued.
-
-**NOTE (Michael): The checking should also be implemented with
-Continuous Integration**
-
+passes the check, the package can be formally released.
 
 After the package has passed without any error, tag the `<version_number>`
-with Git
+with Git.
 
 ```
 git tag -a v<version_number> -m "<your_message>"
 git push –-tags
 ```
 
-Then request Sebastin to install the package.
+Then send an email to Sebastian Campbell with the following example format:
+
+```
+faoswsModule v0.1.2
+faoswsOther v0.2.3
+```
+
+These modules will then be uploaded to the CRAN server, then to QA and eventually to Production on request.
 
 #### Modules
 
