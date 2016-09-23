@@ -80,7 +80,7 @@ with Git.
 
 ```
 git tag -a v<version_number> -m "<your_message>"
-git push –-tags
+git push –-follow-tags
 ```
 
 Then send an email to Sebastian Campbell with the following example format:
