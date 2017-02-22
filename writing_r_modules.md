@@ -1,4 +1,4 @@
-# Guide to Writing R Modules/Pulg-ins
+# Guide to Writing R Modules/Plug-ins
 
 ## When Designing a Module:
 
