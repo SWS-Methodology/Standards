@@ -91,11 +91,42 @@ connection as the repository is not available publicly. This package
 is developed by the Engineering team, and is the work horse package to
 extract and save data.
 
-```r
-install.packages("faosws", repos="http://hqlprsws1.hq.un.fao.org/fao-sws-cran/")
+The default version of faosws (currently available in github) cannot be used for the Prod env and it reqiuests a 
+Given that Rcurl does not support the protoce TLS, a patch is requested to properly install 
+faosws. The folowing steps are requested:
+
+First: clone the bitbucket faosws repository and switch branch:
+
+```r 
+git clone "https://sdlc.fao.org/bitbucket/scm/sws/faosws.git"
+git checkout dismiss-RCurl
+
+```
+The tar.gz file of the packeage faosws must be created: use twice the 7-zip. The first time to create the .tar file, 
+the second one to create the .gizip.
+
+Finally run the following code in the command line:
+
+```
+path/Rcmd.exe INSTALL --build faosws.tar.gz
+
 ```
 
-Note as well that all of our published packages and packages available on the Statistical Working System are contained in that repository.
+
+Second: the curl library must be replaced with the one stored in the shared folder
+````
+T:\Team_working_folder\A\mongeau\tmp 
+````
+
+Note that you can easily find the folder where this library must replaced typing the following line in the command line:
+```
+.libPaths()
+
+```
+
+
+
+Note as well that all the other of our published packages and packages available on the Statistical Working System are contained in that repository and in the Bitbucket repository.
 
 We can then install the development versions of the two in-house package on which all projects depend. The [faoswsFlag](https://github.com/SWS-Methodology/faoswsFlag) package contains standard functions to perform flag manipulation, while the [faoswsUtil](https://github.com/SWS-Methodology/faoswsUtil) package provides a standard to basic manipulations and friendly helper functions. 
 
